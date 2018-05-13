@@ -1,0 +1,69 @@
+{
+  "id": "com.broadlink",
+  "version": "1.0.0",
+  "compatibility": ">=1.5.0",
+  "sdk": 2,
+  "name": {
+    "en": "Broadlink"
+  },
+  "description": {
+    "en": "Adds support for Broadlink devices"
+  },
+  "category": [
+    "appliances"
+  ],
+  "permissions": [],
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png"
+  },
+  "author": {
+    "name": "Remko Wensveen",
+    "email": "r966430@gmail.com"
+  },
+  "drivers": [
+	{
+		"id": "RM3_mini",
+		"name": {
+			"en": "RM3 Mini",
+			"nl": "RM3 mini"
+		},
+		"images": {
+			"large": "./drivers/RM3_mini/assets/images/large.jpg",
+			"small": "./drivers/RM3_mini/assets/images/small.jpg"
+		},
+		"class": "sensor",
+		"capabilities" : [ "onoff", "dim"] ,
+		"pair": [
+			{	"id":	"start"
+			},
+			{
+      			"id": "list_devices",
+      			"template": "list_devices",
+      			"navigation": {
+        		"next": "add_devices"
+        		}
+        	},
+        	{
+	      		"id": "add_devices",
+    	  		"template": "add_devices"
+    		}
+   		],
+		"settings": [
+			{
+				"id": "host_address",
+				"type": "text",
+				"value": "0.0.0.0",
+				"label": {
+							"en": "IP Address",
+							"nl": "IP Adres"
+						},
+				"hint": {
+					"en": "IP Address of RM3 mini",
+					"nl": "Ip adres van de RM3-mini"
+				}
+			}
+		]	
+	}
+  ]
+}

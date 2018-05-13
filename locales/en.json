@@ -1,0 +1,26 @@
+{
+  "errors": {
+    "sending timeout": "Timeout while sending message to device: device did not respond on time",
+    "decrypt_payload": "Cannot decrypt response: no payload.",
+    "decrypt_keylength": "Cannot decrypt response: invalid key length ",
+    "discover_local_ip": "Cannot discover devices: local IP address unknown"
+  },
+  "pair": {
+    "title": "Pair Broadlink RM3 Mini",
+    "nosettings": "Please fill in all the fields.",
+    "invalidsettings":"Please use correct format for address and mac",
+    "intro": "Configure the RM3-mini with either e-Control on phone, or python script on Raspberry Pi.<br>Get the IP address from your wifi router",
+	"cancel": "Cancel",
+	"add": "Add",
+	"discover": "Discover",
+	"address": "IP address",
+	"mac" : "MAC",
+	"discovererror": "No Broadlink device discovered.",
+	"verifydiscovered": "Discovered device",
+	"devicetype": "Device Type",
+	"error_no_discover": "No device discovered. Did you switch it on, and is it connectect to your WiFi network ?",
+	"found_another": "Found another device: ",
+	"invalid_ipaddress": "Invalid IP address",
+	"discovering": "Discovering device..."
+  }
+}

@@ -1,0 +1,11 @@
+# homey files
+userdata
+userconf.json
+
+# client id & secret
+env.json
+
+# Development tools
+.project
+.settings
+
