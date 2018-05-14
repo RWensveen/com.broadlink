@@ -24,16 +24,6 @@ class BroadlinkDriver extends Homey.Driver {
 		
 		// list of devices discovered during pairing 
 		this.discoveredDevices = [];
-		
-		let commOptions = {
-				ipAddress : '',
-				mac       : '',
-				id        : [0,0,0,0],
-				count     : Math.floor( Math.random() * 0xFFFF ),
-				key       : null
-		}
-		this._communicate = new Communicate()
-		this._communicate.configure( commOptions )
 	}
 
 
@@ -43,10 +33,21 @@ class BroadlinkDriver extends Homey.Driver {
 	 */
 	onPair(socket) {
 		Util.debugLog('==>BroadlinkDriver.onPair');
-        var that = this
+
+		let commOptions = {
+				ipAddress : null,
+				mac       : null,
+				id        : null,
+				count     : Math.floor( Math.random() * 0xFFFF ),
+				key       : null
+		}
+		this._communicate = new Communicate()
+		this._communicate.configure( commOptions )
+
+		var that = this
 
         socket.on('disconnect', function() {
-			//Util.debugLog('BroadlinkDriver.onPair - disconnect');
+			Util.debugLog('BroadlinkDriver.onPair - disconnect');
 			that.discoveredDevices = [];
 		});
 		
@@ -66,21 +67,25 @@ class BroadlinkDriver extends Homey.Driver {
 			           		var device = {
 			           				name: devinfo.name + ' ('+readableMac+')',
 			           				data: { name     : devinfo.name,
-			           						ipAddress: info.ipAddress,
 			           						mac      : Util.arrToHex(info.mac),
 			           						devtype  : info.devtype.toString()
-			           				}
+			           						},
+			           				settings: { ipAddress: info.ipAddress,
+			           						}
 			           		}
 			           		that.discoveredDevices.push( device )
+			           		that._communicate = null;
 			           		socket.emit('discovered', device )
 			           	})
 			           	.catch( err => {
-			           		//Util.debugLog('BroadlinkDriver.onPair -> discover error: ' + err)
+			           		Util.debugLog('BroadlinkDriver.onPair -> discover error: ' + err)
+			           		that._communicate = null;
 			           		socket.emit('discovered', null )
 			           	})
 				})
 				.catch( function(err) {
-					//Util.debugLog('no local address: ' + err)
+					Util.debugLog('no local address: ' + err)
+					that._communicate = null;
 					socket.emit('discovered',null)
 				})
 		})
@@ -90,6 +95,7 @@ class BroadlinkDriver extends Homey.Driver {
 		});
 	}
 
+	
 }
 
 

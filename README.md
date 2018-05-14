@@ -22,7 +22,7 @@ See:
 
 requires the following NodeJS modules
 - dgram
-- cryptjs
+- cryptojs
 
 
 # To Do

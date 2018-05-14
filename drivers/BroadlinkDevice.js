@@ -17,11 +17,11 @@ class BroadlinkDevice extends Homey.Device {
 		let deviceData     = this.getData();
 		
 		let options = {
-				ipAddress : deviceData.ipAddress,
-				mac       : deviceData.mac,
+				ipAddress : deviceSettings.ipAddress,
+				mac       : Util.hexToArr(deviceData.mac),
 				count     : Math.floor(Math.random() * 0xFFFF),
-				id        : deviceSettings.id,
-				key       : deviceSettings.key
+				id        : Util.hexToArr(deviceSettings.id),
+				key       : Util.hexToArr(deviceSettings.key)
 		}
 
 		this._communicate = new Communicate()
@@ -40,7 +40,7 @@ class BroadlinkDevice extends Homey.Device {
 		
 		let deviceData = this.getData();
 		let options = {
-				ipAddress : deviceData.ipAddress,
+				ipAddress : this.getSettings().ipAddress,
 				mac       : Util.hexToArr(deviceData.mac),
 				count     : Math.floor(Math.random() * 0xFFFF),
 				id        : null,
@@ -50,20 +50,20 @@ class BroadlinkDevice extends Homey.Device {
 
 		this._communicate.auth()
 			.then( (authenticationData ) => {
-				let newSettings = { key: authenticationData.key,
-									id : authenticationData.id
+				let newSettings = { key: Util.arrToHex(authenticationData.key),
+									id : Util.arrToHex(authenticationData.id)
 								  };
 
 				this.setSettings( newSettings )
 					.then( dummy => {
-						//Util.debugLog( 'settings saved' )
+						Util.debugLog( 'settings saved' )
 					})
 					.catch( err => {
-						//Util.debugLog(' settings error  * settings not saved *'); 
+						Util.debugLog(' settings error  * settings not saved *'); 
 					})
 			})
 			.catch( err => {
-				//Util.debugLog( 'authentication error: ' + err); 
+				Util.debugLog( 'authentication error: ' + err); 
 			})
 
 	}
@@ -77,6 +77,11 @@ class BroadlinkDevice extends Homey.Device {
 
 		this._communicate = null;
 	}
+	
+	
+	
+	
+	
 	
 }
 
