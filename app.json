@@ -12,7 +12,7 @@
 	"category": [
 		"appliances"
 	],
-	"permissions": [],
+	"permissions": ["homey:manager:api"],
 	"images": {
 		"large": "/assets/images/large.png",
 		"small": "/assets/images/small.png"
@@ -95,5 +95,63 @@
 			}
 		]
 	}
-	]
+	],
+	"flow": {
+		"triggers" : [
+			{
+				"id":"Remote_command_sent",
+				"title": {
+					"en":"Remote Command transmitted",
+					"nl": "Commando verzonden"
+				},
+				"tokens": [
+					{
+						"name": "CommandSent",
+						"type": "string",
+						"title": {
+							"en": "Command sent",
+							"nl": "Verzonden commando"
+						},
+						"example": {
+							"en": "Program Up",
+							"nl": "Volgend Programma"
+						}
+					}
+				],
+				"args": [
+					{
+						"name": "RM3_mini",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=RM3_mini"
+					}
+				]
+			}
+		],
+		"actions": [
+			{
+				"id": "send_command",
+				"title": {
+					"en": "Send Remote Command",
+					"nl": "Verstuur AB commando"
+				},
+				"args": [
+					{
+						"name": "placeholder_arg",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=RM3_mini"
+					},
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "name",
+							"nl": "naam"
+						}
+					}
+				]
+			}
+      
+      			
+        ]
+	}
 }

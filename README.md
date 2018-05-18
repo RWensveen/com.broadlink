@@ -30,13 +30,9 @@ requires the following NodeJS modules
 quite a lot of things
 - add supported devices (see /lib/DeviceInfo for list)
 - get valid icons 
-   + currently, a default 'lamp' is used.
+   + currently, default 'lamp' and 'rocket' is used.
 - find a way to manage commands on RM3
-   + enter RM3 in learn mode, retrieve data, store data
-   + excute commands learned
    + delete commands learned
-  The functions to learn/retrieve/execute already work
-  (see /driver/RM3_mini/driver.js). There just is no way for
-  Homey to use those functions.
+   + rename commands learned
 
 

@@ -10,6 +10,7 @@ class BroadlinkApp extends Homey.App {
 	
 	onInit() {
 		//this.log('Broadlink is running...');
+		
 	}	
 }
 

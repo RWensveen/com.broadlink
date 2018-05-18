@@ -8,8 +8,6 @@
 'use strict';
 
 const BroadlinkDriver = require('./../BroadlinkDriver');
-const Util = require('./../../lib/util.js' );
-
 
 
 

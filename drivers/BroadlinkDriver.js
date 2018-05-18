@@ -17,7 +17,7 @@ class BroadlinkDriver extends Homey.Driver {
 	 * @returns {Error}
 	 */
 	onInit(options) {
-		Util.debugLog('==>BroadlinkDriver.onInit', options);
+		//Util.debugLog('==>BroadlinkDriver.onInit', options);
 
 		// Store driverType
 		this.driverType = options.driverType;
@@ -32,7 +32,7 @@ class BroadlinkDriver extends Homey.Driver {
 	 * 
 	 */
 	onPair(socket) {
-		Util.debugLog('==>BroadlinkDriver.onPair');
+		//Util.debugLog('==>BroadlinkDriver.onPair');
 
 		let commOptions = {
 				ipAddress : null,
@@ -47,7 +47,7 @@ class BroadlinkDriver extends Homey.Driver {
 		var that = this
 
         socket.on('disconnect', function() {
-			Util.debugLog('BroadlinkDriver.onPair - disconnect');
+			//Util.debugLog('BroadlinkDriver.onPair - disconnect');
 			that.discoveredDevices = [];
 		});
 		
@@ -78,13 +78,13 @@ class BroadlinkDriver extends Homey.Driver {
 			           		socket.emit('discovered', device )
 			           	})
 			           	.catch( err => {
-			           		Util.debugLog('BroadlinkDriver.onPair -> discover error: ' + err)
+			           		//Util.debugLog('BroadlinkDriver.onPair -> discover error: ' + err)
 			           		that._communicate = null;
 			           		socket.emit('discovered', null )
 			           	})
 				})
 				.catch( function(err) {
-					Util.debugLog('no local address: ' + err)
+					//Util.debugLog('no local address: ' + err)
 					that._communicate = null;
 					socket.emit('discovered',null)
 				})

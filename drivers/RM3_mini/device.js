@@ -1,8 +1,8 @@
 /**
  * 
- * Driver for Broadlink RM3 Mini
+ * Driver for Broadlink devices
  * 
- * Copyright 2016 - 2018, Remko Wensveen
+ * Copyright 2018, Remko Wensveen
  * 
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 const Homey = require('homey');
 const Util = require('./../../lib/util.js');
 const Communicate = require('./../../lib/Communicate.js');
-const BroadlinkDevice = require('./../BroadlinkDevice')
+const BroadlinkDevice = require('./../BroadlinkDevice');
 
 
 class RM3miniDevice extends BroadlinkDevice {
@@ -31,23 +31,50 @@ class RM3miniDevice extends BroadlinkDevice {
 	
 	onInit() {
 		super.onInit();
-		Util.debugLog('==>RM3miniDevice.onInit');
+		//Util.debugLog('==>RM3miniDevice.onInit');
 		
 		// General capability listeners (only for capabilities which can be set on the device)
 		if (this.hasCapability('learn')) {
-			Util.debugLog('   register capability learn');
 			this.registerCapabilityListener('learn', this.onCapabilityLearn.bind(this));
 		}
+		
+		// Register a function to fill the action-flowcard 'send_command' (see app.json)
+		let myAction = new Homey.FlowCardAction('send_command');
+		myAction
+			.register()
+			.registerRunListener(( args, state ) => { ; })
+			.getArgument('variable')
+			.registerAutocompleteListener(( query, args ) => {
+				// @param: query = name of already selected item in flowcard
+				//                 or empty string if no selection yet
+				// @param: args = other args of flow (i.e. this device)
+				// @return: [Promise]->return list of {name,description,anything_programmer_wants}
+				
+				//Util.debugLog("device.onInit.FlowCardAction:registered = " + JSON.stringify(query))
+				
+				let that = this
+				return new Promise( function(resolve, reject ) {
+					let lst = []
+					let names = that.dataStore.getCommandNameList()
+					for(var i = names.length -1; i >= 0; i--) {
+						let item =  {
+										"name": name[i] 
+									};
+						lst.push( item )
+					}
+					resolve( lst )
+				});
+		})
+	
 
 	}
-	
 
 	/**
 	 * This method is called when the user adds the device, called just after pairing.
 	 */
 	onAdded() {
 		super.onAdded();
-		Util.debugLog('==>RM3miniDevice.onAdded');
+		//Util.debugLog('==>RM3miniDevice.onAdded');
 	}
 
 		
@@ -56,7 +83,7 @@ class RM3miniDevice extends BroadlinkDevice {
 	 */
 	onDeleted() {
 		super.onDeleted()
-		Util.debugLog('==>RM3miniDevice.onDeleted');
+		//Util.debugLog('==>RM3miniDevice.onDeleted');
 	}
 
 	
@@ -68,7 +95,7 @@ class RM3miniDevice extends BroadlinkDevice {
 	 * @returns {Promise}
 	 */
 	onCapabilityLearn(onoff) {
-	    Util.debugLog('==>RM3miniDevice.onCapabilityLearn');
+	    //Util.debugLog('==>RM3miniDevice.onCapabilityLearn');
 	    var that = this
 	    if( this.learn ) { 
 	    	return Promise.resolve() 
@@ -77,26 +104,25 @@ class RM3miniDevice extends BroadlinkDevice {
 	    
 	    return this._communicate.enter_learning()
 			.then( response => {
-				Util.debugLog('entered learning');
+				//Util.debugLog('entered learning');
 				that._communicate.check_data()
 					.then( data => {
-						Util.debugLog('<==RM3miniDevice.onCapabilityLearn, data = ' + Util.asHex(data));
 						that.learn = false;
+						//Util.debugLog('<==RM3miniDevice.onCapabilityLearn, data = ' + Util.asHex(data));
+						this.dataStore.addCommand( 'cmd' + this.dataStore.dataArray.length, data);
 					})
 					.catch( err => {
-						Util.debugLog('<==RM3miniDevice.onCapabilityLearn, error checking data: '+err);
 						that.learn = false;
+						//Util.debugLog('<==RM3miniDevice.onCapabilityLearn, error checking data: '+err);
 					})
 			})
 			.catch( err => {
-				Util.debugLog('error learning: '+err);
+				//Util.debugLog('error learning: '+err);
 				that.learn = false;
 			})
 	    
 	    //return Promise.resolve();
 	}
-	
-
 	
 	
 }
