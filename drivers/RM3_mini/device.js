@@ -29,6 +29,17 @@ class RM3miniDevice extends BroadlinkDevice {
 	
 	
 	
+	
+	executeCommand( cmd ) {
+		//Util.debugLog('==>executeCommand = ' + JSON.stringify(cmd));
+		var cmdData = this.dataStore.getCommandData( cmd.name )
+		if( cmdData ) {
+			return this._communicate.send_data( cmdData )
+		}
+		else { return Promise.resolve(); }
+	}
+	
+	
 	onInit() {
 		super.onInit();
 		//Util.debugLog('==>RM3miniDevice.onInit');
@@ -38,11 +49,15 @@ class RM3miniDevice extends BroadlinkDevice {
 			this.registerCapabilityListener('learn', this.onCapabilityLearn.bind(this));
 		}
 		
+		let that = this;
 		// Register a function to fill the action-flowcard 'send_command' (see app.json)
 		let myAction = new Homey.FlowCardAction('send_command');
 		myAction
 			.register()
-			.registerRunListener(( args, state ) => { ; })
+			.registerRunListener(( args, state ) => { 
+					//Util.debugLog('action card - run listener' + JSON.stringify(args) + " - " + JSON.stringify(state) )
+					return that.executeCommand( args['variable'] )
+			 })
 			.getArgument('variable')
 			.registerAutocompleteListener(( query, args ) => {
 				// @param: query = name of already selected item in flowcard
@@ -58,14 +73,13 @@ class RM3miniDevice extends BroadlinkDevice {
 					let names = that.dataStore.getCommandNameList()
 					for(var i = names.length -1; i >= 0; i--) {
 						let item =  {
-										"name": name[i] 
+										"name": names[i] 
 									};
 						lst.push( item )
 					}
 					resolve( lst )
 				});
-		})
-	
+			})
 
 	}
 
@@ -108,8 +122,13 @@ class RM3miniDevice extends BroadlinkDevice {
 				that._communicate.check_data()
 					.then( data => {
 						that.learn = false;
-						//Util.debugLog('<==RM3miniDevice.onCapabilityLearn, data = ' + Util.asHex(data));
-						this.dataStore.addCommand( 'cmd' + this.dataStore.dataArray.length, data);
+						if( data ) {
+							//Util.debugLog('<==RM3miniDevice.onCapabilityLearn, data = ' + Util.asHex(data));
+							this.dataStore.addCommand( 'cmd' + that.dataStore.dataArray.length, data);
+						}
+						else {
+							//Util.debugLog('<==RM3miniDevice.onCapabilityLearn -> no data');
+						}
 					})
 					.catch( err => {
 						that.learn = false;
