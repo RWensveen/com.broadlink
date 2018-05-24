@@ -29,20 +29,54 @@ class RM3miniDevice extends BroadlinkDevice {
 	
 	
 	
-	
-	executeCommand( cmd ) {
-		//Util.debugLog('==>executeCommand = ' + JSON.stringify(cmd));
-		var cmdData = this.dataStore.getCommandData( cmd.name )
+	/**
+	 * Sends the given command to the device and triggers the flows
+	 * 
+	 * @param  that  = this driver
+	 * @param  cmd   = command-name
+	 * 
+	 * @return [Promise] resolves once command is send
+	 */
+	executeCommand( that, cmd ) {
+		//Util.debugLog('==>executeCommand: ' + JSON.stringify(cmd))
+		
+		var cmdData = that.dataStore.getCommandData( cmd.name )
 		if( cmdData ) {
-			return this._communicate.send_data( cmdData )
+			// RC_specific_sent: user entered command name
+			that.mySpecificTrigger.trigger( that, {}, { 'variable':cmd.name })
+			
+			// RC_sent_any: set token
+			that.myAnyCmdTrigger.trigger(that,{'CommandSent':cmd.name},{})
+			
+			// send the command
+		    return this._communicate.send_data( cmdData )
 		}
 		else { return Promise.resolve(); }
 	}
 	
 	
+	/**
+	 * Get a list of all command-names
+	 * 
+	 * @return  [Promise] resolves with the command-name list
+	 */
+	onAutoComplete(that) {
+		return new Promise( function(resolve, reject ) {
+			let lst = []
+			let names = that.dataStore.getCommandNameList()
+			for(var i = names.length -1; i >= 0; i--) {
+				let item =  {
+								"name": names[i] 
+							};
+				lst.push( item )
+			}
+			resolve( lst )
+		});
+	}
+	
+	
 	onInit() {
 		super.onInit();
-		//Util.debugLog('==>RM3miniDevice.onInit');
 		
 		// General capability listeners (only for capabilities which can be set on the device)
 		if (this.hasCapability('learn')) {
@@ -51,12 +85,11 @@ class RM3miniDevice extends BroadlinkDevice {
 		
 		let that = this;
 		// Register a function to fill the action-flowcard 'send_command' (see app.json)
-		let myAction = new Homey.FlowCardAction('send_command');
-		myAction
+		this.myAction = new Homey.FlowCardAction('send_command');
+		this.myAction
 			.register()
 			.registerRunListener(( args, state ) => { 
-					//Util.debugLog('action card - run listener' + JSON.stringify(args) + " - " + JSON.stringify(state) )
-					return that.executeCommand( args['variable'] )
+					return that.executeCommand( that, args['variable'] )
 			 })
 			.getArgument('variable')
 			.registerAutocompleteListener(( query, args ) => {
@@ -67,20 +100,31 @@ class RM3miniDevice extends BroadlinkDevice {
 				
 				//Util.debugLog("device.onInit.FlowCardAction:registered = " + JSON.stringify(query))
 				
-				let that = this
-				return new Promise( function(resolve, reject ) {
-					let lst = []
-					let names = that.dataStore.getCommandNameList()
-					for(var i = names.length -1; i >= 0; i--) {
-						let item =  {
-										"name": names[i] 
-									};
-						lst.push( item )
-					}
-					resolve( lst )
-				});
+				return that.onAutoComplete(that);
+			});
+		
+		// Register a function to fill the trigger-flowcard 'RC_specific_sent' (see app.json)
+		this.mySpecificTrigger = new Homey.FlowCardTriggerDevice('RC_specific_sent');
+		this.mySpecificTrigger
+			.register()
+			.registerRunListener(( args, state,callback ) => { 
+				// @param: args = trigger settings from app.json
+				// @param: state = data from trigger-event (as given in this.executeCommand function)
+
+				callback(null,( args.variable.name === state.variable ))
+			})
+			.getArgument('variable')
+			.registerAutocompleteListener(( query, args ) => {
+				// @param: query = name of already selected item in flowcard
+				//                 or empty string if no selection yet
+				// @param: args = other args of flow (i.e. this device)
+				// @return: [Promise]->return list of {name,description,anything_programmer_wants}
+				
+				return that.onAutoComplete(that);
 			})
 
+		this.myAnyCmdTrigger = new Homey.FlowCardTriggerDevice('RC_sent_any');
+		this.myAnyCmdTrigger.register()
 	}
 
 	/**
@@ -98,9 +142,11 @@ class RM3miniDevice extends BroadlinkDevice {
 	onDeleted() {
 		super.onDeleted()
 		//Util.debugLog('==>RM3miniDevice.onDeleted');
+		
+		this.myAction.unregister()
+		this.mySpecificTrigger.unregister()
+		this.myAnyCmdTrigger.unregister()
 	}
-
-	
 
 
 	/**
@@ -110,12 +156,12 @@ class RM3miniDevice extends BroadlinkDevice {
 	 */
 	onCapabilityLearn(onoff) {
 	    //Util.debugLog('==>RM3miniDevice.onCapabilityLearn');
-	    var that = this
 	    if( this.learn ) { 
 	    	return Promise.resolve() 
 	    }
 	    this.learn = true;
 	    
+	    var that = this
 	    return this._communicate.enter_learning()
 			.then( response => {
 				//Util.debugLog('entered learning');

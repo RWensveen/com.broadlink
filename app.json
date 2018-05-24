@@ -99,9 +99,9 @@
 	"flow": {
 		"triggers" : [
 			{
-				"id":"Remote_command_sent",
+				"id":"RC_sent_any",
 				"title": {
-					"en":"Remote Command transmitted",
+					"en":"Any Remote Command transmitted",
 					"nl": "Commando verzonden"
 				},
 				"tokens": [
@@ -123,6 +123,42 @@
 						"name": "RM3_mini",
 						"type": "device",
 						"filter": "driver_uri=homey:app:com.broadlink&driver_id=RM3_mini"
+					}
+				]
+			},
+			{
+				"id":"RM3_TEST",
+				"title": {
+					"en":"RM3 test trigger",
+					"nl": "RM3 test trigger"
+				},
+				"args": [
+					{
+						"name": "RM3_mini_test",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=RM3_mini"
+					}
+				]
+			},
+			{
+				"id":"RC_specific_sent",
+				"title": {
+					"en":"Remote Command transmitted",
+					"nl": "Commando verzonden"
+				},
+				"args": [
+					{
+						"name": "placeholder_arg",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=RM3_mini"
+					},
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "name",
+							"nl": "naam"
+						}
 					}
 				]
 			}
