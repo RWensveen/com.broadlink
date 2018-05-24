@@ -127,20 +127,6 @@
 				]
 			},
 			{
-				"id":"RM3_TEST",
-				"title": {
-					"en":"RM3 test trigger",
-					"nl": "RM3 test trigger"
-				},
-				"args": [
-					{
-						"name": "RM3_mini_test",
-						"type": "device",
-						"filter": "driver_uri=homey:app:com.broadlink&driver_id=RM3_mini"
-					}
-				]
-			},
-			{
 				"id":"RC_specific_sent",
 				"title": {
 					"en":"Remote Command transmitted",
