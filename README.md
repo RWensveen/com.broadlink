@@ -27,12 +27,9 @@ requires the following NodeJS modules
 
 # To Do
 
-quite a lot of things
+still some things to do:
 - add supported devices (see /lib/DeviceInfo for list)
 - get valid icons 
    + currently, default 'lamp' and 'rocket' is used.
-- find a way to manage commands on RM3
-   + delete commands learned
-   + rename commands learned
 
 
