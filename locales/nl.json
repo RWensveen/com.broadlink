@@ -1,0 +1,25 @@
+{
+  "errors": {
+    "sending timeout": "Kan geen bericht naar apparaat sturen: antwoord niet op tijd ontvangen",
+    "decrypt_payload": "Kan anwoord niet ontsleutelen: geen data in bericht.",
+    "decrypt_keylength": "Kan anwoord niet ontsleutelen: foutive sleutel lengte.",
+    "discover_local_ip": "Kan geen apparaten ontdekken: locaal IP adres is onbekend.",
+    "save_settings": "Kan instellingen niet bewaren: commando ",
+    "save_settings_nocmd": " is nog niet bekend.",
+    "save_settings_exist": " bestaat al."
+  },
+  "pair": {
+    "title": "Broadlink RM3 Mini toevoegen",
+    "nosettings": "Niet alle velden zijn ingevuld.",
+    "invalidsettings":"Gebruik juiste formaat voor IP adres.",
+    "intro": "Configureer de RM3 Mini met de e-Control app op een smartphone, or met het python script op Raspberry Pi.<br>Zoek dan het IP adres op de wifi router",
+	"cancel": "Stop",
+	"add": "Toevoegen",
+	"address": "IP address",
+	"devicetype": "Device Type",
+	"error_no_discover": "Geen apparaat gevonden. Is het apparaat aan, en is het verbonden met het Wifi netwerk ?",
+	"found_another": "Ander apparaat gevonden: ",
+	"invalid_ipaddress": "Ongeldig IP adres",
+	"discovering": "Probeer apparaat te ontdekken..."
+  }
+}

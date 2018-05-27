@@ -6,6 +6,9 @@
 	"name": {
 		"en": "Broadlink"
 	},
+	"tags":{
+		"en": [ "IR", "Remote Control", "Infrared", "wifi"]
+	},
 	"description": {
 		"en": "Adds support for Broadlink devices.",
 		"nl": "Voegt ondersteuning voor Broadlink apparaten toe."
@@ -15,8 +18,8 @@
 	],
 	"permissions": ["homey:manager:api"],
 	"images": {
-		"large": "/assets/images/large.png",
-		"small": "/assets/images/small.png"
+		"large": "/assets/images/large.jpg",
+		"small": "/assets/images/small.jpg"
 	},
 	"author": {
 		"name": "Remko Wensveen",
