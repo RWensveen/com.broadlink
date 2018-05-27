@@ -28,8 +28,6 @@ requires the following NodeJS modules
 # To Do
 
 still some things to do:
-- add supported devices (see /lib/DeviceInfo for list)
-- get valid icons 
-   + currently, default 'lamp' and 'rocket' is used.
+- add supported devices (see com.broadlink/lib/DeviceInfo for list)
 
 

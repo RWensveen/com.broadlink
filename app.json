@@ -7,7 +7,8 @@
 		"en": "Broadlink"
 	},
 	"description": {
-		"en": "Adds support for Broadlink devices"
+		"en": "Adds support for Broadlink devices.",
+		"nl": "Voegt ondersteuning voor Broadlink apparaten toe."
 	},
 	"category": [
 		"appliances"
@@ -42,7 +43,7 @@
 		"id": "RM3_mini",
 		"name": {
 			"en": "RM3 Mini",
-			"nl": "RM3 mini"
+			"nl": "RM3 Mini"
 		},
 		"images": {
 			"large": "./drivers/RM3_mini/assets/images/large.jpg",
@@ -85,7 +86,10 @@
 					"en": "RC Commands",
 					"nl": "RC commando's"
 				},
-				"description": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows",
+				"description": {
+					"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows",
+					"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+				},
 				"children": [
 					{
 						"id": "RcCmd0",
@@ -266,6 +270,66 @@
 							"en": "Name of the command the RM3 Mini learned.",
 							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
 						}
+					},
+					{
+						"id": "RcCmd15",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "16"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd16",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "17"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd17",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "18"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd18",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "19"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd19",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "20"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
 					}
 				]
 			}
@@ -277,7 +341,7 @@
 			{
 				"id":"RC_sent_any",
 				"title": {
-					"en":"Any Remote Command transmitted",
+					"en": "Any Remote Command transmitted",
 					"nl": "Commando verzonden"
 				},
 				"tokens": [
@@ -305,7 +369,7 @@
 			{
 				"id":"RC_specific_sent",
 				"title": {
-					"en":"Remote Command transmitted",
+					"en": "Remote Command transmitted",
 					"nl": "Commando verzonden"
 				},
 				"args": [
@@ -330,7 +394,7 @@
 				"id": "send_command",
 				"title": {
 					"en": "Send Remote Command",
-					"nl": "Verstuur AB commando"
+					"nl": "Verstuur commando"
 				},
 				"args": [
 					{

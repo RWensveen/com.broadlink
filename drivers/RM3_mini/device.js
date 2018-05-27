@@ -1,8 +1,7 @@
 /**
- * 
  * Driver for Broadlink devices
  * 
- * Copyright 2018, Remko Wensveen
+ * Copyright 2018, R Wensveen
  * 
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
@@ -14,7 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
- * along with com.gruijter.plugwise2py.  If not, see <http://www.gnu.org/licenses/>.
+ * along with com.broadlink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 'use strict';
@@ -27,20 +26,18 @@ const BroadlinkDevice = require('./../BroadlinkDevice');
 
 class RM3miniDevice extends BroadlinkDevice {
 	
-	
-	
+
+	/**
+	 * Store the given name at the first available place in settings.
+	 * i.e. look for an entry 'RcCmd.' (where . is integer >= 0)
+	 */
 	storeCmdSetting( cmdname ) {
 
 		let settings = this.getSettings()
 		
-		//for( idx = 0; idx < 15; idx++ ) {
-		//	let settingName = 'RcCmd' + idx;
-		//	Util.debugLog('settings['+settingName+ '].length = ' + settings[ settingName ].length);
-		//}
-		
 		var idx = 0;
-		for( idx = 0; idx < 15; idx++ ) {
-			let settingName = 'RcCmd' + idx;
+		let settingName = 'RcCmd' + idx;
+		while( settingName in settings) {
 			if( settings[ settingName ].length == 0 ) {
 		
 				let s = { 
@@ -49,6 +46,8 @@ class RM3miniDevice extends BroadlinkDevice {
 				this.setSettings( s );
 				break;
 			}
+			idx++;
+			settingName = 'RcCmd' + idx;
 		}
 	}
 
@@ -131,7 +130,7 @@ class RM3miniDevice extends BroadlinkDevice {
 		this.mySpecificTrigger = new Homey.FlowCardTriggerDevice('RC_specific_sent');
 		this.mySpecificTrigger
 			.register()
-			.registerRunListener(( args, state,callback ) => { 
+			.registerRunListener(( args, state, callback ) => { 
 				// @param: args = trigger settings from app.json
 				// @param: state = data from trigger-event (as given in this.executeCommand function)
 
@@ -239,16 +238,14 @@ class RM3miniDevice extends BroadlinkDevice {
 			// has old + no new: delete
 			// no old + has new: error
 			// no old + no new: unused
-			if(oldName.length > 0) {
-				if(newName.length > 0) {
+			if(newName.length > 0) {
+				if(oldName.length > 0) {
 					if( this.dataStore.findCommand( newName ) >= 0 ) {
 						callback( Homey.__('errors.save_settings') + newName + Homey.__('errors.save_settings_exist'), false);
 						return;
 					}	
 				}
-			}
-			else {
-				if(newName.length > 0) {
+				else {
 					callback( Homey.__('errors.save_settings') + newName + Homey.__('errors.save_settings_nocmd'), null);
 					return;
 				}
@@ -265,7 +262,7 @@ class RM3miniDevice extends BroadlinkDevice {
 				this.dataStore.renameCommand( oldName, newName );
 			}
 			else {
-				//Util.debugLog(' delete ' + newName)
+				//Util.debugLog(' delete ' + oldName)
 				this.dataStore.deleteCommand( oldName );
 			}
 		}
