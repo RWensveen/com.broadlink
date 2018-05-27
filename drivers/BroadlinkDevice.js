@@ -66,11 +66,11 @@ class BroadlinkDevice extends Homey.Device {
 						//Util.debugLog( 'settings saved' )
 					})
 					.catch( err => {
-						Util.debugLog(' settings error  * settings not saved *'); 
+						Util.debugLog('*> settings error  * settings not saved *'); 
 					})
 			})
 			.catch( err => {
-				Util.debugLog( 'authentication error: ' + err); 
+				Util.debugLog( '*> authentication error: ' + err); 
 			})
 
 	}

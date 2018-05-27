@@ -71,6 +71,7 @@ class BroadlinkDriver extends Homey.Driver {
 			           						devtype  : info.devtype.toString()
 			           						},
 			           				settings: { ipAddress: info.ipAddress,
+			           					        RcCmd0: ''
 			           						}
 			           		}
 			           		that.discoveredDevices.push( device )

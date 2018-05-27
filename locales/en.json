@@ -1,9 +1,12 @@
 {
   "errors": {
-    "sending timeout": "Timeout while sending message to device: device did not respond on time",
+    "sending timeout": "Timeout while sending message to device: device did not respond in time",
     "decrypt_payload": "Cannot decrypt response: no payload.",
-    "decrypt_keylength": "Cannot decrypt response: invalid key length ",
-    "discover_local_ip": "Cannot discover devices: local IP address unknown"
+    "decrypt_keylength": "Cannot decrypt response: invalid key length.",
+    "discover_local_ip": "Cannot discover devices: local IP address unknown.",
+    "save_settings": "Cannot save changes: command ",
+    "save_settings_nocmd": " is not known yet",
+    "save_settings_exist": " already exists"
   },
   "pair": {
     "title": "Pair Broadlink RM3 Mini",

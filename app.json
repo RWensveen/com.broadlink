@@ -49,7 +49,7 @@
 			"small": "./drivers/RM3_mini/assets/images/small.jpg"
 		},
 		"class": "other",
-		"capabilities" : ["learn","onoff","volume_set"],
+		"capabilities" : ["learn"],
 		"mobile": {
 			"components": [ 
 				{
@@ -80,18 +80,194 @@
 	 	],
 		"settings": [
 			{
-				"id": "ipAddress",
-				"type": "text",
-				"pattern": "[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}",
-				"value": "0.0.0.0",
+				"type":"group",
 				"label": {
-					"en": "IP Address",
-					"nl": "IP Adres"
+					"en": "RC Commands",
+					"nl": "RC commando's"
 				},
-				"hint": {
-					"en": "IP Address of RM3 mini",
-					"nl": "Ip adres van de RM3-mini"
-				}
+				"description": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows",
+				"children": [
+					{
+						"id": "RcCmd0",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "1"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd1",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "2"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd2",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "3"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd3",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "4"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd4",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "5"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd5",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "6"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd6",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "7"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd7",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "8"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd8",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "9"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd9",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "10"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd10",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "11"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd11",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "12"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd12",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "13"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd13",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "14"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					},
+					{
+						"id": "RcCmd14",
+						"type": "text",
+						"value": "",
+						"label": {
+							"en": "15"
+						},
+						"hint": {
+							"en": "Name of the command the RM3 Mini learned.",
+							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						}
+					}
+				]
 			}
 		]
 	}
