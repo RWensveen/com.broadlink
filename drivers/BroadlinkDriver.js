@@ -29,16 +29,15 @@ class BroadlinkDriver extends Homey.Driver {
 	
 	/**
 	 * Method that will be called when a driver is initialized. It will register Flow Cards
-	 * for the respective drivers. Options parameter should at least contain a driverType
-	 * property.
+	 * for the respective drivers. 
 	 * @param options {Object}
 	 * @returns {Error}
 	 */
 	onInit(options) {
 		//Util.debugLog('==>BroadlinkDriver.onInit', options);
 
-		// Store driverType
-		this.driverType = options.driverType;
+		// options
+		this.CompatibilityID = options.CompatibilityID;
 		
 		// list of devices discovered during pairing 
 		this.discoveredDevices = [];
@@ -64,10 +63,11 @@ class BroadlinkDriver extends Homey.Driver {
 
 		var that = this
 
+		
         socket.on('disconnect', function() {
-			//Util.debugLog('BroadlinkDriver.onPair - disconnect');
 			that.discoveredDevices = [];
-		});
+			that._communicate = null;
+       	});
 		
 		socket.on( 'start_discover', function(userdata, callback ) {
 
@@ -80,7 +80,8 @@ class BroadlinkDriver extends Homey.Driver {
 					that._communicate.discover( 5, localAddress, userdata.address ) 
 			           	.then ( info => {
 			           		
-			           		var devinfo = DeviceInfo.getDeviceInfo(info.devtype)
+			           		//var devinfo = DeviceInfo.getDeviceInfo(info.devtype, userdata.expectedType)
+			           		var devinfo = DeviceInfo.getDeviceInfo(info.devtype,that.CompatibilityID)
 			           		var readableMac = Util.asHex(info.mac).replace(/,/g,':')
 
 			           		var device = {
@@ -90,21 +91,21 @@ class BroadlinkDriver extends Homey.Driver {
 			           						devtype  : info.devtype.toString()
 			           						},
 			           				settings: { ipAddress: info.ipAddress
-			           						}
+			           						},
+			           				isCompatible: devinfo.isCompatible
 			           		}
 			           		that.discoveredDevices.push( device )
-			           		that._communicate = null;
 			           		socket.emit('discovered', device )
+			           		
+			           	},  rejectReason => {
+			           		socket.emit('discovered', null )
 			           	})
 			           	.catch( err => {
-			           		//Util.debugLog('BroadlinkDriver.onPair -> discover error: ' + err)
-			           		that._communicate = null;
 			           		socket.emit('discovered', null )
 			           	})
 				})
 				.catch( function(err) {
-					//Util.debugLog('no local address: ' + err)
-					that._communicate = null;
+					//Util.debugLog('**>BroadlinkDriver.onPair -> catch error: ' + err)
 					socket.emit('discovered',null)
 				})
 		})

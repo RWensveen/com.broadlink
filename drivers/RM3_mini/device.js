@@ -72,7 +72,7 @@ class RM3miniDevice extends BroadlinkDevice {
 			that.myAnyCmdTrigger.trigger(that,{'CommandSent':cmd.name},{})
 			
 			// send the command
-		    return this._communicate.send_data( cmdData )
+			return this._communicate.send_IR_RF_data( cmdData )
 		}
 		else { return Promise.resolve(); }
 	}
@@ -98,13 +98,13 @@ class RM3miniDevice extends BroadlinkDevice {
 	}
 	
 	
+	/**
+	 * 
+	 */
 	onInit() {
 		super.onInit();
 		
-		// General capability listeners (only for capabilities which can be set on the device)
-		if (this.hasCapability('learn')) {
-			this.registerCapabilityListener('learn', this.onCapabilityLearn.bind(this));
-		}
+		this.registerCapabilityListener('learnIRcmd', this.onCapabilityLearnIR.bind(this));
 		
 		let that = this;
 		// Register a function to fill the action-flowcard 'send_command' (see app.json)
@@ -150,6 +150,7 @@ class RM3miniDevice extends BroadlinkDevice {
 		this.myAnyCmdTrigger.register()
 	}
 
+
 	/**
 	 * This method is called when the user adds the device, called just after pairing.
 	 */
@@ -177,8 +178,8 @@ class RM3miniDevice extends BroadlinkDevice {
 	 * @param onoff
 	 * @returns {Promise}
 	 */
-	onCapabilityLearn(onoff) {
-	    //Util.debugLog('==>RM3miniDevice.onCapabilityLearn');
+	onCapabilityLearnIR(onoff) {
+	    //Util.debugLog('==>RM3miniDevice.onCapabilityLearnIR');
 	    if( this.learn ) { 
 	    	return Promise.resolve() 
 	    }
@@ -188,11 +189,11 @@ class RM3miniDevice extends BroadlinkDevice {
 	    return this._communicate.enter_learning()
 			.then( response => {
 				//Util.debugLog('entered learning');
-				that._communicate.check_data()
+				that._communicate.check_IR_data()
 					.then( data => {
 						that.learn = false;
 						if( data ) {
-							//Util.debugLog('<==RM3miniDevice.onCapabilityLearn, data = ' + Util.asHex(data));
+							//Util.debugLog('<==RM3miniDevice.onCapabilityLearnIR, data = ' + Util.asHex(data));
 							let idx = that.dataStore.dataArray.length + 1;
 							let cmdname = 'cmd' + idx;
 							this.dataStore.addCommand( cmdname, data);
@@ -202,12 +203,12 @@ class RM3miniDevice extends BroadlinkDevice {
 								
 					})
 					.catch( err => {
-						that.learn = false;
-						Util.debugLog('*> RM3miniDevice.onCapabilityLearn, error checking data: '+err);
+						that.learn = fal*se;
+						Util.debugLog('**> RM3miniDevice.onCapabilityLearnIR, error checking data: '+err);
 					})
 			})
 			.catch( err => {
-				Util.debugLog('*> error learning: '+err);
+				Util.debugLog('**> error learning: '+err);
 				that.learn = false;
 			})
 	}
@@ -263,7 +264,7 @@ class RM3miniDevice extends BroadlinkDevice {
 			}
 			else {
 				//Util.debugLog(' delete ' + oldName)
-				this.dataStore.deleteCommand( oldName );
+				this.dataStore.deleteCommand( oldName);
 			}
 		}
 

@@ -1,6 +1,6 @@
 {
 	"id": "com.broadlink",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"compatibility": ">=1.5.0",
 	"sdk": 2,
 	"name": {
@@ -26,318 +26,591 @@
 		"email": "r966430@gmail.com"
 	},
 	"capabilities" : {
-		"learn": {
+		"learnIRcmd": {
 			"type": "boolean",
 			"title": {
-				"en": "Start learn mode",
-				"nl": "Start leer modus"
+				"en": "Learn IR command",
+				"nl": "Leer IR commando"
 			},
 			"getable": false,
+			"setable": true
+		},
+		"learnRFcmd": {
+			"type": "boolean",
+			"title": {
+				"en": "Learn RF command",
+				"nl": "Leer RF commando"
+			},
+			"getable": false,
+			"setable": true
+		},
+		"a1_air_quality": {
+			"type": "enum",
+			"title": {
+				"en": "Air Quality",
+				"nl": "Luchtkwaliteit"
+			},
+			"values": [
+				{ "id": "excellent", "title":{"en":"excellent", "nl": "uitstekend"} },
+				{ "id": "good",      "title":{"en":"good",      "nl": "goed"} },
+				{ "id": "normal",    "title":{"en":"normal",    "nl": "normaal"} },
+				{ "id": "bad",       "title":{"en":"bad",       "nl": "slecht"} },
+				{ "id": "unknown",   "title":{"en":"unknown",   "nl": "onbekend"} }
+			],
+			"getable": true,
+			"setable": true
+		},
+		"a1_air_quality_number": {
+			"type": "number",
+			"title": {
+				"en": "Air Quality",
+				"nl": "Luchtkwaliteit"
+			},
+			"min":1,
+			"max":4,
+			"decimals": 0,
+			"chartType": "spline",
+			"getable": true,
+			"setable": true
+		},
+		"a1_light_level": {
+			"type": "enum",
+			"title": {
+				"en": "Light Level",
+				"nl": "Lichtniveau"
+			},
+			"values": [ 
+				{ "id":"dark",    "title":{"en": "dark",    "nl":"donker"} },
+				{ "id":"dim",     "title":{"en": "dim",     "nl":"schemerig"} },
+				{ "id":"normal",  "title":{"en": "normal",  "nl":"normaal"} },
+				{ "id":"bright",  "title":{"en": "bright",  "nl":"helder"} },
+				{ "id":"unknown", "title":{"en": "unknown", "nl":"onbekend"} }
+			],
+			"getable": true,
+			"setable": true
+		},
+		"a1_light_level_number": {
+			"type": "number",
+			"title": {
+				"en": "Light",
+				"nl": "Licht"
+			},
+			"min":1,
+			"max":4,
+			"decimals": 0,
+			"chartType": "spline",
+			"getable": true,
+			"setable": true
+		},
+		"a1_noise_level": {
+			"type": "enum",
+			"title": {
+				"en": "Noise Level",
+				"nl": "Geluidsniveau"
+			},
+			"values": [ 
+				{ "id":"quiet",   "title":{"en": "quiet",   "nl":"stil"} },
+				{ "id":"normal",  "title":{"en": "normal",  "nl":"normaal"} },
+				{ "id":"noisy",   "title":{"en": "noisy",   "nl":"luidruchtig"} },
+				{ "id":"unknown", "title":{"en": "unknown", "nl":"onbekend"} }
+			],
+			"getable": true,
+			"setable": true
+		},
+		"a1_noise_level_number": {
+			"type": "number",
+			"title": {
+				"en": "Noise Level",
+				"nl": "Geluidsniveau"
+			},
+			"min":1,
+			"max":3,
+			"decimals": 0,
+			"chartType": "spline",
+			"getable": true,
 			"setable": true
 		}
 	},
 	"capabilitiesOptions": {
-		"learn": {
-			"preventInsights":true
-		}
+		"learnIRcmd":     { "preventInsights":true },
+		"learnRFcmd":     { "preventInsights":true },
+		"a1_air_quality": { "preventInsights":true },
+		"a1_light_level": { "preventInsights":true },
+		"a1_noise_level": { "preventInsights":true },
+		"a1_air_quality_number": { "preventInsights":false },
+		"a1_light_level_number": { "preventInsights":false },
+		"a1_noise_level_number": { "preventInsights":false }
 	},
 	"drivers": [
-	{
-		"id": "RM3_mini",
-		"name": {
-			"en": "RM3 Mini",
-			"nl": "RM3 Mini"
-		},
-		"images": {
-			"large": "./drivers/RM3_mini/assets/images/large.jpg",
-			"small": "./drivers/RM3_mini/assets/images/small.jpg"
-		},
-		"class": "other",
-		"capabilities" : ["learn"],
-		"mobile": {
-			"components": [ 
+		{
+			"id": "RM3_mini",
+			"name": {
+				"en": "RM3 Mini",
+				"nl": "RM3 Mini"
+			},
+			"images": {
+				"large": "./drivers/RM3_mini/assets/images/large.jpg",
+				"small": "./drivers/RM3_mini/assets/images/small.jpg"
+			},
+			"class": "other",
+			"capabilities" : ["learnIRcmd"],
+			"mobile": {
+				"components": [ 
+					{
+						"id": "icon",
+						"capabilities": []
+					},
+					{
+						"id": "button",
+						"capabilities": ["learnIRcmd"]
+					}
+				]
+			},
+			"pair": [
 				{
-					"id": "icon",
-					"capabilities": []
+					"id": "start"
 				},
 				{
-					"id": "button",
-					"capabilities": ["learn"]
+					"id": "list_devices",
+					"template": "list_devices",
+					"navigation": {
+						"next": "add_devices"
+					}
+				},
+				{
+					"id": "add_devices",
+					"template": "add_devices"
+				}
+	 		],
+			"settings": [
+				{
+					"type":"group",
+					"label": {
+						"en": "RC Commands",
+						"nl": "RC commando's"
+					},
+					"description": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					},
+					"children": [
+						{ "id": "RcCmd0", "type": "text", "value": "", "label": { "en": "1" },
+							"hint": {
+								"en": "Name of the command the RM3 Mini learned.",
+								"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+							}
+						},
+						{ "id": "RcCmd1",  "type": "text", "value": "", "label": { "en": "2" } },
+						{ "id": "RcCmd2",  "type": "text", "value": "", "label": { "en": "3" } },
+						{ "id": "RcCmd3",  "type": "text", "value": "", "label": { "en": "4" } },
+						{ "id": "RcCmd4",  "type": "text", "value": "", "label": { "en": "5" } },
+						{ "id": "RcCmd5",  "type": "text", "value": "", "label": { "en": "6" } },
+						{ "id": "RcCmd6",  "type": "text", "value": "", "label": { "en": "7" } },
+						{ "id": "RcCmd7",  "type": "text", "value": "", "label": { "en": "8" } },
+						{ "id": "RcCmd8",  "type": "text", "value": "", "label": { "en": "9" } },
+						{ "id": "RcCmd9",  "type": "text", "value": "", "label": { "en": "10" } },
+						{ "id": "RcCmd10", "type": "text", "value": "", "label": { "en": "11" } },
+						{ "id": "RcCmd11", "type": "text", "value": "", "label": { "en": "12" } },
+						{ "id": "RcCmd12", "type": "text", "value": "", "label": { "en": "13" } },
+						{ "id": "RcCmd13", "type": "text", "value": "", "label": { "en": "14" } },
+						{ "id": "RcCmd14", "type": "text", "value": "", "label": { "en": "15" } },
+						{ "id": "RcCmd15", "type": "text", "value": "", "label": { "en": "16" } },
+						{ "id": "RcCmd16", "type": "text", "value": "", "label": { "en": "17" } },
+						{ "id": "RcCmd17", "type": "text", "value": "", "label": { "en": "18" } },
+						{ "id": "RcCmd18", "type": "text", "value": "", "label": { "en": "19" } },
+						{ "id": "RcCmd19", "type": "text", "value": "", "label": { "en": "20" } }
+					]
 				}
 			]
 		},
-		"pair": [
-			{
-				"id": "start"
+		{
+			"id": "RM_plus",
+			"name": {
+				"en": "RM Pro Plus",
+				"nl": "RM Pro Plus"
 			},
-			{
-				"id": "list_devices",
-				"template": "list_devices",
-				"navigation": {
-					"next": "add_devices"
+			"images": {
+				"large": "./drivers/RM_plus/assets/images/large.jpg",
+				"small": "./drivers/RM_plus/assets/images/small.jpg"
+			},
+			"class": "other",
+			"capabilities" : ["learnIRcmd", "learnRFcmd"],
+			"mobile": {
+				"components": [ 
+					{
+						"id": "icon",
+						"capabilities": []
+					},
+					{
+						"id": "button",
+						"capabilities": ["learnIRcmd"]
+					},
+					{
+						"id": "button",
+						"capabilities": ["learnRFcmd"]
+					}
+				]
+			},
+			"pair": [
+				{
+					"id": "start"
+				},
+				{
+					"id": "list_devices",
+					"template": "list_devices",
+					"navigation": {
+						"next": "add_devices"
+					}
+				},
+				{
+					"id": "add_devices",
+					"template": "add_devices"
 				}
+	 		],
+			"settings": [
+				{
+					"type":"group",
+					"label": {
+						"en": "RC Commands",
+						"nl": "RC commando's"
+					},
+					"description": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					},
+					"children": [
+						{ "id": "RcCmd0", "type": "text", "value": "", "label": { "en": "1" },
+							"hint": {
+								"en": "Name of the command the RM3 Mini learned.",
+								"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+							}
+						},
+						{ "id": "RcCmd1",  "type": "text", "value": "", "label": { "en": "2" } },
+						{ "id": "RcCmd2",  "type": "text", "value": "", "label": { "en": "3" } },
+						{ "id": "RcCmd3",  "type": "text", "value": "", "label": { "en": "4" } },
+						{ "id": "RcCmd4",  "type": "text", "value": "", "label": { "en": "5" } },
+						{ "id": "RcCmd5",  "type": "text", "value": "", "label": { "en": "6" } },
+						{ "id": "RcCmd6",  "type": "text", "value": "", "label": { "en": "7" } },
+						{ "id": "RcCmd7",  "type": "text", "value": "", "label": { "en": "8" } },
+						{ "id": "RcCmd8",  "type": "text", "value": "", "label": { "en": "9" } },
+						{ "id": "RcCmd9",  "type": "text", "value": "", "label": { "en": "10" } },
+						{ "id": "RcCmd10", "type": "text", "value": "", "label": { "en": "11" } },
+						{ "id": "RcCmd11", "type": "text", "value": "", "label": { "en": "12" } },
+						{ "id": "RcCmd12", "type": "text", "value": "", "label": { "en": "13" } },
+						{ "id": "RcCmd13", "type": "text", "value": "", "label": { "en": "14" } },
+						{ "id": "RcCmd14", "type": "text", "value": "", "label": { "en": "15" } },
+						{ "id": "RcCmd15", "type": "text", "value": "", "label": { "en": "16" } },
+						{ "id": "RcCmd16", "type": "text", "value": "", "label": { "en": "17" } },
+						{ "id": "RcCmd17", "type": "text", "value": "", "label": { "en": "18" } },
+						{ "id": "RcCmd18", "type": "text", "value": "", "label": { "en": "19" } },
+						{ "id": "RcCmd19", "type": "text", "value": "", "label": { "en": "20" } },
+						{ "id": "RcCmd20", "type": "text", "value": "", "label": { "en": "21" } },
+						{ "id": "RcCmd21", "type": "text", "value": "", "label": { "en": "22" } },
+						{ "id": "RcCmd22", "type": "text", "value": "", "label": { "en": "23" } },
+						{ "id": "RcCmd23", "type": "text", "value": "", "label": { "en": "24" } },
+						{ "id": "RcCmd24", "type": "text", "value": "", "label": { "en": "25" } },
+						{ "id": "RcCmd25", "type": "text", "value": "", "label": { "en": "26" } },
+						{ "id": "RcCmd26", "type": "text", "value": "", "label": { "en": "27" } },
+						{ "id": "RcCmd27", "type": "text", "value": "", "label": { "en": "28" } },
+						{ "id": "RcCmd28", "type": "text", "value": "", "label": { "en": "29" } },
+						{ "id": "RcCmd29", "type": "text", "value": "", "label": { "en": "30" } }
+					]
+				}
+			]
+		},
+		{
+			"id": "RM_pro",
+			"name": {
+				"en": "RM Pro",
+				"nl": "RM Pro"
 			},
-			{
-				"id": "add_devices",
-				"template": "add_devices"
-			}
-	 	],
-		"settings": [
-			{
-				"type":"group",
-				"label": {
-					"en": "RC Commands",
-					"nl": "RC commando's"
+			"images": {
+				"large": "./drivers/RM_pro/assets/images/large.jpg",
+				"small": "./drivers/RM_pro/assets/images/small.jpg"
+			},
+			"class": "other",
+			"capabilities" : ["learnIRcmd"],
+			"mobile": {
+				"components": [ 
+					{
+						"id": "icon",
+						"capabilities": []
+					},
+					{
+						"id": "button",
+						"capabilities": ["learnIRcmd"]
+					}
+				]
+			},
+			"pair": [
+				{
+					"id": "start"
 				},
-				"description": {
-					"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows",
-					"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+				{
+					"id": "list_devices",
+					"template": "list_devices",
+					"navigation": {
+						"next": "add_devices"
+					}
 				},
-				"children": [
-					{
-						"id": "RcCmd0",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "1"
+				{
+					"id": "add_devices",
+					"template": "add_devices"
+				}
+	 		],
+			"settings": [
+				{
+					"type":"group",
+					"label": {
+						"en": "RC Commands",
+						"nl": "RC commando's"
+					},
+					"description": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					},
+					"children": [
+						{ "id": "RcCmd0", "type": "text", "value": "", "label": { "en": "1" },
+							"hint": {
+								"en": "Name of the command the RM3 Mini learned.",
+								"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+							}
 						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
+						{ "id": "RcCmd1",  "type": "text", "value": "", "label": { "en": "2" } },
+						{ "id": "RcCmd2",  "type": "text", "value": "", "label": { "en": "3" } },
+						{ "id": "RcCmd3",  "type": "text", "value": "", "label": { "en": "4" } },
+						{ "id": "RcCmd4",  "type": "text", "value": "", "label": { "en": "5" } },
+						{ "id": "RcCmd5",  "type": "text", "value": "", "label": { "en": "6" } },
+						{ "id": "RcCmd6",  "type": "text", "value": "", "label": { "en": "7" } },
+						{ "id": "RcCmd7",  "type": "text", "value": "", "label": { "en": "8" } },
+						{ "id": "RcCmd8",  "type": "text", "value": "", "label": { "en": "9" } },
+						{ "id": "RcCmd9",  "type": "text", "value": "", "label": { "en": "10" } },
+						{ "id": "RcCmd10", "type": "text", "value": "", "label": { "en": "11" } },
+						{ "id": "RcCmd11", "type": "text", "value": "", "label": { "en": "12" } },
+						{ "id": "RcCmd12", "type": "text", "value": "", "label": { "en": "13" } },
+						{ "id": "RcCmd13", "type": "text", "value": "", "label": { "en": "14" } },
+						{ "id": "RcCmd14", "type": "text", "value": "", "label": { "en": "15" } },
+						{ "id": "RcCmd15", "type": "text", "value": "", "label": { "en": "16" } },
+						{ "id": "RcCmd16", "type": "text", "value": "", "label": { "en": "17" } },
+						{ "id": "RcCmd17", "type": "text", "value": "", "label": { "en": "18" } },
+						{ "id": "RcCmd18", "type": "text", "value": "", "label": { "en": "19" } },
+						{ "id": "RcCmd19", "type": "text", "value": "", "label": { "en": "20" } }
+					]
+				}
+			]
+		},
+		{
+			"id": "A1",
+			"name": {
+				"en": "A1",
+				"nl": "A1"
+			},
+			"images": {
+				"large": "./drivers/A1/assets/images/large.jpg",
+				"small": "./drivers/A1/assets/images/small.jpg"
+			},
+			"class": "sensor",
+			"capabilities" : [
+				"measure_temperature",
+				"measure_humidity",
+				"a1_light_level",
+				"a1_air_quality",
+				"a1_noise_level",
+				"a1_light_level_number",
+				"a1_air_quality_number",
+				"a1_noise_level_number"
+			],
+			"capabilitiesOptions": {
+				"a1_air_quality": { "preventInsights":true },
+				"a1_light_level": { "preventInsights":true },
+				"a1_noise_level": { "preventInsights":true },
+				"a1_air_quality_number": { "preventInsights":false },
+				"a1_light_level_number": { "preventInsights":false },
+				"a1_noise_level_number": { "preventInsights":false }
+			},
+			"mobile": {
+				"components": [ 
+					{
+						"id": "icon",
+						"capabilities": []
 					},
 					{
-						"id": "RcCmd1",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "2"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd2",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "3"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd3",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "4"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd4",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "5"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd5",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "6"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd6",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "7"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd7",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "8"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd8",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "9"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd9",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "10"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd10",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "11"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd11",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "12"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd12",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "13"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd13",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "14"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd14",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "15"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd15",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "16"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd16",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "17"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd17",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "18"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd18",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "19"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
-						}
-					},
-					{
-						"id": "RcCmd19",
-						"type": "text",
-						"value": "",
-						"label": {
-							"en": "20"
-						},
-						"hint": {
-							"en": "Name of the command the RM3 Mini learned.",
-							"nl": "Naam van het commando dat de RM3 Mini heeft geleerd."
+						"id": "sensor",
+						"capabilities": ["a1_air_quality",
+										 "a1_noise_level",
+										 "a1_light_level",
+										 "measure_humidity",
+										 "measure_temperature"
+						],
+						"options": {
+              				"icons": {
+                				"a1_air_quality": "/drivers/a1/assets/icon_airquality.svg",
+              					"a1_noise_level": "/drivers/a1/assets/icon_noiselevel.svg",
+              					"a1_light_level": "/drivers/a1/assets/icon_lightlevel.svg"
+              				}
 						}
 					}
 				]
-			}
-		]
-	}
+			},
+			"pair": [
+				{
+					"id": "start"
+				},
+				{
+					"id": "list_devices",
+					"template": "list_devices",
+					"navigation": {
+						"next": "add_devices"
+					}
+				},
+				{
+					"id": "add_devices",
+					"template": "add_devices"
+				}
+		 	],
+			"settings": [
+				{
+					"id": "CheckInterval",
+					"type": "number",
+					"value": 5,
+					"label": {
+						"en": "Interval",
+						"nl": "Interval"
+					},
+					"hint": {
+						"en": "Time in minutes between reading of sensor values.",
+						"nl": "Tijd tussen het lezen van de sensor waarden, in minuten."
+					},
+					"attr": {
+						"min": 1,
+						"max": 3600
+					}
+				}
+			]
+		},
+		{
+			"id": "SP1",
+			"name": {
+				"en": "SP1"
+			},
+			"images": {
+				"large": "/drivers/sp1/assets/images/large.jpg",
+				"small": "/drivers/sp1/assets/images/small.jpg"
+			},
+			"class": "other",
+			"capabilities": [ "onoff" ],
+      		"mobile": {
+        		"components": [
+          			{
+            			"id": "icon",
+            			"capabilities": []
+          			},
+          			{
+        	   			"id": "toggle",
+            			"capabilities": [ "onoff" ]
+		    	    }
+        		]
+      		},
+			"pair": [
+				{
+					"id": "start"
+				},
+				{
+					"id": "list_devices",
+					"template": "list_devices",
+					"navigation": {
+						"next": "add_devices"
+					}
+				},
+				{
+					"id": "add_devices",
+					"template": "add_devices"
+				}
+		 	]
+		},
+		{
+			"id": "SP2",
+			"name": {
+				"en": "Sp2"
+			},
+			"images": {
+				"large": "/drivers/sp2/assets/images/large.jpg",
+				"small": "/drivers/sp2/assets/images/small.jpg"
+			},
+			"class": "other",
+			"capabilities": [
+				"onoff.power",
+				"onoff.nightlight",
+				"measure_power"
+			],
+			"capabilitiesOptions": {
+                "onoff.power": { "title": { "en": "Switch", "nl": "Schakelaar" } },
+                "onoff.nightlight": { "title": { "en": "Nightlight", "nl": "Nachtlicht" } }
+            },
+            "mobile": {
+        		"components": [
+          			{
+            			"id": "icon",
+            			"capabilities": []
+          			},
+          			{
+        	   			"id": "toggle",
+            			"capabilities": [
+              				"onoff.power"
+              			],
+              			"options" : { "showTitle": true }
+		    	    },
+          			{
+        	   			"id": "toggle",
+            			"capabilities": [
+              				"onoff.nightlight"
+              			],
+              			"options" : { "showTitle": true }
+		    	    },
+          			{
+          				"id": "sensor",
+            			"capabilities": [
+              				"measure_power"
+            			]
+          			}
+        		]
+      		},
+			"pair": [
+				{
+					"id": "start"
+				},
+				{
+					"id": "list_devices",
+					"template": "list_devices",
+					"navigation": {
+						"next": "add_devices"
+					}
+				},
+				{
+					"id": "add_devices",
+					"template": "add_devices"
+				}
+		 	],
+			"settings": [
+				{
+					"id": "CheckInterval",
+					"type": "number",
+					"value": 5,
+					"label": {
+						"en": "Interval",
+						"nl": "Interval"
+					},
+					"hint": {
+						"en": "Time in minutes between reading of device status.",
+						"nl": "Tijd tussen het lezen van de apparaatstatus, in minuten."
+					},
+					"attr": {
+						"min": 1,
+						"max": 3600
+					}
+				}
+			]
+		}
 	],
 	"flow": {
 		"triggers" : [
@@ -363,9 +636,9 @@
 				],
 				"args": [
 					{
-						"name": "RM3_mini",
+						"name": "RMcompatible",
 						"type": "device",
-						"filter": "driver_uri=homey:app:com.broadlink&driver_id=RM3_mini"
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=RM3_mini|RM_pro"
 					}
 				]
 			},
@@ -377,9 +650,9 @@
 				},
 				"args": [
 					{
-						"name": "placeholder_arg",
+						"name": "RMcompatible",
 						"type": "device",
-						"filter": "driver_uri=homey:app:com.broadlink&driver_id=RM3_mini"
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=RM3_mini|RM_pro"
 					},
 					{
 						"name": "variable",
@@ -388,6 +661,422 @@
 							"en": "name",
 							"nl": "naam"
 						}
+					}
+				]
+			},
+			{
+				"id":"air_quality",
+				"title": {
+					"en": "The Air Quality has changed",
+					"nl": "De luchtkwaliteit is veranderd"
+				},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=A1"
+					}
+				],
+		        "tokens": [
+					{
+						"name": "airquality",
+						"type": "string",
+						"title": {
+							"en": "Air Quality",
+							"nl": "Luchtkwaliteit"
+						},
+						"example": {
+							"en": "good",
+							"nl": "goed"
+						}
+					}
+				]
+			},
+			{
+				"id":"light_level",
+				"title": {
+					"en": "The Light Level has changed",
+					"nl": "Het lichtniveau is veranderd"
+				},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=A1"
+					}
+				],
+		        "tokens": [
+					{
+						"name": "lightlevel",
+						"type": "string",
+						"title": {
+							"en": "Light Level",
+							"nl": "Lichtniveau"
+						},
+						"example": {
+							"en": "bright",
+							"nl": "helder"
+						}
+					}
+				]
+			},
+			{
+				"id":"noise_level",
+				"title": {
+					"en": "The Noise Level has changed",
+					"nl": "Het geluidsniveau is veranderd"
+				},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=A1"
+					}
+				],
+		        "tokens": [
+					{
+						"name": "noiselevel",
+						"type": "string",
+						"title": {
+							"en": "Noise Level",
+							"nl": "Geluidsniveau"
+						},
+						"example": {
+							"en": "quiet",
+							"nl": "stil"
+						}
+					}
+				]
+			},
+			{
+				"id": "sp1_onoff_change",
+				"title": { "en": "Switch has changed", "nl": "Schakelaar is omgezet"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP1"
+					}
+				]
+			},
+			{
+				"id": "sp1_onoff_on",
+				"title": { "en": "Switch switched on", "nl": "Schakelaar aangezet"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP1"
+					}
+				]
+			},
+			{
+				"id": "sp1_onoff_off",
+				"title": { "en": "Switch switched off", "nl": "Schakelaar uitgezet"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP1"
+					}
+				]
+			},
+			{
+				"id": "sp2_onoff_power",
+				"title": { "en": "Switch has changed", "nl": "Schakelaar is omgezet"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP2"
+					}
+				]
+			},
+			{
+				"id": "sp2_onoff_power_on",
+				"title": { "en": "Switch switched on", "nl": "Schakelaar aangezet"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP2"
+					}
+				]
+			},
+			{
+				"id": "sp2_onoff_power_off",
+				"title": { "en": "Switch switched off", "nl": "Schakelaar uitgezet"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP2"
+					}
+				]
+			},
+			{
+				"id": "sp2_onoff_nightlight",
+				"title": { "en": "Nightlight has changed", "nl": "Nachtlicht is veranderd"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP2"
+					}
+				]
+			},
+			{
+				"id": "sp2_onoff_nightlight_on",
+				"title": { "en": "Nightlight switched on", "nl": "Nachtlicht aangezet"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP2"
+					}
+				]
+			},
+			{
+				"id": "sp2_onoff_nightlight_off",
+				"title": { "en": "Nightlight switched off", "nl": "Nachtlicht uitgezet"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP2"
+					}
+				]
+			}
+		],
+		"conditions" : [
+			{
+				"id":"air_quality",
+				"title": {
+					"en": "Air Quality",
+					"nl": "Luchtkwaliteit"
+				},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=A1"
+					},
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "Level",
+							"nl": "Niveau"
+						}
+					}
+				]
+			},
+			{
+				"id":"air_quality_better",
+				"title": {
+					"en": "Air Quality is better than",
+					"nl": "Luchtkwaliteit is beter dan"
+				},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=A1"
+					},
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "Level",
+							"nl": "Niveau"
+						}
+					}
+				]
+			},
+			{
+				"id":"air_quality_worse",
+				"title": {
+					"en": "Air Quality is worse than",
+					"nl": "Luchtkwaliteit is slechter dan"
+				},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=A1"
+					},
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "Level",
+							"nl": "Niveau"
+						}
+					}
+				]
+			},
+			{
+				"id":"light_level",
+				"title": {
+					"en": "Light Level",
+					"nl": "Lichtniveau"
+				},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=A1"
+					},
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "Level",
+							"nl": "Niveau"
+						}
+					}
+				]
+			},
+			{
+				"id":"light_level_brighter",
+				"title": {
+					"en": "Light Level is brighter than",
+					"nl": "Lichtniveau is helderder dan"
+				},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=A1"
+					},
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "Level",
+							"nl": "Niveau"
+						}
+					}
+				]
+			},
+			{
+				"id":"light_level_darker",
+				"title": {
+					"en": "Light Level is darker than",
+					"nl": "Lichtniveau is donkerder dan"
+				},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=A1"
+					},
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "Level",
+							"nl": "Niveau"
+						}
+					}
+				]
+			},
+			{
+				"id":"noise_level",
+				"title": {
+					"en": "Noise Level",
+					"nl": "Geluidsniveau"
+				},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=A1"
+					},
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "Level",
+							"nl": "Niveau"
+						}
+					}
+				]
+			},
+			{
+				"id":"noise_level_louder",
+				"title": {
+					"en": "Noise Level is louder than",
+					"nl": "Geluidsniveau is harder dan"
+				},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=A1"
+					},
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "Level",
+							"nl": "Niveau"
+						}
+					}
+				]
+			},
+			{
+				"id":"noise_level_softer",
+				"title": {
+					"en": "Noise Level is softer than",
+					"nl": "Geluidsniveau is zachter dan"
+				},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=A1"
+					},
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "Level",
+							"nl": "Niveau"
+						}
+					}
+				]
+			},
+			{
+				"id": "sp1_onoff",
+				"title": { "en": "Switch is !{{on|off}}", "nl": "Schakelaar is !{{aan|uit}}"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP1"
+					}
+				]
+			},
+			{
+				"id": "sp2_onoff_power_on",
+				"title": { "en": "Switch is !{{on|off}}", "nl": "Schakelaar is !{{aan|uit}}"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP2"
+					}
+				]
+			},
+			{
+				"id": "sp2_onoff_nightlight_on",
+				"title": { "en": "Nightlight is !{{on|off}}", "nl": "Nachtlicht is !{{aan|uit}}"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP2"
 					}
 				]
 			}
@@ -401,9 +1090,9 @@
 				},
 				"args": [
 					{
-						"name": "placeholder_arg",
+						"name": "RMcompatible",
 						"type": "device",
-						"filter": "driver_uri=homey:app:com.broadlink&driver_id=RM3_mini"
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=RM3_mini|RM_pro"
 					},
 					{
 						"name": "variable",
@@ -414,9 +1103,73 @@
 						}
 					}
 				]
+			},
+			{
+				"id": "sp1_onoff_on",
+				"title": { "en": "Switch on", "nl": "Schakelaar aan"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP1"
+					}
+				]
+			},
+			{
+				"id": "sp1_onoff_off",
+				"title": { "en": "Switch off", "nl": "Schakelaar uit"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP1"
+					}
+				]
+			},
+			{
+				"id": "sp2_onoff_power_on",
+				"title": { "en": "Switch on", "nl": "Schakelaar aan"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP2"
+					}
+				]
+			},
+			{
+				"id": "sp2_onoff_power_off",
+				"title": { "en": "Switch off", "nl": "Schakelaar uit"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP2"
+					}
+				]
+			},
+			{
+				"id": "sp2_onoff_nightlight_on",
+				"title": { "en": "Nightlight on", "nl": "Nachtlicht aan"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP2"
+					}
+				]
+			},
+			{
+				"id": "sp2_onoff_nightlight_off",
+				"title": { "en": "Nightlight off", "nl": "Nachtlicht uit"},
+				"args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_uri=homey:app:com.broadlink&driver_id=SP2"
+					}
+				]
 			}
-      
-      			
         ]
 	}
 }

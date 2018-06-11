@@ -16,10 +16,6 @@
  * along with com.broadlink.  If not, see http://www.gnu.org/licenses/.
 -->
 
-<script>
-  var ExpectedDeviceID = 10039;  // RM3-mini
-</script>
-
 
 <style type="text/css">
   span label {
@@ -35,17 +31,11 @@
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
-    }
-    .broadlink-pairing {
         width: 100%;
     }
     .buttons, .messages {
         padding-top: 14px;
     }
-	.doorbird-status {
-		display: none;
-		align: left;
-	}
 </style>
 
 
@@ -64,7 +54,7 @@
 </td></TR><tr><td>
         <div class="form-group buttons">
 	        <table><TR>
-	           <TD align="left"><button id="add" onclick="add()" class="button" data-i18n="pair.add"></button>
+	           <TD align="left"><button  id="add"    onclick="add()"    class="button" data-i18n="pair.add"></button>
 	           <TD align="right"><button id="cancel" onclick="cancel()" class="button" data-i18n="pair.cancel"></button>
             </TR></table>
         </div>
@@ -72,6 +62,7 @@
 </div>
 
 <script type="text/javascript">
+
 
 
 
@@ -109,10 +100,10 @@ function add( data ) {
 Homey.on('discovered', function (device) {
 
 	if( device ) {
-		showError( "found " + device.data.devtype);
+		//showError( "found " + device.data.devtype);
 		
-		if( parseInt(device.data.devtype) == ExpectedDeviceID ) {
-			showError( `found correct device: ${device.data.name} (${device.data.devtype})`);
+		if( device.isCompatible ) {
+			//showError( `found complatible device: ${device.data.name} (${device.data.devtype})`);
 			Homey.showView('list_devices');
 		}
 		else {
@@ -126,13 +117,11 @@ Homey.on('discovered', function (device) {
 })
 
 
-
 // function called when user pressed button
 function cancel(data) {
+	Homey.emit('disconnect');
 	Homey.done();
 }
-
-
 
 
 </script>

@@ -84,11 +84,11 @@ class BroadlinkDevice extends Homey.Device {
 						//Util.debugLog( 'settings saved' )
 					})
 					.catch( err => {
-						Util.debugLog('*> settings error  * settings not saved *'); 
+						Util.debugLog('**> settings error  * settings not saved *'); 
 					})
 			})
 			.catch( err => {
-				Util.debugLog( '*> authentication error: ' + err); 
+				Util.debugLog( '**> authentication error: ' + err); 
 			})
 
 	}
@@ -103,12 +103,7 @@ class BroadlinkDevice extends Homey.Device {
 		this._communicate = null;
 		this.dataStore.deleteAllCommands();
 	}
-	
-	
-	
-	
-	
-	
+
 }
 
 module.exports = BroadlinkDevice;

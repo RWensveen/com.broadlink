@@ -25,7 +25,7 @@ class BroadlinkRM3miniDriver extends BroadlinkDriver {
 	
 	onInit() {
 		super.onInit({
-			driverType: 'RM3 Mini'
+			CompatibilityID: 0x2737
 		});
 	}
 

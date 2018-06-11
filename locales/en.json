@@ -6,13 +6,15 @@
     "discover_local_ip": "Cannot discover devices: local IP address unknown.",
     "save_settings": "Cannot save changes: command ",
     "save_settings_nocmd": " is not known yet",
-    "save_settings_exist": " already exists"
+    "save_settings_exist": " already exists",
+    "sensor_check": "Cannot get sensor values from device",
+    "invalid_response": "invalid response from device"
   },
   "pair": {
     "title": "Pair Broadlink RM3 Mini",
     "nosettings": "Please fill in all the fields.",
     "invalidsettings":"Please use correct format for address and mac",
-    "intro": "Configure the RM3-mini with either e-Control on phone, or python script on Raspberry Pi.<br>Get the IP address from your wifi router",
+    "intro": "Configure the RM3-mini with the e-Control app on a smartphone.<br>Get the IP address from your wifi router",
 	"cancel": "Cancel",
 	"add": "Add",
 	"address": "IP address",
@@ -21,5 +23,22 @@
 	"found_another": "Found another device: ",
 	"invalid_ipaddress": "Invalid IP address",
 	"discovering": "Discovering device..."
+  },
+  "air_quality": {
+    "excellent": "excellent",
+    "good": "good",
+    "normal": "normal",
+    "bad": "bad"
+  },
+  "light_level": {
+    "dark": "dark",
+    "dim": "dim",
+    "normal": "normal",
+    "bright": "bright"
+  },
+  "noise_level": {
+    "quiet": "quiet",
+    "normal": "normal",
+    "noisy": "noisy"
   }
 }
