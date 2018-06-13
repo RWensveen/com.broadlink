@@ -181,7 +181,7 @@
 					"id": "add_devices",
 					"template": "add_devices"
 				}
-	 		],
+			],
 			"settings": [
 				{
 					"type":"group",
@@ -266,7 +266,7 @@
 					"id": "add_devices",
 					"template": "add_devices"
 				}
-	 		],
+			],
 			"settings": [
 				{
 					"type":"group",
@@ -357,7 +357,7 @@
 					"id": "add_devices",
 					"template": "add_devices"
 				}
-	 		],
+			],
 			"settings": [
 				{
 					"type":"group",
@@ -436,18 +436,19 @@
 					},
 					{
 						"id": "sensor",
-						"capabilities": ["a1_air_quality",
-										 "a1_noise_level",
-										 "a1_light_level",
-										 "measure_humidity",
-										 "measure_temperature"
+						"capabilities": [
+								"a1_air_quality",
+								"a1_noise_level",
+								"a1_light_level",
+								"measure_humidity",
+								"measure_temperature"
 						],
 						"options": {
-              				"icons": {
-                				"a1_air_quality": "/drivers/a1/assets/icon_airquality.svg",
-              					"a1_noise_level": "/drivers/a1/assets/icon_noiselevel.svg",
-              					"a1_light_level": "/drivers/a1/assets/icon_lightlevel.svg"
-              				}
+							"icons": {
+								"a1_air_quality": "/drivers/a1/assets/icon_airquality.svg",
+								"a1_noise_level": "/drivers/a1/assets/icon_noiselevel.svg",
+								"a1_light_level": "/drivers/a1/assets/icon_lightlevel.svg"
+							}
 						}
 					}
 				]
@@ -467,7 +468,7 @@
 					"id": "add_devices",
 					"template": "add_devices"
 				}
-		 	],
+			],
 			"settings": [
 				{
 					"id": "CheckInterval",
@@ -494,23 +495,23 @@
 				"en": "SP1"
 			},
 			"images": {
-				"large": "/drivers/sp1/assets/images/large.jpg",
-				"small": "/drivers/sp1/assets/images/small.jpg"
+				"large": "/drivers/SP1/assets/images/large.jpg",
+				"small": "/drivers/SP1/assets/images/small.jpg"
 			},
 			"class": "other",
 			"capabilities": [ "onoff" ],
-      		"mobile": {
-        		"components": [
-          			{
-            			"id": "icon",
-            			"capabilities": []
-          			},
-          			{
-        	   			"id": "toggle",
-            			"capabilities": [ "onoff" ]
-		    	    }
-        		]
-      		},
+			"mobile": {
+				"components": [
+					{
+						"id": "icon",
+						"capabilities": []
+					},
+					{
+						"id": "toggle",
+						"capabilities": [ "onoff" ]
+					}
+				]
+			},
 			"pair": [
 				{
 					"id": "start"
@@ -526,7 +527,7 @@
 					"id": "add_devices",
 					"template": "add_devices"
 				}
-		 	]
+			]
 		},
 		{
 			"id": "SP2",
@@ -534,8 +535,8 @@
 				"en": "Sp2"
 			},
 			"images": {
-				"large": "/drivers/sp2/assets/images/large.jpg",
-				"small": "/drivers/sp2/assets/images/small.jpg"
+				"large": "/drivers/SP2/assets/images/large.jpg",
+				"small": "/drivers/SP2/assets/images/small.jpg"
 			},
 			"class": "other",
 			"capabilities": [
@@ -544,37 +545,31 @@
 				"measure_power"
 			],
 			"capabilitiesOptions": {
-                "onoff.power": { "title": { "en": "Switch", "nl": "Schakelaar" } },
-                "onoff.nightlight": { "title": { "en": "Nightlight", "nl": "Nachtlicht" } }
-            },
-            "mobile": {
-        		"components": [
-          			{
-            			"id": "icon",
-            			"capabilities": []
-          			},
-          			{
-        	   			"id": "toggle",
-            			"capabilities": [
-              				"onoff.power"
-              			],
-              			"options" : { "showTitle": true }
-		    	    },
-          			{
-        	   			"id": "toggle",
-            			"capabilities": [
-              				"onoff.nightlight"
-              			],
-              			"options" : { "showTitle": true }
-		    	    },
-          			{
-          				"id": "sensor",
-            			"capabilities": [
-              				"measure_power"
-            			]
-          			}
-        		]
-      		},
+				"onoff.power": { "title": { "en": "Switch", "nl": "Schakelaar" } },
+				"onoff.nightlight": { "title": { "en": "Nightlight", "nl": "Nachtlicht" } }
+			},
+			"mobile": {
+				"components": [
+					{
+						"id": "icon",
+						"capabilities": []
+					},
+					{
+						"id": "toggle",
+						"capabilities": [ "onoff.power" ],
+						"options" : { "showTitle": true }
+					},
+					{
+						"id": "toggle",
+						"capabilities": [ "onoff.nightlight" ],
+						"options" : { "showTitle": true }
+					},
+					{
+						"id": "sensor",
+						"capabilities": [ "measure_power" ]
+					}
+				]
+			},
 			"pair": [
 				{
 					"id": "start"
@@ -590,7 +585,7 @@
 					"id": "add_devices",
 					"template": "add_devices"
 				}
-		 	],
+			],
 			"settings": [
 				{
 					"id": "CheckInterval",
@@ -705,7 +700,7 @@
 						"filter": "driver_uri=homey:app:com.broadlink&driver_id=A1"
 					}
 				],
-		        "tokens": [
+				"tokens": [
 					{
 						"name": "lightlevel",
 						"type": "string",
@@ -733,7 +728,7 @@
 						"filter": "driver_uri=homey:app:com.broadlink&driver_id=A1"
 					}
 				],
-		        "tokens": [
+				"tokens": [
 					{
 						"name": "noiselevel",
 						"type": "string",
@@ -1170,6 +1165,6 @@
 					}
 				]
 			}
-        ]
+		]
 	}
 }
