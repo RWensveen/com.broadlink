@@ -7,7 +7,7 @@
 		"en": "Broadlink"
 	},
 	"tags":{
-		"en": [ "IR", "Remote Control", "Infrared", "WiFi", "433", "433MHz", "Environement Sensor"]
+		"en": [ "IR", "Remote Control", "Infrared", "WiFi", "433", "433MHz", "Environement", "Sensor"]
 	},
 	"description": {
 		"en": "Adds support for Broadlink devices.",
