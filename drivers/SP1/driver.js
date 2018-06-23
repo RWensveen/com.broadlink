@@ -19,14 +19,51 @@
 'use strict';
 
 const BroadlinkDriver = require('./../BroadlinkDriver');
+const Homey = require('homey');
+const Util = require('./../../lib/util.js');
 
 
 class BroadlinkSP1Driver extends BroadlinkDriver {
+	
+	
+
+	sp1_check_condition_on( args, state, callback ) { 
+		return args.device.check_condition_on( callback ) 
+	}
+	
+	sp1_do_action_on(args,state) {
+		return args.device.do_action_on()
+	}
+
+	sp1_do_action_off(args,state) {
+		return args.device.do_action_off()
+	}
+
 	
 	onInit() {
 		super.onInit({
 			CompatibilityID: 0x0000  // SP1
 		});
+		
+		this.trigger_toggle = new Homey.FlowCardTriggerDevice('sp1_onoff_change').register();
+		this.trigger_on = new Homey.FlowCardTriggerDevice('sp1_onoff_on').register();
+		this.trigger_off = new Homey.FlowCardTriggerDevice('sp1_onoff_off').register();
+		
+		this.sp1_condition_on = new Homey.FlowCardCondition('sp1_onoff');
+		this.sp1_condition_on
+			.register()
+			.registerRunListener(this.sp1_check_condition_on.bind(this) )
+
+		this.sp1_action_on = new Homey.FlowCardAction('sp1_onoff_on');
+		this.sp1_action_on
+			.register()
+			.registerRunListener(this.sp1_do_action_on.bind(this))
+			
+		this.sp1_action_off = new Homey.FlowCardAction('sp1_onoff_off');
+		this.sp1_action_off
+			.register()
+			.registerRunListener(this.sp1_do_action_off.bind(this))
+
 	}
 
 }

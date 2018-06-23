@@ -18,15 +18,80 @@
 
 'use strict';
 
+const Homey = require('homey');
 const BroadlinkDriver = require('./../BroadlinkDriver');
 
 
 class BroadlinkSP2Driver extends BroadlinkDriver {
 	
+
+	check_condition_power_on( args, state, callback ) { 
+		args.device.check_condition_power_on(callback)
+	}
+    
+	check_condition_nightlight_on( args, state, callback ) { 
+		args.device.check_condition_nightlight_on(callback)
+	}
+    
+	do_action_power_on(args,state) {
+		return args.device.do_action_power_on()
+	}
+	
+	do_action_power_off(args,state) {
+		return args.device.do_action_power_off()
+	}
+
+	do_action_nightlight_on(args,state) {
+		return args.device.do_action_nightlight_on()
+	}
+
+	do_action_nightlight_off(args,state) {
+		return args.device.do_action_nightlight_off()
+	}
+
 	onInit() {
 		super.onInit({
-			CompatibilityID:0x2711 //= SP2
+			CompatibilityID: 0x2737 //0x2711 //= SP2
 		});
+		
+		this.trigger_power_toggle = new Homey.FlowCardTriggerDevice('sp2_onoff_power').register();
+		this.trigger_power_on = new Homey.FlowCardTriggerDevice('sp2_onoff_power_on').register();
+		this.trigger_power_off = new Homey.FlowCardTriggerDevice('sp2_onoff_power_off').register();
+
+		this.trigger_nightlight_toggle = new Homey.FlowCardTriggerDevice('sp2_onoff_nightlight').register();
+		this.trigger_nightlight_on = new Homey.FlowCardTriggerDevice('sp2_onoff_nightlight_on').register();
+		this.trigger_nightlight_off = new Homey.FlowCardTriggerDevice('sp2_onoff_nightlight_off').register();
+
+		this.condition_power_on = new Homey.FlowCardCondition('sp2_onoff_power_on');
+		this.condition_power_on
+			.register()
+			.registerRunListener(this.check_condition_power_on.bind(this) )
+			
+		this.condition_nightlight_on = new Homey.FlowCardCondition('sp2_onoff_nightlight_on');
+		this.condition_nightlight_on
+			.register()
+			.registerRunListener(this.check_condition_nightlight_on.bind(this) )
+
+		this.action_power_on = new Homey.FlowCardAction('sp2_onoff_power_on');
+		this.action_power_on
+			.register()
+			.registerRunListener(this.do_action_power_on.bind(this))
+			
+		this.action_power_off = new Homey.FlowCardAction('sp2_onoff_power_off');
+		this.action_power_off
+			.register()
+			.registerRunListener(this.do_action_power_off.bind(this))
+
+		this.action_nightlight_on = new Homey.FlowCardAction('sp2_onoff_nightlight_on');
+		this.action_nightlight_on
+			.register()
+			.registerRunListener(this.do_action_nightlight_on.bind(this))
+		
+		this.action_nightlight_off = new Homey.FlowCardAction('sp2_onoff_nightlight_off');
+		this.action_nightlight_off
+			.register()
+			.registerRunListener(this.do_action_nightlight_off.bind(this))
+
 	}
 
 }

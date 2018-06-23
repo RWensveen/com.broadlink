@@ -19,14 +19,43 @@
 'use strict';
 
 const BroadlinkDriver = require('./../BroadlinkDriver');
+const Homey = require('homey');
+const Util = require('./../../lib/util.js');
 
 
 class BroadlinkRM3miniDriver extends BroadlinkDriver {
+	
+	
+	check_condition_specific_cmd( args, state, callback ) {
+		args.device.check_condition_specific_cmd_sent( args, state, callback )
+	}
+	
+	do_exec_cmd( args, state ) {
+		return args.device.executeCommand( args )
+	}
+	
 	
 	onInit() {
 		super.onInit({
 			CompatibilityID: 0x2737
 		});
+		
+		this.rm3mini_action_send_cmd = new Homey.FlowCardAction('send_command');
+		this.rm3mini_action_send_cmd
+			.register()
+			.registerRunListener( this.do_exec_cmd.bind(this) )
+			.getArgument('variable')
+			.registerAutocompleteListener(( query, args ) => { return args.device.onAutoComplete(); });
+		
+		// Register a function to fill the trigger-flowcard 'RC_specific_sent' (see app.json)
+		this.rm3mini_specific_cmd_trigger = new Homey.FlowCardTriggerDevice('RC_specific_sent');
+		this.rm3mini_specific_cmd_trigger
+			.register()
+			.registerRunListener( this.check_condition_specific_cmd.bind(this) )
+			.getArgument('variable')
+			.registerAutocompleteListener(( query, args ) => { return args.device.onAutoComplete(); })
+
+		this.rm3mini_any_cmd_trigger = new Homey.FlowCardTriggerDevice('RC_sent_any').register()
 	}
 
 }

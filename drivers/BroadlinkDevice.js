@@ -21,7 +21,6 @@
 const Homey = require('homey');
 const Util = require('./../lib/util.js');
 const Communicate = require('./../lib/Communicate.js');
-const DataStore = require('./../lib/DataStore.js')
 
 
 class BroadlinkDevice extends Homey.Device {
@@ -32,8 +31,7 @@ class BroadlinkDevice extends Homey.Device {
 	 * capabilities and state are available.
 	 * However, the device may or may not have been added yet.
 	 */
-	onInit() {
-		//Util.debugLog('==>BroadlinkDevice.onInit');
+	onInit( dev ) {
 
 		let deviceSettings = this.getSettings();
 		let deviceData     = this.getData();
@@ -48,9 +46,6 @@ class BroadlinkDevice extends Homey.Device {
 
 		this._communicate = new Communicate()
 		this._communicate.configure( options )
-		
-		this.dataStore = new DataStore( deviceData.mac )
-		this.dataStore.readCommands();
 	}
 	
 
@@ -61,7 +56,7 @@ class BroadlinkDevice extends Homey.Device {
 	 * can authenticate it to get is 'key' and 'id'
 	 */
 	onAdded() {
-		//Util.debugLog('==>BroadlinkDevice.onAdded');
+		Util.debugLog('==>BroadlinkDevice.onAdded');
 		
 		let deviceData = this.getData();
 		let options = {
@@ -99,9 +94,7 @@ class BroadlinkDevice extends Homey.Device {
 	 */
 	onDeleted() {
 		//Util.debugLog('==>BroadlinkDevice.onDeleted');
-
 		this._communicate = null;
-		this.dataStore.deleteAllCommands();
 	}
 
 }

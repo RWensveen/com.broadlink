@@ -58,7 +58,6 @@ class A1Device extends BroadlinkDevice {
 	
 	
 	start_sensor_check( interval ) {
-		
 		var that = this
 		this.checkTimer = setInterval( function() {
 			that.check_sensors();
@@ -70,6 +69,7 @@ class A1Device extends BroadlinkDevice {
 	stop_sensor_check() {
 		if( this.checkTimer ) {
 			clearInterval( this.checkTimer)
+			this.checkTimer = undefined
 		}
 	}
 	
@@ -138,11 +138,11 @@ class A1Device extends BroadlinkDevice {
 	}
 	
 	check_lightlevel_brighter( args, state, callback ) { 
-		callback(null, args.variable.value > args.device.light_level )
+		callback(null, args.variable.value < args.device.light_level )
 	}
 
 	check_lightlevel_darker( args, state, callback ) { 
-		callback(null, args.variable.value < args.device.light_level )
+		callback(null, args.variable.value > args.device.light_level )
 	}
 
 
@@ -178,116 +178,11 @@ class A1Device extends BroadlinkDevice {
 		callback(null, args.variable.value < args.device.noise_level )
 	}
 
-	/*	
-	.registerRunListener(( args, state, callback ) => { 
-			// @param: args = trigger settings from app.json
-			// @param: state = data from trigger-event
-
-	.registerAutocompleteListener(( query, args ) => {
-					// @param: query = name of already selected item in flowcard
-					//                 or empty string if no selection yet
-					// @param: args = other args of flow (i.e. this device)
-					// @return: [Promise]->return list of {name,description,anything_programmer_wants}
-	*/
 		
 	onInit() {
+		Util.debugLog('==>A1.onInit')
 		super.onInit();
-		
-		// Register functions to fill the condition-flowcards and check the condition 
-		this.condition_air_quality = new Homey.FlowCardCondition('air_quality');
-		this.condition_air_quality
-			.register()
-			.registerRunListener(this.check_airquality_level.bind() )
-			.getArgument('variable')
-			.registerAutocompleteListener(( query, args ) => {
-				return this.getAirQualityList('same');
-			})
-
-		this.condition_air_quality_better = new Homey.FlowCardCondition('air_quality_better');
-		this.condition_air_quality_better
-			.register()
-			.registerRunListener(this.check_airquality_level_better.bind() )
-			.getArgument('variable')
-			.registerAutocompleteListener(( query, args ) => {
-				return this.getAirQualityList('better');
-			})
-
-		this.condition_air_quality_worse = new Homey.FlowCardCondition('air_quality_worse');
-		this.condition_air_quality_worse
-			.register()
-			.registerRunListener(this.check_airquality_level_worse.bind() )
-			.getArgument('variable')
-			.registerAutocompleteListener(( query, args ) => {
-				return this.getAirQualityList('worse');
-			})
-			
-		this.condition_light_level = new Homey.FlowCardCondition('light_level');
-		this.condition_light_level
-			.register()
-			.registerRunListener(this.check_lightlevel.bind() )
-			.getArgument('variable')
-			.registerAutocompleteListener(( query, args ) => {
-				return this.getLightLevelList('same');
-			})
-
-		this.condition_light_level_brighter = new Homey.FlowCardCondition('light_level_brighter');
-		this.condition_light_level_brighter
-			.register()
-			.registerRunListener(this.check_lightlevel_brighter.bind() )
-			.getArgument('variable')
-			.registerAutocompleteListener(( query, args ) => {
-				return this.getLightLevelList('brighter');
-			})
-
-		this.condition_light_level_darker = new Homey.FlowCardCondition('light_level_darker');
-		this.condition_light_level_darker
-			.register()
-			.registerRunListener(this.check_lightlevel_darker.bind() )
-			.getArgument('variable')
-			.registerAutocompleteListener(( query, args ) => {
-				return this.getLightLevelList('darker');
-			})
-			
-		this.condition_noise_level = new Homey.FlowCardCondition('noise_level');
-		this.condition_noise_level
-			.register()
-			.registerRunListener(this.check_noiselevel.bind() )
-			.getArgument('variable')
-			.registerAutocompleteListener(( query, args ) => {
-				return this.getNoiseLevelList('same');
-			})
-
-		this.condition_noise_level_louder = new Homey.FlowCardCondition('noise_level_louder');
-		this.condition_noise_level_louder
-			.register()
-			.registerRunListener(this.check_noiselevel_louder.bind() )
-			.getArgument('variable')
-			.registerAutocompleteListener(( query, args ) => {
-				return this.getNoiseLevelList('louder');
-			})
-
-		this.condition_noise_level_softer = new Homey.FlowCardCondition('noise_level_softer');
-		this.condition_noise_level_softer
-			.register()
-			.registerRunListener(this.check_noiselevel_softer.bind() )
-			.getArgument('variable')
-			.registerAutocompleteListener(( query, args ) => {
-				return this.getNoiseLevelList('softer');
-			})
-			
-		// Register a function to fill the trigger-flowcard 
-		this.trigger_air_quality = new Homey.FlowCardTriggerDevice('air_quality');
-		this.trigger_air_quality
-			.register();
-
-		this.trigger_light_level = new Homey.FlowCardTriggerDevice('light_level');
-		this.trigger_light_level
-			.register();
-
-		this.trigger_noise_level = new Homey.FlowCardTriggerDevice('noise_level');
-		this.trigger_noise_level
-			.register();
-
+					
 		this.getDriver()
 			.ready( () => {
 				this.start_sensor_check( this.getSetting('CheckInterval') )
@@ -311,7 +206,6 @@ class A1Device extends BroadlinkDevice {
 	onDeleted() {
 		super.onDeleted();
 		this.stop_sensor_check();
-		
 		//Util.debugLog('==>A1Device.onDeleted');
 	}
 
@@ -339,7 +233,6 @@ class A1Device extends BroadlinkDevice {
      */
     check_sensors() 
     {
-    	var that = this;
     	this._communicate.read_status()
     		.then( response => {
     			
@@ -349,52 +242,62 @@ class A1Device extends BroadlinkDevice {
 	    		let str_air_quality = response[6];
 	    		let str_noise       = response[8];
     			
+	    		let curr_air_quality = this.air_quality;
+	    		let curr_light       = this.light_level;
+	    		let curr_noise       = this.noise_level;
+	    		let curr_temperature = this.temperature;
+	    		let curr_humidity    = this.humidity;
+	    		
 				switch( str_air_quality )
 	    	    {
-	    	    	case 0:  that.air_quality = AirQualityLevel.excellent.value; str_air_quality = AirQualityLevel.excellent.name;  break;
-	    	    	case 1:  that.air_quality = AirQualityLevel.good.value;      str_air_quality = AirQualityLevel.good.name;       break;
-	    	    	case 2:  that.air_quality = AirQualityLevel.normal.value;    str_air_quality = AirQualityLevel.normal.name;     break;
-	    	    	case 3:  that.air_quality = AirQualityLevel.bad.value;       str_air_quality = AirQualityLevel.bad.name;        break;
-	    	    	default: that.air_quality = AirQualityLevel.unknown.value;   str_air_quality = AirQualityLevel.unknown.name;    break;
+	    	    	case 0:  this.air_quality = AirQualityLevel.excellent.value; str_air_quality = AirQualityLevel.excellent.name;  break;
+	    	    	case 1:  this.air_quality = AirQualityLevel.good.value;      str_air_quality = AirQualityLevel.good.name;       break;
+	    	    	case 2:  this.air_quality = AirQualityLevel.normal.value;    str_air_quality = AirQualityLevel.normal.name;     break;
+	    	    	case 3:  this.air_quality = AirQualityLevel.bad.value;       str_air_quality = AirQualityLevel.bad.name;        break;
+	    	    	default: this.air_quality = AirQualityLevel.unknown.value;   str_air_quality = AirQualityLevel.unknown.name;    break;
 	    	    }
-				if( that.air_quality != AirQualityLevel.unknown.value ) {
+				if( this.air_quality != AirQualityLevel.unknown.value ) {
 					this.setCapabilityValue('a1_air_quality', str_air_quality, true);
-					this.setCapabilityValue('a1_air_quality_number', that.air_quality);
-		    	    //Util.debugLog('air_quality = '+ str_air_quality + ' ('+that.air_quality +')' )
+					this.setCapabilityValue('a1_air_quality_number', this.air_quality);
+		    	    //Util.debugLog('air_quality = '+ str_air_quality + ' ('+this.air_quality +')' )
 				}
 				
 	    	    switch( str_light )
 	    	    {
-	    	    	case 0  : that.light_level = LightLevel.dark.value    ; str_light = LightLevel.dark.name;    break;
-	    	    	case 1  : that.light_level = LightLevel.dim.value     ; str_light = LightLevel.dim.name;     break;
-	    	    	case 2  : that.light_level = LightLevel.normal.value  ; str_light = LightLevel.normal.name;  break;
-	    	    	case 3  : that.light_level = LightLevel.bright.value  ; str_light = LightLevel.bright.name;  break;
-	    	    	default : that.light_level = LightLevel.unknown.value ; str_light = LightLevel.unknown.name; break;
+	    	    	case 0  : this.light_level = LightLevel.dark.value    ; str_light = LightLevel.dark.name;    break;
+	    	    	case 1  : this.light_level = LightLevel.dim.value     ; str_light = LightLevel.dim.name;     break;
+	    	    	case 2  : this.light_level = LightLevel.normal.value  ; str_light = LightLevel.normal.name;  break;
+	    	    	case 3  : this.light_level = LightLevel.bright.value  ; str_light = LightLevel.bright.name;  break;
+	    	    	default : this.light_level = LightLevel.unknown.value ; str_light = LightLevel.unknown.name; break;
 	    	    }
-	    	    if ( that.light_level != LightLevel.unknown.value ) {
-	    	    	this.setCapabilityValue('a1_light_level', str_light,       true);
-	    	    	this.setCapabilityValue('a1_light_level_number', that.light_level);
-		    	    //Util.debugLog('light = '      + str_light       + ' ('+that.light_level + ')'      )
+	    	    if ( this.light_level != LightLevel.unknown.value ) {
+	    	    	this.setCapabilityValue('a1_light_level', str_light, true);
+	    	    	this.setCapabilityValue('a1_light_level_number', this.light_level);
+		    	    //Util.debugLog('light = '      + str_light       + ' ('+this.light_level + ')'      )
 	    	    }
 	    	    
 	    	    switch( str_noise )
 	    	    {
-	    	    	case 0:  that.noise_level = NoiseLevel.quiet.value   ; str_noise = NoiseLevel.quiet.name;   break;
-	    	    	case 1:  that.noise_level = NoiseLevel.normal.value  ; str_noise = NoiseLevel.normal.name;  break;
-	    	    	case 2:  that.noise_level = NoiseLevel.noisy.value   ; str_noise = NoiseLevel.noisy.name;   break;
-	    	    	default: that.noise_level = NoiseLevel.unknown.value ; str_noise = NoiseLevel.unknown.name; break;
+	    	    	case 0:  this.noise_level = NoiseLevel.quiet.value   ; str_noise = NoiseLevel.quiet.name;   break;
+	    	    	case 1:  this.noise_level = NoiseLevel.normal.value  ; str_noise = NoiseLevel.normal.name;  break;
+	    	    	case 2:  this.noise_level = NoiseLevel.noisy.value   ; str_noise = NoiseLevel.noisy.name;   break;
+	    	    	default: this.noise_level = NoiseLevel.unknown.value ; str_noise = NoiseLevel.unknown.name; break;
 	    	    }
-	    	    if( that.noise_level != NoiseLevel.unknown.value ) {
-	    	    	this.setCapabilityValue('a1_noise_level', str_noise,       true);
-	    	    	this.setCapabilityValue('a1_noise_level_number', that.noise_level);
-		    	    //Util.debugLog('noise = '      + str_noise       + ' ('+that.noise_level + ')'     )
+	    	    if( this.noise_level != NoiseLevel.unknown.value ) {
+	    	    	this.setCapabilityValue('a1_noise_level', str_noise, true);
+	    	    	this.setCapabilityValue('a1_noise_level_number', this.noise_level);
+		    	    //Util.debugLog('noise = '      + str_noise       + ' ('+this.noise_level + ')'     )
 	    	    }
 	    	    
 	    	    this.setCapabilityValue('measure_temperature', temperature );
     			this.setCapabilityValue('measure_humidity'   , humidity    );
-
     			//Util.debugLog('temperature = '+ temperature )
 	    	    //Util.debugLog('humidity = '   + humidity    )
+
+	    	    let drv = this.getDriver();
+				if( curr_air_quality != this.air_quality ) { drv.a1_trigger_air_quality.trigger(this,{'airquality':str_air_quality},{}) }
+				if( curr_light       != this.light_level ) { drv.a1_trigger_light_level.trigger(this,{'lightlevel':str_light},{}) }
+				if( curr_noise       != this.noise_level ) { drv.a1_trigger_noise_level.trigger(this,{'noiselevel':str_noise},{}) }
     			
     		}, rejectReason => {
     			Util.debugLog('**> device.check_sensors: ' + rejectReason)

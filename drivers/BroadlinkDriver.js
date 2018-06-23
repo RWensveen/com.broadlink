@@ -34,8 +34,6 @@ class BroadlinkDriver extends Homey.Driver {
 	 * @returns {Error}
 	 */
 	onInit(options) {
-		//Util.debugLog('==>BroadlinkDriver.onInit', options);
-
 		// options
 		this.CompatibilityID = options.CompatibilityID;
 		
@@ -62,7 +60,6 @@ class BroadlinkDriver extends Homey.Driver {
 		this._communicate.configure( commOptions )
 
 		var that = this
-
 		
         socket.on('disconnect', function() {
 			that.discoveredDevices = [];
@@ -80,7 +77,6 @@ class BroadlinkDriver extends Homey.Driver {
 					that._communicate.discover( 5, localAddress, userdata.address ) 
 			           	.then ( info => {
 			           		
-			           		//var devinfo = DeviceInfo.getDeviceInfo(info.devtype, userdata.expectedType)
 			           		var devinfo = DeviceInfo.getDeviceInfo(info.devtype,that.CompatibilityID)
 			           		var readableMac = Util.asHex(info.mac).replace(/,/g,':')
 
@@ -98,9 +94,11 @@ class BroadlinkDriver extends Homey.Driver {
 			           		socket.emit('discovered', device )
 			           		
 			           	},  rejectReason => {
+			           		Util.debugLog('<==onPair.rejectReason = ' + rejectReason)
 			           		socket.emit('discovered', null )
 			           	})
 			           	.catch( err => {
+			           		Util.debugLog('<==onPair.catch = ' + err)
 			           		socket.emit('discovered', null )
 			           	})
 				})
