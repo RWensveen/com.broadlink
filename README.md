@@ -5,12 +5,16 @@ Use [Homey](https://www.athom.com/) together with [Broadlink devices](http://www
 
 # Supported devices
 
+* [A1](http://www.ibroadlink.com/a1/) - Environment Sensor
 * [RM3 mini](http://www.ibroadlink.com/rmMini3/)
-* SP1
-* SP2
-* [A1](http://www.ibroadlink.com/a1/)
-* [RM Pro](http://www.ibroadlink.com/rmPro)
-* [Rm Pro Plus](http://www.ibroadlink.com/rmPro+)
+  The RM3 Mini is a wifi to IR (infrared) device. It can learn IR commands and transmit them.
+* [RM Pro](http://www.ibroadlink.com/rmPro)  - IR 
+* [RM Pro Plus](http://www.ibroadlink.com/rmPro+)   - IR + RF
+
+* SP1  - power socket switch
+* SP2  - power socket switch with nightlight and meter
+* SP3S - power socket switch with meter
+* MP1 - 4 way power socket switch
 
 Others will follow...
 

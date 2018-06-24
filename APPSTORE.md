@@ -51,7 +51,7 @@ Also, broadlink devices are sold as OEM products, with a different name.
 The following table lists which devices are compatible.
 
 <table border=1>
-<tr><th> Supported Device  </td><th>  Compatible Device              </td></tr>
+<tr><th> Supported Device  </th><th> Compatible Device               </th></tr>
 <tr><td> SP1               </td><td> SP1                             </td></tr>
 
 <tr><td> SP2               </td><td> SP2                             <br>
@@ -67,13 +67,15 @@ The following table lists which devices are compatible.
 
 <tr><td> RM2               </td><td> RM2                             <br>
                                      RM Mini                         <br>
+                                     RM3 Mini                        <br>
                                      RM Pro Phicomm                  <br>
                                      RM2 Home Plus                   <br>
                                      RM2 Home Plus GDT               <br>
                                      RM Mini Shate                   <br>
                                      RM2 Pro HYC                     </td></tr>
 
-<tr><td>RM Plus            </td><td> RM2 Pro Plus                    <br>
+<tr><td>RM Plus            </td><td> RM Plus                         <br>
+                                     RM2 Pro Plus                    <br>
                                      RM2 Pro Plus2                   <br>
                                      RM2 Pro Plus BL                 <br>
                                      RM3 Pro Plus                    <br>
@@ -83,7 +85,8 @@ The following table lists which devices are compatible.
 
 <tr><td>A1                 </td><td> A1                              </td></tr>
 
-<tr><td>MP1                </td><td> Hontar MP1                      </td></tr>
+<tr><td>MP1                </td><td> MP1                             <br>
+                                     Hontar MP1                      </td></tr>
 
 <tr><td>HYSEN              </td><td> Hysen                           </td></tr>
 
@@ -91,47 +94,4 @@ The following table lists which devices are compatible.
 
 <tr><td>DOOYA              </td><td> Dooya DT360E (DOOYA curtain v2) </td></tr>
 </table>
-
-| ----------------- | ------------------------------- |
-| Supported Device  |  Compatible Device              |
-| ----------------- | ------------------------------- |
-| SP1               | SP1                             |
-| ----------------- | ------------------------------- |
-| SP2               | SP2                             |
-|                   | SP3                             |
-|                   | SP Mini                         |
-|                   | SP Mini 2                       |
-|                   | SP Mini Plus                    |
-|                   | Honeywell SP2                   |
-|                   | SP Mini [OEM]                   |
-|                   | SP3 [OEM]                       |
-|------------------ | ------------------------------- |
-| SP3 Plus            SP3 Plus                        |
-|------------------ | ------------------------------- |
-| RM2               | RM2                             |
-|                   | RM Mini                         |
-|                   | RM Pro Phicomm                  |
-|                   | RM2 Home Plus                   |
-|                   | RM2 Home Plus GDT               |
-|                   | RM Mini Shate                   |
-|                   | RM2 Pro HYC                     |
-|------------------ | ------------------------------- |
-|RM Plus            | RM2 Pro Plus                    |
-|                   | RM2 Pro Plus2                   |
-|                   | RM2 Pro Plus BL                 |
-|                   | RM3 Pro Plus                    |
-|                   | RM2 Pro Plus 300                |
-|                   | RM2 Pro Plus R1                 |
-|                   | RM2 Pro PP                      |
-|------------------ | ------------------------------- |
-|A1                 | A1                              |
-|------------------ | ------------------------------- |
-|MP1                | Hontar MP1                      |
-|------------------ | ------------------------------- |
-|HYSEN              | Hysen                           |
-|------------------ | ------------------------------- |
-|S1C                | S1C (SmartOne Alarm Kit)        |
-|------------------ | ------------------------------- |
-|DOOYA              | Dooya DT360E (DOOYA curtain v2) |
-|------------------ | ------------------------------- |
 
