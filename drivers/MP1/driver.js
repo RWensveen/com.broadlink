@@ -20,6 +20,7 @@
 
 const Homey = require('homey');
 const BroadlinkDriver = require('./../BroadlinkDriver');
+const Util = require('./../../lib/util.js');
 
 
 class BroadlinkMP1Driver extends BroadlinkDriver {
@@ -42,6 +43,22 @@ class BroadlinkMP1Driver extends BroadlinkDriver {
 			CompatibilityID: 0x4EB5  // MP1
 		});
 		
+		this.trigger_toggle = new Homey.FlowCardTriggerDevice('mp1_onoff_change')
+			.register()
+			.registerRunListener( (args,state,callback) => {
+				callback( null, (args.switchID == state.switchID ))
+			})
+		this.trigger_toggle_on = new Homey.FlowCardTriggerDevice('mp1_onoff_on')
+			.register()
+			.registerRunListener( (args,state,callback) => {
+				callback( null, (args.switchID == state.switchID ))
+			})
+		this.trigger_toggle_off = new Homey.FlowCardTriggerDevice('mp1_onoff_off')
+			.register()
+			.registerRunListener( (args,state,callback) => {
+				callback( null, (args.switchID == state.switchID ))
+			})
+
 		this.mp1_condition_on = new Homey.FlowCardCondition('mp1_onoff');
 		this.mp1_condition_on
 			.register()
@@ -57,21 +74,6 @@ class BroadlinkMP1Driver extends BroadlinkDriver {
 			.register()
 			.registerRunListener(this.mp1_do_action_off.bind(this))
 
-		this.trigger_1_toggle = new Homey.FlowCardTriggerDevice('mp1_onoff_1_change').register();
-		this.trigger_1_on     = new Homey.FlowCardTriggerDevice('mp1_onoff_1_on').register();
-		this.trigger_1_off    = new Homey.FlowCardTriggerDevice('mp1_onoff_1_off').register();
-
-		this.trigger_2_toggle = new Homey.FlowCardTriggerDevice('mp1_onoff_2_change').register();
-		this.trigger_2_on     = new Homey.FlowCardTriggerDevice('mp1_onoff_2_on').register();
-		this.trigger_2_off    = new Homey.FlowCardTriggerDevice('mp1_onoff_2_off').register();
-
-		this.trigger_3_toggle = new Homey.FlowCardTriggerDevice('mp1_onoff_3_change').register();
-		this.trigger_3_on     = new Homey.FlowCardTriggerDevice('mp1_onoff_3_on').register();
-		this.trigger_3_off    = new Homey.FlowCardTriggerDevice('mp1_onoff_3_off').register();
-
-		this.trigger_4_toggle = new Homey.FlowCardTriggerDevice('mp1_onoff_4_change').register();
-		this.trigger_4_on     = new Homey.FlowCardTriggerDevice('mp1_onoff_4_on').register();
-		this.trigger_4_off    = new Homey.FlowCardTriggerDevice('mp1_onoff_4_off').register();
 	}
 
 }

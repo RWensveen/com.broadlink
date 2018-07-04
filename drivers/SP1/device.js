@@ -19,7 +19,6 @@
 'use strict';
 
 const Homey = require('homey');
-const Communicate = require('./../../lib/Communicate.js');
 const BroadlinkDevice = require('./../BroadlinkDevice');
 
 
@@ -33,7 +32,6 @@ class SP1Device  extends BroadlinkDevice {
 	 * with check_IR_data() 
 	 */
 	onCapabilityOnOff( mode ) {
-		//Util.debugLog('==>SP1device.onCapabilityOnOff - ' + mode);
 		return this._communicate.sp1_set_power_state(mode)
 			.then (response => {
 

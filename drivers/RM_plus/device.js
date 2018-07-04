@@ -49,16 +49,18 @@ class RmPlusDevice extends RM3MiniDevice {
 				//Util.debugLog('entered learning');
 				that._communicate.checkRFData()
 					.then( data => {
-						that.learn = false;
-						if( data ) {
-							//Util.debugLog('<==RM3miniDevice.onCapabilityLearnIR, data = ' + Util.asHex(data));
-							let idx = that.dataStore.dataArray.length + 1;
-							let cmdname = 'cmd' + idx;
-							this.dataStore.addCommand( cmdname, data);
+						that._communicate.checkRFData2()
+							.then( data => {
+								that.learn = false;
+								if( data ) {
+									that._communicate.cancelRFSweep();
+									let idx = that.dataStore.dataArray.length + 1;
+									let cmdname = 'cmd' + idx;
+									this.dataStore.addCommand( cmdname, data);
 							
-							this.storeCmdSetting( cmdname )
-						}
-								
+									this.storeCmdSetting( cmdname )
+								}
+							})
 					})
 					.catch( err => {
 						that.learn = false;

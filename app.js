@@ -41,7 +41,6 @@ const Util = require('./../lib/util.js');
 class BroadlinkApp extends Homey.App {
 	
 	onInit() {
-		//Util.debugLog('Broadlink is running...');	
 	}	
 }
 

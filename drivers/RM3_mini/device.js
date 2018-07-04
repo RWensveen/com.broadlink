@@ -20,9 +20,8 @@
 
 const Homey = require('homey');
 const Util = require('./../../lib/util.js');
-const Communicate = require('./../../lib/Communicate.js');
 const BroadlinkDevice = require('./../BroadlinkDevice');
-const DataStore = require('./../lib/DataStore.js')
+const DataStore = require('./../../lib/DataStore.js')
 
 
 class RM3miniDevice extends BroadlinkDevice {
@@ -113,7 +112,7 @@ class RM3miniDevice extends BroadlinkDevice {
 		super.onInit();
 		this.registerCapabilityListener('learnIRcmd', this.onCapabilityLearnIR.bind(this));
 		
-		this.dataStore = new DataStore( deviceData.mac )
+		this.dataStore = new DataStore( this.getData().mac )
 		this.dataStore.readCommands();
 	}
 
@@ -123,7 +122,6 @@ class RM3miniDevice extends BroadlinkDevice {
 	 */
 	onAdded() {
 		super.onAdded();
-		//Util.debugLog('==>RM3miniDevice.onAdded');
 	}
 
 		
@@ -132,7 +130,6 @@ class RM3miniDevice extends BroadlinkDevice {
 	 */
 	onDeleted() {
 		super.onDeleted()
-		//Util.debugLog('==>RM3miniDevice.onDeleted');
 	}
 
 
@@ -142,7 +139,6 @@ class RM3miniDevice extends BroadlinkDevice {
 	 * @returns {Promise}
 	 */
 	onCapabilityLearnIR(onoff) {
-	    //Util.debugLog('==>RM3miniDevice.onCapabilityLearnIR');
 	    if( this.learn ) { 
 	    	return Promise.resolve() 
 	    }
@@ -151,12 +147,10 @@ class RM3miniDevice extends BroadlinkDevice {
 	    var that = this
 	    return this._communicate.enter_learning()
 			.then( response => {
-				//Util.debugLog('entered learning');
 				that._communicate.check_IR_data()
 					.then( data => {
 						that.learn = false;
 						if( data ) {
-							//Util.debugLog('<==RM3miniDevice.onCapabilityLearnIR, data = ' + Util.asHex(data));
 							let idx = that.dataStore.dataArray.length + 1;
 							let cmdname = 'cmd' + idx;
 							this.dataStore.addCommand( cmdname, data);
@@ -184,11 +178,6 @@ class RM3miniDevice extends BroadlinkDevice {
 	 *  @param changedKeysArr   contains an array of keys that have been changed
 	 */
 	onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, callback ) {
-		
-		//Util.debugLog('oldSettingsObj ' + JSON.stringify(oldSettingsObj));
-		//Util.debugLog('newSettingsObj ' + JSON.stringify(newSettingsObj));
-		//Util.debugLog('changedKeysArr ' + JSON.stringify(changedKeysArr));
-		
 		let i = 0;
 		let oldName = '';
 		let newName = '';
@@ -222,11 +211,9 @@ class RM3miniDevice extends BroadlinkDevice {
 			newName = newSettingsObj[changedKeysArr[i]] || ''
 
 			if(newName.length > 0) {
-				//Util.debugLog(' rename ' + oldName + ' to ' + newName)
 				this.dataStore.renameCommand( oldName, newName );
 			}
 			else {
-				//Util.debugLog(' delete ' + oldName)
 				this.dataStore.deleteCommand( oldName);
 			}
 		}
@@ -245,7 +232,6 @@ class RM3miniDevice extends BroadlinkDevice {
 	 * This method will be called when a device has been removed.
 	 */
 	onDeleted() {
-		//Util.debugLog('==>BroadlinkDevice.onDeleted');
 		this.dataStore.deleteAllCommands();
 	}
 

@@ -47,8 +47,9 @@ class BroadlinkDriver extends Homey.Driver {
 	 * 
 	 */
 	onPair(socket) {
-		//Util.debugLog('==>BroadlinkDriver.onPair');
-
+		if( this._communicate !== undefined ) {
+			this._communicate.destroy();
+		}
 		let commOptions = {
 				ipAddress : null,
 				mac       : null,
@@ -94,16 +95,13 @@ class BroadlinkDriver extends Homey.Driver {
 			           		socket.emit('discovered', device )
 			           		
 			           	},  rejectReason => {
-			           		Util.debugLog('<==onPair.rejectReason = ' + rejectReason)
 			           		socket.emit('discovered', null )
 			           	})
 			           	.catch( err => {
-			           		Util.debugLog('<==onPair.catch = ' + err)
 			           		socket.emit('discovered', null )
 			           	})
 				})
 				.catch( function(err) {
-					//Util.debugLog('**>BroadlinkDriver.onPair -> catch error: ' + err)
 					socket.emit('discovered',null)
 				})
 		})

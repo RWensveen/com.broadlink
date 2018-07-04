@@ -952,87 +952,54 @@
 				]
 			},
 			{
-				"id": "mp1_onoff_1_change",
-				"title": { "en": "Switch 1 has changed", "nl": "Schakelaar 1 is omgezet"},
+				"id": "mp1_onoff_change",
+				"title": { "en": "Switch has changed", "nl": "Schakelaar is omgezet"},
 				"args": [ 
-					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" }
+					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" },
+					{
+						"name": "switchID",
+						"type": "dropdown",
+						"values": [
+							{ "id": "1", "label": { "en": "Switch 1", "nl": "Schakelaar 1" } },
+							{ "id": "2", "label": { "en": "Switch 2", "nl": "Schakelaar 2" } },
+							{ "id": "3", "label": { "en": "Switch 3", "nl": "Schakelaar 3" } },
+							{ "id": "4", "label": { "en": "Switch 4", "nl": "Schakelaar 4" } }
+						]
+					}
 				]
 			},
 			{
-				"id": "mp1_onoff_2_change",
-				"title": { "en": "Switch 2 has changed", "nl": "Schakelaar 2 is omgezet"},
+				"id": "mp1_onoff_on",
+				"title": { "en": "Switched on", "nl": "Schakelaar aangezet"},
 				"args": [ 
-					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" }
+					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" },
+					{
+						"name": "switchID",
+						"type": "dropdown",
+						"values": [
+							{ "id": "1", "label": { "en": "Switch 1", "nl": "Schakelaar 1" } },
+							{ "id": "2", "label": { "en": "Switch 2", "nl": "Schakelaar 2" } },
+							{ "id": "3", "label": { "en": "Switch 3", "nl": "Schakelaar 3" } },
+							{ "id": "4", "label": { "en": "Switch 4", "nl": "Schakelaar 4" } }
+						]
+					}
 				]
 			},
 			{
-				"id": "mp1_onoff_3_change",
-				"title": { "en": "Switch 3 has changed", "nl": "Schakelaar 3 is omgezet"},
+				"id": "mp1_onoff_off",
+				"title": { "en": "Switched off", "nl": "Schakelaar uitgezet"},
 				"args": [ 
-					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" }
-				]
-			},
-			{
-				"id": "mp1_onoff_4_change",
-				"title": { "en": "Switch 4 has changed", "nl": "Schakelaar 4 is omgezet"},
-				"args": [ 
-					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" }
-				]
-			},
-			{
-				"id": "mp1_onoff_1_on",
-				"title": { "en": "Switch 1 switched on", "nl": "Schakelaar 1 aangezet"},
-				"args": [ 
-					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" }
-				]
-			},
-			{
-				"id": "mp1_onoff_2_on",
-				"title": { "en": "Switch 2 switched on", "nl": "Schakelaar 2 aangezet"},
-				"args": [ 
-					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" }
-				]
-			},
-			{
-				"id": "mp1_onoff_3_on",
-				"title": { "en": "Switch 3 switched on", "nl": "Schakelaar 3 aangezet"},
-				"args": [ 
-					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" }
-				]
-			},
-			{
-				"id": "mp1_onoff_4_on",
-				"title": { "en": "Switch 4 switched on", "nl": "Schakelaar 4 aangezet"},
-				"args": [ 
-					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" }
-				]
-			},
-			{
-				"id": "mp1_onoff_1_off",
-				"title": { "en": "Switch 1 switched off", "nl": "Schakelaar 1 uitgezet"},
-				"args": [
-					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" }
-				]
-			},
-			{
-				"id": "mp1_onoff_2_off",
-				"title": { "en": "Switch 2 switched off", "nl": "Schakelaar 2 uitgezet"},
-				"args": [
-					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" }
-				]
-			},
-			{
-				"id": "mp1_onoff_3_off",
-				"title": { "en": "Switch 3 switched off", "nl": "Schakelaar 3 uitgezet"},
-				"args": [
-					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" }
-				]
-			},
-			{
-				"id": "mp1_onoff_4_off",
-				"title": { "en": "Switch 4 switched off", "nl": "Schakelaar 4 uitgezet"},
-				"args": [
-					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" }
+					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" },
+					{
+						"name": "switchID",
+						"type": "dropdown",
+						"values": [
+							{ "id": "1", "label": { "en": "Switch 1", "nl": "Schakelaar 1" } },
+							{ "id": "2", "label": { "en": "Switch 2", "nl": "Schakelaar 2" } },
+							{ "id": "3", "label": { "en": "Switch 3", "nl": "Schakelaar 3" } },
+							{ "id": "4", "label": { "en": "Switch 4", "nl": "Schakelaar 4" } }
+						]
+					}
 				]
 			}
 		],

@@ -20,7 +20,6 @@
 
 const Homey = require('homey');
 const Util = require('./../../lib/util.js');
-const Communicate = require('./../../lib/Communicate.js');
 const BroadlinkDevice = require('./../BroadlinkDevice');
 
 

@@ -56,7 +56,6 @@ class BroadlinkDevice extends Homey.Device {
 	 * can authenticate it to get is 'key' and 'id'
 	 */
 	onAdded() {
-		Util.debugLog('==>BroadlinkDevice.onAdded');
 		
 		let deviceData = this.getData();
 		let options = {
@@ -76,7 +75,6 @@ class BroadlinkDevice extends Homey.Device {
 
 				this.setSettings( newSettings )
 					.then( dummy => {
-						//Util.debugLog( 'settings saved' )
 					})
 					.catch( err => {
 						Util.debugLog('**> settings error  * settings not saved *'); 
@@ -93,7 +91,7 @@ class BroadlinkDevice extends Homey.Device {
 	 * This method will be called when a device has been removed.
 	 */
 	onDeleted() {
-		//Util.debugLog('==>BroadlinkDevice.onDeleted');
+		this._communicate.destroy();
 		this._communicate = null;
 	}
 

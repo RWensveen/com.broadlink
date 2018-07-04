@@ -20,7 +20,6 @@
 
 const Homey = require('homey');
 const Util = require('./../../lib/util.js');
-const Communicate = require('./../../lib/Communicate.js');
 const BroadlinkDevice = require('./../BroadlinkDevice');
 
 
@@ -180,7 +179,6 @@ class A1Device extends BroadlinkDevice {
 
 		
 	onInit() {
-		Util.debugLog('==>A1.onInit')
 		super.onInit();
 					
 		this.getDriver()
@@ -196,7 +194,6 @@ class A1Device extends BroadlinkDevice {
 	 */
 	onAdded() {
 		super.onAdded();
-		//Util.debugLog('==>A1Device.onAdded');
 	}
 
 		
@@ -206,7 +203,6 @@ class A1Device extends BroadlinkDevice {
 	onDeleted() {
 		super.onDeleted();
 		this.stop_sensor_check();
-		//Util.debugLog('==>A1Device.onDeleted');
 	}
 
 	
@@ -259,7 +255,6 @@ class A1Device extends BroadlinkDevice {
 				if( this.air_quality != AirQualityLevel.unknown.value ) {
 					this.setCapabilityValue('a1_air_quality', str_air_quality, true);
 					this.setCapabilityValue('a1_air_quality_number', this.air_quality);
-		    	    //Util.debugLog('air_quality = '+ str_air_quality + ' ('+this.air_quality +')' )
 				}
 				
 	    	    switch( str_light )
@@ -273,7 +268,6 @@ class A1Device extends BroadlinkDevice {
 	    	    if ( this.light_level != LightLevel.unknown.value ) {
 	    	    	this.setCapabilityValue('a1_light_level', str_light, true);
 	    	    	this.setCapabilityValue('a1_light_level_number', this.light_level);
-		    	    //Util.debugLog('light = '      + str_light       + ' ('+this.light_level + ')'      )
 	    	    }
 	    	    
 	    	    switch( str_noise )
@@ -286,13 +280,10 @@ class A1Device extends BroadlinkDevice {
 	    	    if( this.noise_level != NoiseLevel.unknown.value ) {
 	    	    	this.setCapabilityValue('a1_noise_level', str_noise, true);
 	    	    	this.setCapabilityValue('a1_noise_level_number', this.noise_level);
-		    	    //Util.debugLog('noise = '      + str_noise       + ' ('+this.noise_level + ')'     )
 	    	    }
 	    	    
 	    	    this.setCapabilityValue('measure_temperature', temperature );
     			this.setCapabilityValue('measure_humidity'   , humidity    );
-    			//Util.debugLog('temperature = '+ temperature )
-	    	    //Util.debugLog('humidity = '   + humidity    )
 
 	    	    let drv = this.getDriver();
 				if( curr_air_quality != this.air_quality ) { drv.a1_trigger_air_quality.trigger(this,{'airquality':str_air_quality},{}) }

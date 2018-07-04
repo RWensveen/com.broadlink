@@ -20,7 +20,6 @@
 
 const Homey = require('homey');
 const Util = require('./../../lib/util.js');
-const Communicate = require('./../../lib/Communicate.js');
 const BroadlinkDevice = require('./../BroadlinkDevice');
 
 
@@ -32,32 +31,12 @@ class MP1Device  extends BroadlinkDevice {
 		if( mode != this.getCapabilityValue( capa ) ) {
 			
 			let drv = this.getDriver();
-			if( sid !== Number ) { sid = Number(sid); }
-			
-			switch( sid )
-			{
-			case 1: drv.trigger_1_toggle.trigger(this,{},{}); break;
-			case 2: drv.trigger_2_toggle.trigger(this,{},{}); break;
-			case 3: drv.trigger_3_toggle.trigger(this,{},{}); break;
-			case 4: drv.trigger_4_toggle.trigger(this,{},{}); break;
-			}
+			drv.trigger_toggle.trigger(this,{},{"switchID":sid})
 			if( mode ) {
-				switch( sid )
-				{
-				case 1: drv.trigger_1_on.trigger(this,{},{}); break;
-				case 2: drv.trigger_2_on.trigger(this,{},{}); break;
-				case 3: drv.trigger_3_on.trigger(this,{},{}); break;
-				case 4: drv.trigger_4_on.trigger(this,{},{}); break;
-				}
+				drv.trigger_toggle_on.trigger(this,{},{"switchID":sid})
 			}
 			else {
-				switch( sid )
-				{
-				case 1: drv.trigger_1_off.trigger(this,{},{}); break;
-				case 2: drv.trigger_2_off.trigger(this,{},{}); break;
-				case 3: drv.trigger_3_off.trigger(this,{},{}); break;
-				case 4: drv.trigger_4_off.trigger(this,{},{}); break;
-				}
+				drv.trigger_toggle_off.trigger(this,{},{"switchID":sid})
 			}
 		}
 	}
@@ -90,7 +69,9 @@ class MP1Device  extends BroadlinkDevice {
 		return this._communicate.mp1_set_power_state( sid, mode )
 			.then (response => { 
 				this.generate_trigger( sid, mode );
+				return Promise.resolve(true)
 			}, rejection => {
+				Util.debugLog('   set_onoff - rejection' + rejection)
 			})
 			.catch( err => {
 				Util.debugLog('**>MP1device.onCapabilityOnOff - catch = ' + err);
@@ -117,26 +98,9 @@ class MP1Device  extends BroadlinkDevice {
    				this.setCapabilityValue('onoff.s2', s2 );
    				this.setCapabilityValue('onoff.s3', s3 );
    				this.setCapabilityValue('onoff.s4', s4 );
+            }, rejection => {
 			})
 	}	
-
-
-	onCapabilityOnOff_1( mode ) {
-		this.set_onoff( "1", mode )
-	}
-
-	onCapabilityOnOff_2( mode ) {
-		this.set_onoff( "2", mode )
-	}
-
-	onCapabilityOnOff_3( mode ) {
-		this.set_onoff( "3", mode )
-	}
-
-	onCapabilityOnOff_4( mode ) {
-		this.set_onoff( "4", mode )
-	}
-
 
 	check_condition_on( sid, callback ) { 
 		let capa = 'onoff.s' + sid
@@ -158,13 +122,17 @@ class MP1Device  extends BroadlinkDevice {
 			})
 	}
 
+	onCapabilityOnOff_1(mode) { this.set_onoff( "1", mode ); }
+	onCapabilityOnOff_2(mode) { this.set_onoff( "2", mode ); }
+	onCapabilityOnOff_3(mode) { this.set_onoff( "3", mode ); }
+	onCapabilityOnOff_4(mode) { this.set_onoff( "4", mode ); }
 	
 	onInit() {
 		super.onInit();
-		this.registerCapabilityListener('onoff.s1', this.onCapabilityOnOff_1.bind(this));
-		this.registerCapabilityListener('onoff.s2', this.onCapabilityOnOff_2.bind(this));
-		this.registerCapabilityListener('onoff.s3', this.onCapabilityOnOff_3.bind(this));
-		this.registerCapabilityListener('onoff.s4', this.onCapabilityOnOff_4.bind(this));
+		this.registerCapabilityListener('onoff.s1', onCapabilityOnOff_1.bind(this) )
+		this.registerCapabilityListener('onoff.s2', onCapabilityOnOff_2.bind(this) )
+		this.registerCapabilityListener('onoff.s3', onCapabilityOnOff_3.bind(this) )
+		this.registerCapabilityListener('onoff.s4', onCapabilityOnOff_4.bind(this) )
 	}
 	
 	/**

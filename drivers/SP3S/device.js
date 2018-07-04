@@ -20,7 +20,6 @@
 
 const Homey = require('homey');
 const Util = require('./../../lib/util.js');
-const Communicate = require('./../../lib/Communicate.js');
 const BroadlinkDevice = require('./../BroadlinkDevice');
 
 
@@ -81,7 +80,6 @@ class SP3SDevice  extends BroadlinkDevice {
 		return this._communicate.sp2_get_energy()
 			.then( response => {
 				let energy = response[3] * 256 + response[2] + (response[1]/100.0)
-				//Util.debugLog('<==SP3SDevice.get_energy = ' + energy )
 				return energy
 			})
 	}
