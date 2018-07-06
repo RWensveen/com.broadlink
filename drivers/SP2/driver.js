@@ -51,7 +51,7 @@ class BroadlinkSP2Driver extends BroadlinkDriver {
 
 	onInit() {
 		super.onInit({
-			CompatibilityID: 0x2737 //0x2711 //= SP2
+			CompatibilityID: 0x2711   // SP2
 		});
 		
 		this.trigger_power_toggle = new Homey.FlowCardTriggerDevice('sp2_onoff_power').register();

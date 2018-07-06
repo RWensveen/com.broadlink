@@ -37,7 +37,7 @@ class BroadlinkRM3miniDriver extends BroadlinkDriver {
 	
 	onInit() {
 		super.onInit({
-			CompatibilityID: 0x2737
+			CompatibilityID: 0x2737   // RM MINI
 		});
 		
 		this.rm3mini_action_send_cmd = new Homey.FlowCardAction('send_command');

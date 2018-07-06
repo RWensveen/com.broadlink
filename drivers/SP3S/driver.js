@@ -39,7 +39,7 @@ class SP3SDriver extends BroadlinkDriver {
 	
 	onInit() {
 		super.onInit({
-			CompatibilityID: 0x9479  // SP3S
+			CompatibilityID: 0x9479   // SP3S
 		});
 
 		this.sp3s_condition_on = new Homey.FlowCardCondition('sp3s_onoff');

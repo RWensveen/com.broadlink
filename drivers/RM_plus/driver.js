@@ -25,7 +25,7 @@ class BroadlinkRMPlusDriver extends BroadlinkDriver {
 	
 	onInit() {
 		super.onInit({
-			CompatibilityID: 0x2737  // 10119  // RM Pro Plus 2
+			CompatibilityID: 0x272A   // RM Pro Plus 2
 		});
 	}
 

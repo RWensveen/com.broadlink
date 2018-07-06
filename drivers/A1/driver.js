@@ -65,7 +65,7 @@ class BroadlinkA1Driver extends BroadlinkDriver {
 	
 	onInit() {
 		super.onInit({
-			CompatibilityID: 0x2714  // A1
+			CompatibilityID: 0x2714   // A1
 		});
 		
 		this.a1_condition_air_quality = new Homey.FlowCardCondition('a1_air_quality');

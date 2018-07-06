@@ -47,9 +47,6 @@ class BroadlinkDriver extends Homey.Driver {
 	 * 
 	 */
 	onPair(socket) {
-		//if( this._communicate !== undefined ) {
-		//	this._communicate.destroy();
-		//}
 		let commOptions = {
 				ipAddress : null,
 				mac       : null,
@@ -64,7 +61,7 @@ class BroadlinkDriver extends Homey.Driver {
 		
         socket.on('disconnect', function() {
 			that.discoveredDevices = [];
-			that._communicate = null;
+			that._communicate.destroy();
        	});
 		
 		socket.on( 'start_discover', function(userdata, callback ) {

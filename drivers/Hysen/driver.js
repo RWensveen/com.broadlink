@@ -25,7 +25,7 @@ class HysenDriver extends BroadlinkDriver {
 	
 	onInit() {
 		super.onInit({
-			CompatibilityID: 0x4EAD  // SP1
+			CompatibilityID: 0x4EAD   // HYSEN
 		});
 	}
 

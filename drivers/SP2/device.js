@@ -26,6 +26,32 @@ const BroadlinkDevice = require('./../BroadlinkDevice');
 class SP2Device extends BroadlinkDevice {
 
 
+	generate_trigger_nightlight(mode) {
+		if( mode != this.getCapabilityValue('onoff.nightlight') ) {
+			let drv = this.getDriver();
+			drv.trigger_nightlight_toggle.trigger(this,{},{})
+			if(mode) {
+				drv.trigger_nightlight_on.trigger(this,{},{})
+			}
+			else {
+				drv.trigger_nightlight_off.trigger(this,{},{})
+			}
+		}
+	}
+	
+	generate_trigger_power(mode) {
+		if( mode != this.getCapabilityValue('onoff.power') ) {
+			let drv = this.getDriver();
+			drv.trigger_power_toggle.trigger(this,{},{})
+			if(mode) {
+				drv.trigger_power_on.trigger(this,{},{})
+			}
+			else {
+				drv.trigger_power_off.trigger(this,{},{})
+			}
+		}
+	}
+	
 	
 	start_state_check( interval ) {
 		
@@ -34,6 +60,17 @@ class SP2Device extends BroadlinkDevice {
 			that.get_energy()
 				.then ( energy => {
 					that.setCapabilityValue('measure_power', energy);
+					this._communicate.read_status()
+					.then( response => {    			
+						
+						let state = (( response[0] == 2 ) || ( response[0] == 3 ))
+						that.generate_trigger_nightlight(state);
+						that.setCapabilityValue('onoff.nightlight',state);
+						
+						state = (( response[0] == 1 ) || (response[0] == 3 ));
+						that.generate_trigger_power(state);
+						that.setCapabilityValue('onoff.power',state);
+					})
 					}, error => {
 				})
 		},
@@ -67,7 +104,8 @@ class SP2Device extends BroadlinkDevice {
 	check_nightlight() {
 		return this._communicate.read_status()
 			.then( response => {    			
-				let state = (( response[0] == 2 ) || ( response[0] == 3 ))
+				let state = (( response[0] == 2 ) || ( response[0] == 3 ));
+				return state;
 			}, rejection => { 
 		});
 	}
@@ -111,14 +149,14 @@ class SP2Device extends BroadlinkDevice {
 		var that = this
 		return this.check_nightlight()
 			.then( onoff => {
-		    	let level = 0
+		    	let level = 0;
 				if(onoff) {
 					level = state ? 3 : 2;
 				}
 				else {
 					level = state ? 1 : 0;
 				}
-		    	return that._communicate.setPowerState(level)
+		    	return that._communicate.setPowerState(level);
 			})
 	}
 	
@@ -126,18 +164,10 @@ class SP2Device extends BroadlinkDevice {
 	 * 
 	 */
 	onCapabilityPowerOnOff( mode ) {
+		var that = this;
 	    return this.set_power( mode )
 	    	.then( response => {
-	    		if( mode != this.getCapabilityValue('onoff.power') ) {
-	    			let drv = this.getDriver();
-	    			drv.trigger_power_toggle.trigger(this,{},{})
-	    			if(mode) {
-	    				drv.trigger_power_on.trigger(this,{},{})
-	    			}
-	    			else {
-	    				drv.trigger_power_off.trigger(this,{},{})
-	    			}
-	    		}
+	    		that.generate_trigger_power(mode);
 	    	}, rejection => {
 	    	})
 	}
@@ -147,18 +177,10 @@ class SP2Device extends BroadlinkDevice {
 	 * 
 	 */
 	onCapabilityNightLightOnOff( mode ) {
+		var that = this;
 	    return this.set_nightlight( mode )
 	    	.then( response => {
-	    		if( mode != this.getCapabilityValue('onoff.nightlight') ) {
-	    			let drv = this.getDriver();
-	    			drv.trigger_nightlight_toggle.trigger(this,{},{})
-	    			if(mode) {
-	    				drv.trigger_nightlight_on.trigger(this,{},{})
-	    			}
-	    			else {
-	    				drv.trigger_nightlight_off.trigger(this,{},{})
-	    			}
-	    		}
+	    		that.generate_trigger_nightlight(mode);
 	    	}, rejection => {
 	    	})
 	}
