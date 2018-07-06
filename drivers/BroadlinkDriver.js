@@ -47,9 +47,9 @@ class BroadlinkDriver extends Homey.Driver {
 	 * 
 	 */
 	onPair(socket) {
-		if( this._communicate !== undefined ) {
-			this._communicate.destroy();
-		}
+		//if( this._communicate !== undefined ) {
+		//	this._communicate.destroy();
+		//}
 		let commOptions = {
 				ipAddress : null,
 				mac       : null,
