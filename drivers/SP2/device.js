@@ -19,7 +19,7 @@
 'use strict';
 
 const Homey = require('homey');
-const Util = require('./../../lib/util.js');
+//const Util = require('./../../lib/util.js');
 const BroadlinkDevice = require('./../BroadlinkDevice');
 
 

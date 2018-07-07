@@ -19,7 +19,6 @@
 'use strict';
 
 const Homey = require('homey');
-const Util = require('./../../lib/util.js');
 const BroadlinkDriver = require('./../BroadlinkDriver');
 
 
@@ -28,12 +27,10 @@ class SP3SDriver extends BroadlinkDriver {
 
 
 	check_condition_power_on( args, state, callback ) { 
-		Util.debugLog('SP3SDriver - check power on - '+JSON.stringify(state));
 		args.device.check_condition_power_on(callback)
 	}
 
 	check_condition_nightlight_on( args, state, callback ) { 
-		Util.debugLog('SP3SDriver - check nightlight on - '+JSON.stringify(state));
 		args.device.check_condition_nightlight_on(callback)
 	}
 
