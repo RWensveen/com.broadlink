@@ -137,7 +137,7 @@ class SP2Device extends BroadlinkDevice {
 		return this._communicate.read_status()
 			.then( response => {
 				let state = (( response[0] == 1 ) || (response[0] == 3 ));
-			    return state;
+				return state;
 			})
 	  }
 	  
@@ -204,22 +204,22 @@ class SP2Device extends BroadlinkDevice {
 	
 	do_action_power_on() {
 		this.onCapabilityPowerOnOff(true)
-		.then( r => { this.setCapabilityValue('onoff.power', true);
+			.then( r => { this.setCapabilityValue('onoff.power', true);
 		})
 	}
 	do_action_power_off() {
 		this.onCapabilityPowerOnOff(false)
-		.then( r => { this.setCapabilityValue('onoff.power', false);
+			.then( r => { this.setCapabilityValue('onoff.power', false);
 		})	
 	}
 	do_action_nightlight_on() {
 		this.onCapabilityNightLightOnOff(true)
-		.then( r => { this.setCapabilityValue('onoff.nightlight', true)
+			.then( r => { this.setCapabilityValue('onoff.nightlight', true)
 		})
 	}
 	do_action_nightlight_off() {
 		this.onCapabilityNightLightOnOff(false)
-		.then( r => { this.setCapabilityValue('onoff.nightlight', false)
+			.then( r => { this.setCapabilityValue('onoff.nightlight', false)
 		})
 	}
 

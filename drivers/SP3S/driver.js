@@ -24,42 +24,78 @@ const BroadlinkDriver = require('./../BroadlinkDriver');
 
 
 class SP3SDriver extends BroadlinkDriver {
-	
-	sp3s_check_condition_on( args, state, callback ) {
-		args.device.check_condition_on( callback);
+
+
+
+	check_condition_power_on( args, state, callback ) { 
+		Util.debugLog('SP3SDriver - check power on - '+JSON.stringify(state));
+		args.device.check_condition_power_on(callback)
 	}
 
-	sp3s_do_action_on(args,state) {
-		args.device.do_action_on()
+	check_condition_nightlight_on( args, state, callback ) { 
+		Util.debugLog('SP3SDriver - check nightlight on - '+JSON.stringify(state));
+		args.device.check_condition_nightlight_on(callback)
 	}
 
-	sp3s_do_action_off(args,state) {
-		args.device.do_action_off()
+	do_action_power_on(args,state) {
+		return args.device.do_action_power_on()
 	}
-	
+
+	do_action_power_off(args,state) {
+		return args.device.do_action_power_off()
+	}
+
+	do_action_nightlight_on(args,state) {
+		return args.device.do_action_nightlight_on()
+	}
+
+	do_action_nightlight_off(args,state) {
+		return args.device.do_action_nightlight_off()
+	}
+
 	onInit() {
 		super.onInit({
 			CompatibilityID: 0x9479   // SP3S
 		});
 
-		this.sp3s_condition_on = new Homey.FlowCardCondition('sp3s_onoff');
-		this.sp3s_condition_on
-			.register()
-			.registerRunListener(this.sp3s_check_condition_on.bind(this) )
 
-		this.sp3s_action_on = new Homey.FlowCardAction('sp3s_onoff_on');
-		this.sp3s_action_on
-			.register()
-			.registerRunListener(this.sp3s_do_action_on.bind(this))
-			
-		this.sp3s_action_off = new Homey.FlowCardAction('sp3s_onoff_off');
-		this.sp3s_action_off
-			.register()
-			.registerRunListener(this.sp3s_do_action_off.bind(this))
+	this.trigger_power_toggle = new Homey.FlowCardTriggerDevice('sp3s_onoff_power').register();
+	this.trigger_power_on = new Homey.FlowCardTriggerDevice('sp3s_onoff_power_on').register();
+	this.trigger_power_off = new Homey.FlowCardTriggerDevice('sp3s_onoff_power_off').register();
 
-		this.trigger_toggle = new Homey.FlowCardTriggerDevice('sp3s_onoff_change').register();
-		this.trigger_on = new Homey.FlowCardTriggerDevice('sp3s_onoff_on').register();
-		this.trigger_off = new Homey.FlowCardTriggerDevice('sp3s_onoff_off').register();
+	this.trigger_nightlight_toggle = new Homey.FlowCardTriggerDevice('sp3s_onoff_nightlight').register();
+	this.trigger_nightlight_on = new Homey.FlowCardTriggerDevice('sp3s_onoff_nightlight_on').register();
+	this.trigger_nightlight_off = new Homey.FlowCardTriggerDevice('sp3s_onoff_nightlight_off').register();
+
+	this.condition_power_on = new Homey.FlowCardCondition('sp3s_onoff_power_on');
+	this.condition_power_on
+		.register()
+		.registerRunListener(this.check_condition_power_on.bind(this) )
+
+	this.condition_nightlight_on = new Homey.FlowCardCondition('sp3s_onoff_nightlight_on');
+	this.condition_nightlight_on
+		.register()
+		.registerRunListener(this.check_condition_nightlight_on.bind(this) )
+
+	this.action_power_on = new Homey.FlowCardAction('sp3s_onoff_power_on');
+	this.action_power_on
+		.register()
+		.registerRunListener(this.do_action_power_on.bind(this))
+
+	this.action_power_off = new Homey.FlowCardAction('sp3s_onoff_power_off');
+	this.action_power_off
+		.register()
+		.registerRunListener(this.do_action_power_off.bind(this))
+
+	this.action_nightlight_on = new Homey.FlowCardAction('sp3s_onoff_nightlight_on');
+	this.action_nightlight_on
+		.register()
+		.registerRunListener(this.do_action_nightlight_on.bind(this))
+
+	this.action_nightlight_off = new Homey.FlowCardAction('sp3s_onoff_nightlight_off');
+	this.action_nightlight_off
+		.register()
+		.registerRunListener(this.do_action_nightlight_off.bind(this))
 	}
 
 }
