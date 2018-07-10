@@ -1,6 +1,6 @@
 {
 	"id": "com.broadlink",
-	"version": "1.3.2",
+	"version": "1.3.3",
 	"compatibility": ">=1.5.0",
 	"sdk": 2,
 	"name": {
