@@ -11,10 +11,10 @@
     "invalid_response": "ongeldig antwoord van apparaat"
   },
   "pair": {
-    "title": "Broadlink RM3 Mini toevoegen",
+    "title": "Broadlink Device toevoegen",
     "nosettings": "Niet alle velden zijn ingevuld.",
     "invalidsettings":"Gebruik juiste formaat voor IP adres.",
-    "intro": "Configureer de RM3 Mini met de e-Control app op een smartphone.<br>Zoek dan het IP adres op de wifi router",
+    "intro": "Configureer de Broadlink device met de e-Control app op een smartphone.<br>Zoek dan het IP adres op de wifi router",
 	"cancel": "Stop",
 	"add": "Toevoegen",
 	"address": "IP address",

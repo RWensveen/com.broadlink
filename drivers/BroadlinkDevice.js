@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,48 +22,46 @@ const Homey = require('homey');
 const Util = require('./../lib/util.js');
 const Communicate = require('./../lib/Communicate.js');
 
-
 class BroadlinkDevice extends Homey.Device {
 
-	
 	/**
-	 * This method is called when the device is loaded, and properties such as name, 
+	 * This method is called when the device is loaded, and properties such as name,
 	 * capabilities and state are available.
 	 * However, the device may or may not have been added yet.
 	 */
 	onInit( dev ) {
 
-		let deviceSettings = this.getSettings();
-		let deviceData     = this.getData();
-		
+		let deviceSettings	= this.getSettings();
+		let deviceData		= this.getData();
+
 		let options = {
-				ipAddress : deviceSettings.ipAddress,
-				mac       : Util.hexToArr(deviceData.mac),
-				count     : Math.floor(Math.random() * 0xFFFF),
-				id        : Util.hexToArr(deviceSettings.id),
-				key       : Util.hexToArr(deviceSettings.key)
+				ipAddress	: deviceSettings.ipAddress,
+				mac			: Util.hexToArr(deviceData.mac),
+				count		: Math.floor(Math.random() * 0xFFFF),
+				id			: Util.hexToArr(deviceSettings.id),
+				key			: Util.hexToArr(deviceSettings.key)
 		}
 
 		this._communicate = new Communicate()
 		this._communicate.configure( options )
 	}
-	
+
 
 	/**
 	 * This method is called when the user adds the device, called just after pairing.
-	 * 
+	 *
 	 * Which means, the device has been discovered (it has an ipAddress, MAC). Now we
 	 * can authenticate it to get is 'key' and 'id'
 	 */
 	onAdded() {
-		
+
 		let deviceData = this.getData();
 		let options = {
-				ipAddress : this.getSettings().ipAddress,
-				mac       : Util.hexToArr(deviceData.mac),
-				count     : Math.floor(Math.random() * 0xFFFF),
-				id        : null,
-				key       : null
+				ipAddress	: this.getSettings().ipAddress,
+				mac			: Util.hexToArr(deviceData.mac),
+				count		: Math.floor(Math.random() * 0xFFFF),
+				id			: null,
+				key			: null
 		}
 		this._communicate.configure( options )
 
@@ -71,22 +69,21 @@ class BroadlinkDevice extends Homey.Device {
 			.then( (authenticationData ) => {
 				let newSettings = { key: Util.arrToHex(authenticationData.key),
 									id : Util.arrToHex(authenticationData.id)
-								  };
+								};
 
 				this.setSettings( newSettings )
 					.then( dummy => {
 					})
 					.catch( err => {
-						Util.debugLog('**> settings error  * settings not saved *'); 
+						Util.debugLog('**> settings error  * settings not saved *');
 					})
 			})
 			.catch( err => {
-				Util.debugLog( '**> authentication error: ' + err); 
+				Util.debugLog( '**> authentication error: ' + err);
 			})
 
 	}
 
-		
 	/**
 	 * This method will be called when a device has been removed.
 	 */

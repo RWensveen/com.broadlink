@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,44 +22,38 @@ const Homey = require('homey');
 const Util = require('./../../lib/util.js');
 const BroadlinkDevice = require('./../BroadlinkDevice');
 
+class MP1Device extends BroadlinkDevice {
 
-class MP1Device  extends BroadlinkDevice {
-	
-	
 	generate_trigger( sid, mode ) {
 		let capa = 'onoff.s' + sid
-		if( mode != this.getCapabilityValue( capa ) ) {
-			
+		if ( mode != this.getCapabilityValue( capa ) ) {
+
 			let drv = this.getDriver();
 			drv.trigger_toggle.trigger(this,{},{"switchID":sid})
-			if( mode ) {
+			if ( mode ) {
 				drv.trigger_toggle_on.trigger(this,{},{"switchID":sid})
-			}
-			else {
+			} else {
 				drv.trigger_toggle_off.trigger(this,{},{"switchID":sid})
 			}
 		}
-	}
+	}	// generate_trigger
 
 	start_state_check( interval ) {
-
 		var that = this
 		this.checkTimer = setInterval( function() {
 			that.check_power_state();
 		},
-		interval * 60000);  // [minutes] to [msec]
+		interval * 60000);	// [minutes] to [msec]
 	}
-	
-	
+
 	stop_state_check() {
-		if( this.checkTimer ) {
+		if ( this.checkTimer ) {
 			clearInterval( this.checkTimer);
-			this.checkTimer=undefined;
+			this.checkTimer = undefined;
 		}
 	}
-	
-	
-    /**
+
+	/**
 	 * Send 'on/off' command to the device.
 	 *
 	 * @param sid  [string] "1".."4"
@@ -67,7 +61,7 @@ class MP1Device  extends BroadlinkDevice {
 	 */
 	set_onoff( sid, mode ) {
 		return this._communicate.mp1_set_power_state( sid, mode )
-			.then (response => { 
+			.then (response => {
 				this.generate_trigger( sid, mode );
 				return Promise.resolve(true)
 			}, rejection => {
@@ -77,37 +71,38 @@ class MP1Device  extends BroadlinkDevice {
 				Util.debugLog('**>MP1device.onCapabilityOnOff - catch = ' + err);
 			})
 	}
-	
+
 	/**
 	 * Returns the power state of the smart power strip.
 	 */
 	check_power_state() {
 		return this._communicate.mp1_set_power_state()
-    		.then( state => {
-    			let s1,s2,s3,s4;
-    			s1 = ( state & 0x01 );
-    			s2 = ( state & 0x02 );
-    			s3 = ( state & 0x04 );
-    			s4 = ( state & 0x08 );
-    			
-    			this.generate_trigger(1,s1)
-    			this.generate_trigger(2,s2)
-    			this.generate_trigger(3,s3)
-    			this.generate_trigger(4,s4)
-    			this.setCapabilityValue('onoff.s1', s1 );
-   				this.setCapabilityValue('onoff.s2', s2 );
-   				this.setCapabilityValue('onoff.s3', s3 );
-   				this.setCapabilityValue('onoff.s4', s4 );
-            }, rejection => {
-			})
-	}	
+			.then( state => {
+				let s1, s2, s3, s4;
+				s1 = ( state & 0x01 );
+				s2 = ( state & 0x02 );
+				s3 = ( state & 0x04 );
+				s4 = ( state & 0x08 );
 
-	check_condition_on( sid, callback ) { 
+				this.generate_trigger(1,s1)
+				this.generate_trigger(2,s2)
+				this.generate_trigger(3,s3)
+				this.generate_trigger(4,s4)
+				this.setCapabilityValue('onoff.s1', s1 );
+				this.setCapabilityValue('onoff.s2', s2 );
+				this.setCapabilityValue('onoff.s3', s3 );
+				this.setCapabilityValue('onoff.s4', s4 );
+			}, rejection => {
+				//
+			})
+	}
+
+	check_condition_on( sid, callback ) {
 		let capa = 'onoff.s' + sid
 		let onoff = this.getCapabilityValue( capa )
-		callback(null,onoff) 
+		callback(null,onoff)
 	}
-	
+
 	do_action_on(sid) {
 		let capa = 'onoff.s' + sid
 		this.set_onoff(sid, true)
@@ -126,7 +121,7 @@ class MP1Device  extends BroadlinkDevice {
 	onCapabilityOnOff_2(mode) { this.set_onoff( "2", mode ); }
 	onCapabilityOnOff_3(mode) { this.set_onoff( "3", mode ); }
 	onCapabilityOnOff_4(mode) { this.set_onoff( "4", mode ); }
-	
+
 	onInit() {
 		super.onInit();
 		this.registerCapabilityListener('onoff.s1', this.onCapabilityOnOff_1.bind(this) )
@@ -134,7 +129,7 @@ class MP1Device  extends BroadlinkDevice {
 		this.registerCapabilityListener('onoff.s3', this.onCapabilityOnOff_3.bind(this) )
 		this.registerCapabilityListener('onoff.s4', this.onCapabilityOnOff_4.bind(this) )
 	}
-	
+
 	/**
 	 * This method is called when the user adds the device, called just after pairing.
 	 */
@@ -146,7 +141,6 @@ class MP1Device  extends BroadlinkDevice {
 		})
 	}
 
-		
 	/**
 	 * This method will be called when a device has been removed.
 	 */

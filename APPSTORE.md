@@ -8,7 +8,7 @@ Use [Homey](https://www.athom.com/) together with [Broadlink devices](http://www
 * [A1](http://www.ibroadlink.com/a1/) - Environment Sensor
 * [RM3 mini](http://www.ibroadlink.com/rmMini3/)
   The RM3 Mini is a wifi to IR (infrared) device. It can learn IR commands and transmit them.
-* [RM Pro](http://www.ibroadlink.com/rmPro)  - IR 
+* [RM Pro](http://www.ibroadlink.com/rmPro)  - IR
 * [RM Pro Plus](http://www.ibroadlink.com/rmPro+)   - IR + RF
 
 * SP1  - power socket switch
@@ -39,11 +39,11 @@ Once a RM3-Mini,RM-Pro or RM-ProPlus is paired, it can start learning commands.
 This is done by pressing the 'learn' button (for IR or RF) in the mobile card of the paired device.
 On the device, a LED will turn on indicating it is in learning mode, and you can press a button on
 a IR/RF Remote control.
-The command will be added to the device settings in Homey. In the device settings menu, you can 
+The command will be added to the device settings in Homey. In the device settings menu, you can
 give the command a more logical name, or delete it.
-Currently 20 to 30 commands are supported in the settings page of each device. 
+Currently 20 to 30 commands are supported in the settings page of each device.
 It is not possible at this moment to change the order of the commands in the settings page.
- 
+
 # Compatibility
 
 A large number of devices are compatible with eachother.

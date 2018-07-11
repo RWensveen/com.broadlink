@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,94 +23,90 @@ const Util = require('./../lib/util.js');
 const DeviceInfo = require('./../lib/DeviceInfo.js');
 const Communicate = require('./../lib/Communicate.js');
 
-
 class BroadlinkDriver extends Homey.Driver {
 
-	
 	/**
 	 * Method that will be called when a driver is initialized. It will register Flow Cards
-	 * for the respective drivers. 
+	 * for the respective drivers.
 	 * @param options {Object}
 	 * @returns {Error}
 	 */
 	onInit(options) {
 		// options
 		this.CompatibilityID = options.CompatibilityID;
-		
-		// list of devices discovered during pairing 
+
+		// list of devices discovered during pairing
 		this.discoveredDevices = [];
 	}
 
 
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	onPair(socket) {
 		let commOptions = {
-				ipAddress : null,
-				mac       : null,
-				id        : null,
-				count     : Math.floor( Math.random() * 0xFFFF ),
-				key       : null
+				ipAddress	: null,
+				mac			: null,
+				id			: null,
+				count		: Math.floor( Math.random() * 0xFFFF ),
+				key			: null
 		}
 		this._communicate = new Communicate()
 		this._communicate.configure( commOptions )
 
 		var that = this
-		
-        socket.on('disconnect', function() {
+
+		socket.on('disconnect', function() {
 			that.discoveredDevices = [];
 			that._communicate.destroy();
 			that._communicate = undefined;
-       	});
-		
+		});
+
 		socket.on( 'start_discover', function(userdata, callback ) {
 
 			Util.getHomeyIp()
 				.then ( localAddress => {
 					// get local address without port number
 					let i = localAddress.indexOf(':')
-					if( i > 0 ) { localAddress = localAddress.slice(0,i); }
-			        
-					that._communicate.discover( 5, localAddress, userdata.address ) 
-			           	.then ( info => {
-			           		
-			           		var devinfo = DeviceInfo.getDeviceInfo(info.devtype,that.CompatibilityID)
-			           		var readableMac = Util.asHex(info.mac).replace(/,/g,':')
+					if ( i > 0 ) { localAddress = localAddress.slice(0,i); }
 
-			           		var device = {
-			           				name: devinfo.name + ' ('+readableMac+')',
-			           				data: { name     : devinfo.name,
-			           						mac      : Util.arrToHex(info.mac),
-			           						devtype  : info.devtype.toString()
-			           						},
-			           				settings: { ipAddress: info.ipAddress
-			           						},
-			           				isCompatible: devinfo.isCompatible
-			           		}
-			           		that.discoveredDevices.push( device )
-			           		socket.emit('discovered', device )
-			           		
-			           	},  rejectReason => {
-			           		socket.emit('discovered', null )
-			           	})
-			           	.catch( err => {
-			           		socket.emit('discovered', null )
-			           	})
+					that._communicate.discover( 5, localAddress, userdata.address )
+						.then ( info => {
+
+							var devinfo = DeviceInfo.getDeviceInfo(info.devtype,that.CompatibilityID)
+							var readableMac = Util.asHex(info.mac).replace(/,/g,':')
+
+							var device = {
+									name: devinfo.name + ' ('+readableMac+')',
+									data: { name	: devinfo.name,
+											mac		: Util.arrToHex(info.mac),
+											devtype	: info.devtype.toString()
+											},
+									settings: { ipAddress: info.ipAddress
+											},
+									isCompatible: devinfo.isCompatible
+							}
+							that.discoveredDevices.push( device )
+							socket.emit('discovered', device )
+
+						}, rejectReason => {
+							socket.emit('discovered', null )
+						})
+						.catch( err => {
+							socket.emit('discovered', null )
+						})
 				})
 				.catch( function(err) {
 					socket.emit('discovered',null)
 				})
 		})
-		
-        socket.on('list_devices', function(data, callback) {
+
+		socket.on('list_devices', function(data, callback) {
 			return callback(null,that.discoveredDevices);
 		});
 	}
 
-	
 }
-
 
 module.exports = BroadlinkDriver;

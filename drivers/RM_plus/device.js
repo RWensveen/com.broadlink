@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,16 +20,13 @@
 
 const RM3MiniDevice = require('./../RM3_mini/device');
 
-
 class RmPlusDevice extends RM3MiniDevice {
-	
-	
+
 	onInit() {
 		super.onInit();
-		
+
 		this.registerCapabilityListener('learnRFCmd', this.onCapabilityLearnRF.bind(this));
 	}
-	
 
 	/**
 	 * This method will be called when the learn state needs to be changed.
@@ -37,27 +34,27 @@ class RmPlusDevice extends RM3MiniDevice {
 	 * @returns {Promise}
 	 */
 	onCapabilityLearnRF(onoff) {
-	    //Util.debugLog('==>RM3miniDevice.onCapabilityLearnIR');
-	    if( this.learn ) { 
-	    	return Promise.resolve() 
-	    }
-	    this.learn = true;
-	    
-	    var that = this
-	    return this._communicate.enterRFSweep()
+		// Util.debugLog('==>RM3miniDevice.onCapabilityLearnIR');
+		if ( this.learn ) {
+			return Promise.resolve()
+		}
+		this.learn = true;
+
+		var that = this
+		return this._communicate.enterRFSweep()
 			.then( response => {
-				//Util.debugLog('entered learning');
+				// Util.debugLog('entered learning');
 				that._communicate.checkRFData()
 					.then( data => {
 						that._communicate.checkRFData2()
 							.then( data => {
 								that.learn = false;
-								if( data ) {
+								if ( data ) {
 									that._communicate.cancelRFSweep();
 									let idx = that.dataStore.dataArray.length + 1;
 									let cmdname = 'cmd' + idx;
 									this.dataStore.addCommand( cmdname, data);
-							
+
 									this.storeCmdSetting( cmdname )
 								}
 							})
@@ -72,7 +69,7 @@ class RmPlusDevice extends RM3MiniDevice {
 				that.learn = false;
 			})
 	}
-	
+
 }
 
 module.exports = RmPlusDevice;
