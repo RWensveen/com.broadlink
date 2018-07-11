@@ -1,8 +1,8 @@
 <!--
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,106 +16,90 @@
  * along with com.broadlink.  If not, see http://www.gnu.org/licenses/.
 -->
 
-
 <style type="text/css">
-  span label {
-    width: 100px
-  }
-  p {text-align:center}
-  table,td {width:100% ; height:100%}
+	span label { width: 100px }
+	p { text-align: center }
+	table,td { width:100%; height:100% }
+
+	.broadlink-pairing {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		width: 100%;
+	}
+	.buttons, .messages {
+		padding-top: 14px;
+	}
 </style>
-
-
-<style type="text/css">
-    .broadlink-pairing {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        width: 100%;
-    }
-    .buttons, .messages {
-        padding-top: 14px;
-    }
-</style>
-
 
 <p data-i18n="pair.intro"></p>
-    <div class="broadlink-pairing">
+
+<div class="broadlink-pairing">
+
 <table>
-<TR><TD>
-        <div class="form-group">
-            <label for="address" data-i18n="pair.address"></label>
-            <input type="text" class="form-control" id="address" placeholder="0.0.0.0">
-        </div>
-</td></TR><tr><td>
-        <div class="messages">
-            <p class="broadlink-status broadlink-error" style="color: #ff6300;"><span class="broadlink-error-msg"></span></p>
-        </div>
-</td></TR><tr><td>
-        <div class="form-group buttons">
-	        <table><TR>
-	           <TD align="left"><button  id="add"    onclick="add()"    class="button" data-i18n="pair.add"></button>
-	           <TD align="right"><button id="cancel" onclick="cancel()" class="button" data-i18n="pair.cancel"></button>
-            </TR></table>
-        </div>
+<tr><td>
+	<div class="form-group">
+		<label for="address" data-i18n="pair.address"></label>
+		<input type="text" class="form-control" id="address" placeholder="0.0.0.0">
+	</div>
+</td></tr>
+<tr><td>
+	<div class="messages">
+		<p class="broadlink-status broadlink-error" style="color: #ff6300;"><span class="broadlink-error-msg"></span></p>
+	</div>
+</td></tr>
+<tr><td>
+	<div class="form-group buttons">
+		<table><TR>
+			<TD align="left"><button  id="add"    onclick="add()"    class="button" data-i18n="pair.add"></button>
+			<TD align="right"><button id="cancel" onclick="cancel()" class="button" data-i18n="pair.cancel"></button>
+		</TR></table>
+	</div>
 </table>
+
 </div>
 
 <script type="text/javascript">
 
-
-
-
-
-
 function showError( msg ) {
 	$('.broadlink-error').show();
-    $('.broadlink-error-msg').html( msg );
+	$('.broadlink-error-msg').html( msg );
 }
 
 function add( data ) {
-
 	var ipAddressElement = document.getElementById('address');
-    var device = { 
+	var device = {
 			address: ipAddressElement.value.trim()
 	}
-    if( device.address ) {
-        var m = device.address.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/g);
-    	if( ( ! m ) || ( m.length != 1 ) ) {
-    		showError(Homey.__('pair.invalid_ipaddress'))
-    	}
-    	else {
-    		showError( Homey.__('pair.discovering') );
-    		Homey.emit('start_discover', device, null )    		
-    	}
-    }
-    else {
-    	showError(Homey.__('pair.invalid_ipaddress'))
-    }
+	if ( device.address ) {
+		var m = device.address.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/g);
+		if ( ( ! m ) || ( m.length != 1 ) ) {
+			showError(Homey.__('pair.invalid_ipaddress'))
+		} else {
+			showError( Homey.__('pair.discovering') );
+			Homey.emit('start_discover', device, null )
+		}
+	} else {
+		showError(Homey.__('pair.invalid_ipaddress'))
+	}
 }
-
-
-
 
 Homey.on('discovered', function (device) {
 
-	if( device ) {
-		//showError( "found " + device.data.devtype);
-		
-		if( device.isCompatible ) {
-			//showError( `found complatible device: ${device.data.name} (${device.data.devtype})`);
+	if ( device ) {
+		// showError( "found " + device.data.devtype);
+
+		if ( device.isCompatible ) {
+			// showError( `found complatible device: ${device.data.name} (${device.data.devtype})`);
 			Homey.showView('list_devices');
-		}
-		else {
+		} else {
 			showError( Homey.__('pair.found_another') + device.data.name + '(' + device.data.devtype + ')');
 		}
-	}
-	else {
+	} else {
 		showError( Homey.__('pair.error_no_discover') );
 	}
 
 })
-
 
 // function called when user pressed button
 function cancel(data) {
@@ -123,6 +107,4 @@ function cancel(data) {
 	Homey.done();
 }
 
-
 </script>
-

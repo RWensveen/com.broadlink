@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,7 @@
 
 const RM3MiniDevice = require('./../RM3_mini/device');
 
-
 class RmProDevice extends RM3MiniDevice {
-	
 
 }
 

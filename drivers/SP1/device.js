@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,27 +21,23 @@
 const Homey = require('homey');
 const BroadlinkDevice = require('./../BroadlinkDevice');
 
+class SP1Device extends BroadlinkDevice {
 
-class SP1Device  extends BroadlinkDevice {
-	
-
-
-		
-    /**
-	 * Send a command to the device. The command was previously retrieved 
-	 * with check_IR_data() 
+	/**
+	 * Send a command to the device. The command was previously retrieved
+	 * with check_IR_data()
 	 */
 	onCapabilityOnOff( mode ) {
 		return this._communicate.sp1_set_power_state(mode)
 			.then (response => {
 
-				if( mode != this.getCapabilityValue('onoff') ) {
+				if ( mode != this.getCapabilityValue('onoff') ) {
 					let drv = this.getDriver();
 					drv.trigger_toggle.trigger(this,{},{})
-					if( mode ) {
+
+					if ( mode ) {
 						drv.trigger_on.trigger(this,{},{})
-					}
-					else {
+					} else {
 						drv.trigger_off.trigger(this,{},{})
 					}
 				}
@@ -52,13 +48,12 @@ class SP1Device  extends BroadlinkDevice {
 				throw err;
 			})
 	}
-	
 
-	check_condition_on(callback) { 
+	check_condition_on(callback) {
 		let onoff = this.getCapabilityValue('onoff')
-		callback(null, onoff ) 
+		callback(null, onoff )
 	}
-	
+
 	do_action_on() {
 		this.onCapabilityOnOff( true )
 			.then( r => { this.setCapabilityValue('onoff', true);
@@ -71,12 +66,10 @@ class SP1Device  extends BroadlinkDevice {
 			})
 	}
 
-	
 	onInit() {
 		super.onInit();
 		this.registerCapabilityListener('onoff', this.onCapabilityOnOff.bind(this));
 	}
-	
 
 }
 

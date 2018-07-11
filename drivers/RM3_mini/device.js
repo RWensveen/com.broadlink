@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,9 +23,7 @@ const Util = require('./../../lib/util.js');
 const BroadlinkDevice = require('./../BroadlinkDevice');
 const DataStore = require('./../../lib/DataStore.js')
 
-
 class RM3miniDevice extends BroadlinkDevice {
-	
 
 	/**
 	 * Store the given name at the first available place in settings.
@@ -34,88 +32,85 @@ class RM3miniDevice extends BroadlinkDevice {
 	storeCmdSetting( cmdname ) {
 
 		let settings = this.getSettings()
-		
+
 		var idx = 0;
 		let settingName = 'RcCmd' + idx;
-		while( settingName in settings) {
-			if( settings[ settingName ].length == 0 ) {
-		
-				let s = { 
-						[settingName] : cmdname 
-						} 
+		while ( settingName in settings) {
+			if ( settings[ settingName ].length == 0 ) {
+
+				let s = {
+						[settingName] : cmdname
+						}
 				this.setSettings( s );
 				break;
 			}
 			idx++;
 			settingName = 'RcCmd' + idx;
 		}
+
 	}
 
-	
 	/**
 	 * Sends the given command to the device and triggers the flows
-	 * 
+	 *
 	 * @param  that  = this driver
 	 * @param  cmd   = command-name
-	 * 
+	 *
 	 * @return [Promise] resolves once command is send
 	 */
 	executeCommand( args ) {
 		let cmd = args['variable'];
 
 		var cmdData = this.dataStore.getCommandData( cmd.name )
-		if( cmdData ) {
+		if ( cmdData ) {
 			let drv = this.getDriver();
 			// RC_specific_sent: user entered command name
 			drv.rm3mini_specific_cmd_trigger.trigger( this, {}, { 'variable':cmd.name })
-			
+
 			// RC_sent_any: set token
 			drv.rm3mini_any_cmd_trigger.trigger( this, {'CommandSent':cmd.name}, {})
-			
+
 			// send the command
 			return this._communicate.send_IR_RF_data( cmdData )
+		} else {
+			return Promise.resolve();
 		}
-		else { return Promise.resolve(); }
 	}
-	
-	
+
 	/**
 	 * Get a list of all command-names
-	 * 
+	 *
 	 * @return  the command-name list
 	 */
 	onAutoComplete() {
 		let lst = []
 		let names = this.dataStore.getCommandNameList()
-		for(var i = names.length -1; i >= 0; i--) {
-			let item =  {
-							"name": names[i] 
+		for (var i = names.length -1; i >= 0; i--) {
+			let item = {
+						"name": names[i]
 						};
 			lst.push( item )
 		}
 		return lst;
 	}
-	
-	
+
 	/**
-	 * 
+	 *
 	 */
 	check_condition_specific_cmd_sent( args, state, callback ) {
-		callback(null,( args.variable.name === state.variable )) 
+		callback(null,( args.variable.name === state.variable ))
 	}
-	
-	
+
 	/**
-	 * 
+	 *
 	 */
 	onInit() {
 		super.onInit();
 		this.registerCapabilityListener('learnIRcmd', this.onCapabilityLearnIR.bind(this));
-		
+
 		this.dataStore = new DataStore( this.getData().mac )
 		this.dataStore.readCommands();
 	}
-
 
 	/**
 	 * This method is called when the user adds the device, called just after pairing.
@@ -124,7 +119,6 @@ class RM3miniDevice extends BroadlinkDevice {
 		super.onAdded();
 	}
 
-		
 	/**
 	 * This method will be called when a device has been removed.
 	 */
@@ -132,32 +126,30 @@ class RM3miniDevice extends BroadlinkDevice {
 		super.onDeleted()
 	}
 
-
 	/**
 	 * This method will be called when the learn state needs to be changed.
 	 * @param onoff
 	 * @returns {Promise}
 	 */
 	onCapabilityLearnIR(onoff) {
-	    if( this.learn ) { 
-	    	return Promise.resolve() 
-	    }
-	    this.learn = true;
-	    
-	    var that = this
-	    return this._communicate.enter_learning()
+		if ( this.learn ) {
+			return Promise.resolve()
+		}
+		this.learn = true;
+
+		var that = this
+		return this._communicate.enter_learning()
 			.then( response => {
 				that._communicate.check_IR_data()
 					.then( data => {
 						that.learn = false;
-						if( data ) {
+						if ( data ) {
 							let idx = that.dataStore.dataArray.length + 1;
 							let cmdname = 'cmd' + idx;
 							this.dataStore.addCommand( cmdname, data);
-							
+
 							this.storeCmdSetting( cmdname )
 						}
-								
 					})
 					.catch( err => {
 						that.learn = false;
@@ -169,12 +161,11 @@ class RM3miniDevice extends BroadlinkDevice {
 				Util.debugLog('**> RM3miniDevice.onCapabilityLearnIR, catch: '+err);
 			})
 	}
-	
-	
+
 	/**
-	 * Called when the device settings are changed by the user 
+	 * Called when the device settings are changed by the user
 	 * (so NOT called on programmatically changing settings)
-	 * 
+	 *
 	 *  @param changedKeysArr   contains an array of keys that have been changed
 	 */
 	onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, callback ) {
@@ -183,7 +174,7 @@ class RM3miniDevice extends BroadlinkDevice {
 		let newName = '';
 
 		// Verify all settings
-		for(i=0; i < changedKeysArr.length; i++ ) {
+		for (i=0; i < changedKeysArr.length; i++ ) {
 			oldName = oldSettingsObj[changedKeysArr[i]] || '';
 			newName = newSettingsObj[changedKeysArr[i]] || '';
 
@@ -191,14 +182,13 @@ class RM3miniDevice extends BroadlinkDevice {
 			// has old + no new: delete
 			// no old + has new: error
 			// no old + no new: unused
-			if(newName.length > 0) {
-				if(oldName.length > 0) {
-					if( this.dataStore.findCommand( newName ) >= 0 ) {
+			if (newName.length > 0) {
+				if (oldName.length > 0) {
+					if ( this.dataStore.findCommand( newName ) >= 0 ) {
 						callback( Homey.__('errors.save_settings') + newName + Homey.__('errors.save_settings_exist'), false);
 						return;
-					}	
-				}
-				else {
+					}
+				} else {
 					callback( Homey.__('errors.save_settings') + newName + Homey.__('errors.save_settings_nocmd'), null);
 					return;
 				}
@@ -206,35 +196,32 @@ class RM3miniDevice extends BroadlinkDevice {
 		}
 
 		// All settings OK, process them
-		for(i=0; i < changedKeysArr.length; i++ ) {
+		for (i=0; i < changedKeysArr.length; i++ ) {
 			oldName = oldSettingsObj[changedKeysArr[i]] || ''
 			newName = newSettingsObj[changedKeysArr[i]] || ''
 
-			if(newName.length > 0) {
+			if (newName.length > 0) {
 				this.dataStore.renameCommand( oldName, newName );
-			}
-			else {
+			} else {
 				this.dataStore.deleteCommand( oldName);
 			}
 		}
 
 		callback( null, true );
-		
-	    // always fire the callback, or the settings won't change!
-	    // if the settings must not be saved for whatever reason:
-	    //    callback( "Your error message", null );
-	    // else
+
+		// always fire the callback, or the settings won't change!
+		// if the settings must not be saved for whatever reason:
+		//    callback( "Your error message", null );
+		// else
 		//    callback("Your success message", true )
 	}
 
-	
 	/**
 	 * This method will be called when a device has been removed.
 	 */
 	onDeleted() {
 		this.dataStore.deleteAllCommands();
 	}
-
 
 }
 

@@ -79,7 +79,7 @@
 				"en": "Light Level",
 				"nl": "Lichtniveau"
 			},
-			"values": [ 
+			"values": [
 				{ "id":"dark",    "title":{"en": "dark",    "nl":"donker"} },
 				{ "id":"dim",     "title":{"en": "dim",     "nl":"schemerig"} },
 				{ "id":"normal",  "title":{"en": "normal",  "nl":"normaal"} },
@@ -108,7 +108,7 @@
 				"en": "Noise Level",
 				"nl": "Geluidsniveau"
 			},
-			"values": [ 
+			"values": [
 				{ "id":"quiet",   "title":{"en": "quiet",   "nl":"stil"} },
 				{ "id":"normal",  "title":{"en": "normal",  "nl":"normaal"} },
 				{ "id":"noisy",   "title":{"en": "noisy",   "nl":"luidruchtig"} },
@@ -155,7 +155,7 @@
 			"class": "other",
 			"capabilities" : ["learnIRcmd"],
 			"mobile": {
-				"components": [ 
+				"components": [
 					{
 						"id": "icon",
 						"capabilities": []
@@ -236,7 +236,7 @@
 			"class": "other",
 			"capabilities" : ["learnIRcmd", "learnRFcmd"],
 			"mobile": {
-				"components": [ 
+				"components": [
 					{
 						"id": "icon",
 						"capabilities": []
@@ -331,7 +331,7 @@
 			"class": "other",
 			"capabilities" : ["learnIRcmd"],
 			"mobile": {
-				"components": [ 
+				"components": [
 					{
 						"id": "icon",
 						"capabilities": []
@@ -429,7 +429,7 @@
 				"a1_noise_level_number": { "preventInsights":false }
 			},
 			"mobile": {
-				"components": [ 
+				"components": [
 					{
 						"id": "icon",
 						"capabilities": []
@@ -818,7 +818,7 @@
 				"args": [
 					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=A1" }
 				],
-		        "tokens": [
+				"tokens": [
 					{
 						"name": "airquality",
 						"type": "string",
@@ -989,7 +989,7 @@
 			{
 				"id": "mp1_onoff_change",
 				"title": { "en": "Switch has changed", "nl": "Schakelaar is omgezet"},
-				"args": [ 
+				"args": [
 					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" },
 					{
 						"name": "switchID",
@@ -1006,7 +1006,7 @@
 			{
 				"id": "mp1_onoff_on",
 				"title": { "en": "Switched on", "nl": "Schakelaar aangezet"},
-				"args": [ 
+				"args": [
 					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" },
 					{
 						"name": "switchID",
@@ -1023,7 +1023,7 @@
 			{
 				"id": "mp1_onoff_off",
 				"title": { "en": "Switched off", "nl": "Schakelaar uitgezet"},
-				"args": [ 
+				"args": [
 					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" },
 					{
 						"name": "switchID",

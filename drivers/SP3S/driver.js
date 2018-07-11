@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +21,13 @@
 const Homey = require('homey');
 const BroadlinkDriver = require('./../BroadlinkDriver');
 
-
 class SP3SDriver extends BroadlinkDriver {
 
-
-
-	check_condition_power_on( args, state, callback ) { 
+	check_condition_power_on( args, state, callback ) {
 		args.device.check_condition_power_on(callback)
 	}
 
-	check_condition_nightlight_on( args, state, callback ) { 
+	check_condition_nightlight_on( args, state, callback ) {
 		args.device.check_condition_nightlight_on(callback)
 	}
 
@@ -52,9 +49,8 @@ class SP3SDriver extends BroadlinkDriver {
 
 	onInit() {
 		super.onInit({
-			CompatibilityID: 0x9479   // SP3S
+			CompatibilityID: 0x9479	// SP3S
 		});
-
 
 	this.trigger_power_toggle = new Homey.FlowCardTriggerDevice('sp3s_onoff_power').register();
 	this.trigger_power_on = new Homey.FlowCardTriggerDevice('sp3s_onoff_power_on').register();
