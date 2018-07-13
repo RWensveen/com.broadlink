@@ -16,6 +16,9 @@
  * along with com.broadlink.  If not, see http://www.gnu.org/licenses/.
 -->
 
+<script>
+
+</script>
 
 <style type="text/css">
   span label {
@@ -63,15 +66,14 @@
 
 <script type="text/javascript">
 
-
-
-
+Homey.setTitle(Homey.__('pair.title'));
 
 
 function showError( msg ) {
 	$('.broadlink-error').show();
     $('.broadlink-error-msg').html( msg );
 }
+
 
 function add( data ) {
 
@@ -95,15 +97,10 @@ function add( data ) {
 }
 
 
-
-
 Homey.on('discovered', function (device) {
 
 	if( device ) {
-		//showError( "found " + device.data.devtype);
-		
 		if( device.isCompatible ) {
-			//showError( `found complatible device: ${device.data.name} (${device.data.devtype})`);
 			Homey.showView('list_devices');
 		}
 		else {

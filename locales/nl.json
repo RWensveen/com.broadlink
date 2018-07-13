@@ -11,10 +11,10 @@
     "invalid_response": "ongeldig antwoord van apparaat"
   },
   "pair": {
-    "title": "Broadlink RM3 Mini toevoegen",
+    "title": "Broadlink Apparaat Toevoegen",
     "nosettings": "Niet alle velden zijn ingevuld.",
     "invalidsettings":"Gebruik juiste formaat voor IP adres.",
-    "intro": "Configureer de RM3 Mini met de e-Control app op een smartphone.<br>Zoek dan het IP adres op de wifi router",
+    "intro": "Configureer het apparaat met de e-Control app op een smartphone.<br>Zoek dan het IP adres op de WiFi router.",
 	"cancel": "Stop",
 	"add": "Toevoegen",
 	"address": "IP address",
@@ -23,6 +23,11 @@
 	"found_another": "Ander apparaat gevonden: ",
 	"invalid_ipaddress": "Ongeldig IP adres",
 	"discovering": "Probeer apparaat te ontdekken..."
+  },
+  "settings":{
+  	"title": "Broadlink Debug Instellingen",
+  	"intro": "In eenheidsmode, ieder apparaat dat gevonden wordt tijdens paren, zal geaccepteerd worden alsof het van het gewenste type is. Dit betekent dat het geinstalleerde apparaat aangesproken wordt alsof het een apparaat van dat type is. Hierdoor zullen niet alle (of zelfs geen enkele) van zijn mogelijkheden naar behoren werken.",
+   	"compatmode": "Eenheidsmode"
   },
   "air_quality": {
     "excellent": "uitstekend",

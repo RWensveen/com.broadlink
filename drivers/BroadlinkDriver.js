@@ -60,10 +60,12 @@ class BroadlinkDriver extends Homey.Driver {
 		var that = this
 		
         socket.on('disconnect', function() {
-			that.discoveredDevices = [];
-			that._communicate.destroy();
-			that._communicate = undefined;
-       	});
+        	try {
+				that.discoveredDevices = [];
+				that._communicate.destroy();
+				that._communicate = undefined;
+        	} catch( err ) { ; }
+       	}); 
 		
 		socket.on( 'start_discover', function(userdata, callback ) {
 
@@ -90,16 +92,21 @@ class BroadlinkDriver extends Homey.Driver {
 			           				isCompatible: devinfo.isCompatible
 			           		}
 			           		that.discoveredDevices.push( device )
+			           		
+			           		Util.debugLog('->onPair.discovered = ' + JSON.stringify(device))
 			           		socket.emit('discovered', device )
 			           		
 			           	},  rejectReason => {
+			           		Util.debugLog('**>onPair.reject: ' + rejectReason)
 			           		socket.emit('discovered', null )
 			           	})
 			           	.catch( err => {
+			           		Util.debugLog('**>onPair.catch: ' + err)
 			           		socket.emit('discovered', null )
 			           	})
 				})
 				.catch( function(err) {
+					Util.debugLog('**>onPair.catch: ' + err)
 					socket.emit('discovered',null)
 				})
 		})

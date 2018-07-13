@@ -19,6 +19,7 @@
 'use strict';
 
 const RM3MiniDevice = require('./../RM3_mini/device');
+const Util = require('./../../lib/util.js');
 
 
 class RmPlusDevice extends RM3MiniDevice {
@@ -26,8 +27,9 @@ class RmPlusDevice extends RM3MiniDevice {
 	
 	onInit() {
 		super.onInit();
+		this.learn = false;
 		
-		this.registerCapabilityListener('learnRFCmd', this.onCapabilityLearnRF.bind(this));
+		this.registerCapabilityListener('learnRFcmd', this.onCapabilityLearnRF.bind(this));
 	}
 	
 
@@ -37,7 +39,7 @@ class RmPlusDevice extends RM3MiniDevice {
 	 * @returns {Promise}
 	 */
 	onCapabilityLearnRF(onoff) {
-	    //Util.debugLog('==>RM3miniDevice.onCapabilityLearnIR');
+	    Util.debugLog('==>RM3miniDevice.onCapabilityLearnIR');
 	    if( this.learn ) { 
 	    	return Promise.resolve() 
 	    }
@@ -46,26 +48,36 @@ class RmPlusDevice extends RM3MiniDevice {
 	    var that = this
 	    return this._communicate.enterRFSweep()
 			.then( response => {
-				//Util.debugLog('entered learning');
+				Util.debugLog('   sweeping');
 				that._communicate.checkRFData()
 					.then( data => {
+						Util.debugLog('  checked RF data ')
+						that._communicate.cancelRFSweep();
 						that._communicate.checkRFData2()
 							.then( data => {
+								Util.debugLog('  checked RF data 2')
 								that.learn = false;
 								if( data ) {
-									that._communicate.cancelRFSweep();
 									let idx = that.dataStore.dataArray.length + 1;
 									let cmdname = 'cmd' + idx;
 									this.dataStore.addCommand( cmdname, data);
 							
-									this.storeCmdSetting( cmdname )
+									this.storeCmdSetting( cmdname );
 								}
+							}, rej => { 
+								Util.debugLog('  check RF data 2: reject')
 							})
+					}, rej => { 
+						Util.debugLog('  check RF data : reject')
+						that._communicate.cancelRFSweep();
 					})
 					.catch( err => {
 						that.learn = false;
 						Util.debugLog('**> RMPlusDevice.onCapabilityLearnIR, error checking data: '+err);
 					})
+			}, rej => { 
+				Util.debugLog('  sweep : reject ')
+				that._communicate.cancelRFSweep();
 			})
 			.catch( err => {
 				Util.debugLog('**> error learning: '+err);

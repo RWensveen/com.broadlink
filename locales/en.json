@@ -11,10 +11,10 @@
     "invalid_response": "invalid response from device"
   },
   "pair": {
-    "title": "Pair Broadlink RM3 Mini",
+    "title": "Pair Broadlink Device",
     "nosettings": "Please fill in all the fields.",
     "invalidsettings":"Please use correct format for address and mac",
-    "intro": "Configure the RM3-mini with the e-Control app on a smartphone.<br>Get the IP address from your wifi router",
+    "intro": "Configure the device with the e-Control app on a smartphone.<br>Get the IP address from your wifi router.",
 	"cancel": "Cancel",
 	"add": "Add",
 	"address": "IP address",
@@ -23,6 +23,11 @@
 	"found_another": "Found another device: ",
 	"invalid_ipaddress": "Invalid IP address",
 	"discovering": "Discovering device..."
+  },
+  "settings":{
+  	"title": "Broadlink Debug Settings",
+  	"intro": "In compatibility mode, any device found during pairing will be accepted as the selected device type. This means the device paired will be treated as the choosen device type. As a result, not all (if any) of the capablities of the device will work properly",
+  	"compatmode": "Compatibility mode"
   },
   "air_quality": {
     "excellent": "excellent",
