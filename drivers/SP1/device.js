@@ -23,10 +23,8 @@ const BroadlinkDevice = require('./../BroadlinkDevice');
 
 
 class SP1Device  extends BroadlinkDevice {
-	
 
 
-		
     /**
 	 * Send a command to the device. The command was previously retrieved 
 	 * with check_IR_data() 

@@ -46,6 +46,15 @@ class BroadlinkDevice extends Homey.Device {
 
 		this._communicate = new Communicate()
 		this._communicate.configure( options )
+		
+		this.getDriver()
+			.ready( () => {
+				// if the driver has a CheckInterval, set it. otherwise ignore it.
+				let ci = this.getSetting('CheckInterval');
+				if( ci ) {
+					this.start_check_interval( ci )
+				}
+			})
 	}
 	
 
@@ -83,16 +92,65 @@ class BroadlinkDevice extends Homey.Device {
 			.catch( err => {
 				Util.debugLog( '**> authentication error: ' + err); 
 			})
-
 	}
 
-		
 	/**
 	 * This method will be called when a device has been removed.
 	 */
 	onDeleted() {
+		this.stop_check_interval();
+		
 		this._communicate.destroy();
 		this._communicate = null;
+	}
+
+	
+	/**
+	 * Called when the device settings are changed by the user 
+	 * (so NOT called on programmatically changing settings)
+	 * 
+	 *  @param changedKeysArr   contains an array of keys that have been changed
+	 */
+	onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, callback ) {
+		
+		if( changedKeysArr.indexOf('ipAddress') >= 0 ) {
+			this._communicate.setIPaddress( newSettingsObj['ipAddress'] )
+			Util.debugLog(this.getName() + ' - onSettings - new ipaddress = ' + this._communicate.ipAddress);
+		}
+		if( changedKeysArr.indexOf('CheckInterval') >= 0 ) {
+			this.stop_check_interval()
+			this.start_check_interval( newSettingsObj['CheckInterval'] )
+		}
+		if( callback ) {
+			/* only do callback if this functions was called by Homey. 
+			 * if it was called by another class, that class will do the callback.
+			 */
+			callback( null, true ); 
+		}
+	}
+
+	
+	/**
+	 * Start a timer to periodically access the device. the parent class must implement onCheckInterval()
+	 */
+	start_check_interval( interval ) {
+		Util.debugLog(this.getName()+' start check interval - ' + interval);
+		var that = this
+		this.checkTimer = setInterval( function() {
+			that.onCheckInterval();
+		},
+		interval * 60000);  // [minutes] to [msec]
+	}
+	
+	
+	/**
+	 * Stop the periodic timer
+	 */
+	stop_check_interval() {
+		if( this.checkTimer ) {
+			clearInterval( this.checkTimer )
+			this.checkTimer = null
+		}
 	}
 
 }

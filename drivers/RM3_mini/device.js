@@ -38,8 +38,9 @@ class RM3miniDevice extends BroadlinkDevice {
 		var idx = 0;
 		let settingName = 'RcCmd' + idx;
 		while( settingName in settings) {
+			Util.debugLog( settingName );
 			if( settings[ settingName ].length == 0 ) {
-		
+				Util.debugLog(this.getName()+' - storeCmdSettings - name = ' + cmdname );
 				let s = { 
 						[settingName] : cmdname 
 						} 
@@ -118,22 +119,6 @@ class RM3miniDevice extends BroadlinkDevice {
 
 
 	/**
-	 * This method is called when the user adds the device, called just after pairing.
-	 */
-	onAdded() {
-		super.onAdded();
-	}
-
-		
-	/**
-	 * This method will be called when a device has been removed.
-	 */
-	onDeleted() {
-		super.onDeleted()
-	}
-
-
-	/**
 	 * This method will be called when the learn state needs to be changed.
 	 * @param onoff
 	 * @returns {Promise}
@@ -178,6 +163,9 @@ class RM3miniDevice extends BroadlinkDevice {
 	 *  @param changedKeysArr   contains an array of keys that have been changed
 	 */
 	onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, callback ) {
+
+		super.onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, null );
+
 		let i = 0;
 		let oldName = '';
 		let newName = '';

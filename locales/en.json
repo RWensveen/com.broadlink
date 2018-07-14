@@ -26,8 +26,10 @@
   },
   "settings":{
   	"title": "Broadlink Debug Settings",
-  	"intro": "In compatibility mode, any device found during pairing will be accepted as the selected device type. This means the device paired will be treated as the choosen device type. As a result, not all (if any) of the capablities of the device will work properly",
-  	"compatmode": "Compatibility mode"
+  	"compatinfo": "In compatibility mode, any device found during pairing will be accepted as the selected device type. This means the device paired will be treated as the choosen device type. As a result, not all (if any) of the capablities of the device will work properly",
+  	"compatmode": "Compatibility Mode",
+   	"debuginfo": "Write logging text to console. This is only valid if app is loaded in debug mode.",
+   	"debuglog" : "Log Mode"
   },
   "air_quality": {
     "excellent": "excellent",

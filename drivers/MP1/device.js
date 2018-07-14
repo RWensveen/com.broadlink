@@ -41,24 +41,7 @@ class MP1Device  extends BroadlinkDevice {
 		}
 	}
 
-	start_state_check( interval ) {
 
-		var that = this
-		this.checkTimer = setInterval( function() {
-			that.check_power_state();
-		},
-		interval * 60000);  // [minutes] to [msec]
-	}
-	
-	
-	stop_state_check() {
-		if( this.checkTimer ) {
-			clearInterval( this.checkTimer);
-			this.checkTimer = null;
-		}
-	}
-	
-	
     /**
 	 * Send 'on/off' command to the device.
 	 *
@@ -71,18 +54,17 @@ class MP1Device  extends BroadlinkDevice {
 				this.generate_trigger( sid, mode );
 				return Promise.resolve(true)
 			}, rejection => {
-				Util.debugLog('   set_onoff - rejection' + rejection)
+				return Promise.reject('')
 			})
 			.catch( err => {
-				Util.debugLog('**>MP1device.onCapabilityOnOff - catch = ' + err);
 			})
 	}
 	
 	/**
 	 * Returns the power state of the smart power strip.
 	 */
-	check_power_state() {
-		return this._communicate.mp1_set_power_state()
+	onCheckInterval() {
+		return this._communicate.mp1_check_power()
     		.then( state => {
     			let s1,s2,s3,s4;
     			s1 = ( state & 0x01 );
@@ -107,7 +89,7 @@ class MP1Device  extends BroadlinkDevice {
 		let onoff = this.getCapabilityValue( capa )
 		callback(null,onoff) 
 	}
-	
+
 	do_action_on(sid) {
 		let capa = 'onoff.s' + sid
 		this.set_onoff(sid, true)
@@ -126,33 +108,14 @@ class MP1Device  extends BroadlinkDevice {
 	onCapabilityOnOff_2(mode) { this.set_onoff( "2", mode ); }
 	onCapabilityOnOff_3(mode) { this.set_onoff( "3", mode ); }
 	onCapabilityOnOff_4(mode) { this.set_onoff( "4", mode ); }
-	
+
+
 	onInit() {
 		super.onInit();
 		this.registerCapabilityListener('onoff.s1', this.onCapabilityOnOff_1.bind(this) )
 		this.registerCapabilityListener('onoff.s2', this.onCapabilityOnOff_2.bind(this) )
 		this.registerCapabilityListener('onoff.s3', this.onCapabilityOnOff_3.bind(this) )
 		this.registerCapabilityListener('onoff.s4', this.onCapabilityOnOff_4.bind(this) )
-	}
-	
-	/**
-	 * This method is called when the user adds the device, called just after pairing.
-	 */
-	onAdded() {
-		super.onAdded();
-		this.getDriver()
-		.ready( () => {
-			this.start_state_check( this.getSetting('CheckInterval') )
-		})
-	}
-
-		
-	/**
-	 * This method will be called when a device has been removed.
-	 */
-	onDeleted() {
-		super.onDeleted();
-		this.stop_state_check();
 	}
 
 }

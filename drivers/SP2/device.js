@@ -19,7 +19,7 @@
 'use strict';
 
 const Homey = require('homey');
-//const Util = require('./../../lib/util.js');
+const Util = require('./../../lib/util.js');
 const BroadlinkDevice = require('./../BroadlinkDevice');
 
 
@@ -53,14 +53,12 @@ class SP2Device extends BroadlinkDevice {
 	}
 	
 	
-	start_state_check( interval ) {
+	onCheckInterval( interval ) {
 		
-		var that = this
-		this.checkTimer = setInterval( function() {
-			that.get_energy()
-				.then ( energy => {
-					that.setCapabilityValue('measure_power', energy);
-					this._communicate.read_status()
+		this.get_energy()
+			.then ( energy => {
+				that.setCapabilityValue('measure_power', energy);
+				this._communicate.read_status()
 					.then( response => {    			
 						
 						let state = (( response[0] == 2 ) || ( response[0] == 3 ))
@@ -70,22 +68,13 @@ class SP2Device extends BroadlinkDevice {
 						state = (( response[0] == 1 ) || (response[0] == 3 ));
 						that.generate_trigger_power(state);
 						that.setCapabilityValue('onoff.power',state);
-					})
 					}, error => {
 				})
-		},
-		interval * 60000);  // [minutes] to [msec]
+			}, error => {
+		})
 	}
 	
 	
-	stop_state_check() {
-		if( this.checkTimer ) {
-			clearInterval( this.checkTimer);
-			this.checkTimer=undefined;
-		}
-	}
-	
-
 	/**
 	 * 
 	 */
@@ -184,15 +173,14 @@ class SP2Device extends BroadlinkDevice {
 	    	}, rejection => {
 	    	})
 	}
-	
-	
+
+
 	check_condition_power_on(callback) { 
 		this.check_power()
 			.then( onoff => { callback(null, onoff );
 			}, rejection => { callback(null, false );
 			})
 	}
-	
 	
 	check_condition_nightlight_on(callback) { 
 		this.check_nightlight()
@@ -201,22 +189,25 @@ class SP2Device extends BroadlinkDevice {
 			})
 	}
 
-	
+
 	do_action_power_on() {
 		this.onCapabilityPowerOnOff(true)
 			.then( r => { this.setCapabilityValue('onoff.power', true);
 		})
 	}
+
 	do_action_power_off() {
 		this.onCapabilityPowerOnOff(false)
 			.then( r => { this.setCapabilityValue('onoff.power', false);
 		})	
 	}
+
 	do_action_nightlight_on() {
 		this.onCapabilityNightLightOnOff(true)
 			.then( r => { this.setCapabilityValue('onoff.nightlight', true)
 		})
 	}
+
 	do_action_nightlight_off() {
 		this.onCapabilityNightLightOnOff(false)
 			.then( r => { this.setCapabilityValue('onoff.nightlight', false)
@@ -228,36 +219,6 @@ class SP2Device extends BroadlinkDevice {
 		super.onInit();
 		this.registerCapabilityListener('onoff.power', this.onCapabilityPowerOnOff.bind(this));
 		this.registerCapabilityListener('onoff.nightlight', this.onCapabilityNightLightOnOff.bind(this));
-
-		this.getDriver()
-			.ready( () => {
-				this.start_state_check( this.getSetting('CheckInterval') )
-			})
-	}
-	
-		
-	/**
-	 * This method will be called when a device has been removed.
-	 */
-	onDeleted() {
-		super.onDeleted();
-		this.stop_state_check();
-	}
-
-
-	/**
-	 * Called when the device settings are changed by the user 
-	 * (so NOT called on programmatically changing settings)
-	 * 
-	 *  @param changedKeysArr   contains an array of keys that have been changed
-	 */
-	onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, callback ) {
-		
-		if( changedKeysArr.indexOf('CheckInterval') >= 0 ) {
-			this.stop_state_check()
-			this.start_state_check( newSettingsObj['CheckInterval'] )
-		}
-		callback( null, true );
 	}
 
 }

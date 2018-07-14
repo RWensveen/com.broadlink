@@ -23,7 +23,7 @@ const Util = require('./../../lib/util.js');
 const SP2Device = require('./../SP2/device');
 
 
-class SP3SDevice  extends SP2Device {
+class SP3SDevice extends SP2Device {
 	
 
 }

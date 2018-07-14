@@ -26,8 +26,10 @@
   },
   "settings":{
   	"title": "Broadlink Debug Instellingen",
-  	"intro": "In eenheidsmode, ieder apparaat dat gevonden wordt tijdens paren, zal geaccepteerd worden alsof het van het gewenste type is. Dit betekent dat het geinstalleerde apparaat aangesproken wordt alsof het een apparaat van dat type is. Hierdoor zullen niet alle (of zelfs geen enkele) van zijn mogelijkheden naar behoren werken.",
-   	"compatmode": "Eenheidsmode"
+  	"compatinfo": "In eenheidsmode, ieder apparaat dat gevonden wordt tijdens paren, zal geaccepteerd worden alsof het van het gewenste type is. Dit betekent dat het geinstalleerde apparaat aangesproken wordt alsof het een apparaat van dat type is. Hierdoor zullen niet alle (of zelfs geen enkele) van zijn mogelijkheden naar behoren werken.",
+   	"compatmode": "Eenheidsmode",
+   	"debuginfo": "Schrijf log teksten naar console. Werkt alleen als app in debug mode is geladen.",
+   	"debuglog" : "Logmode"
   },
   "air_quality": {
     "excellent": "uitstekend",

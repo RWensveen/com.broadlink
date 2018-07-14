@@ -22,26 +22,15 @@ const Homey = require('homey');
 const Util = require('./../lib/util.js');
 
 
-/*	
-.registerRunListener(( args, state, callback ) => { 
-		// @param: args = trigger settings from app.json
-		// @param: state = data from trigger-event
-
-.registerAutocompleteListener(( query, args ) => {
-				// @param: query = name of already selected item in flowcard
-				//                 or empty string if no selection yet
-				// @param: args = other args of flow (i.e. this device)
-				// @return: [Promise]->return list of {name,description,anything_programmer_wants}
-*/
-
-
 /**
  * Main entry point for app.
  */
 class BroadlinkApp extends Homey.App {
 	
 	onInit() {
+
 	}	
+
 }
 
 module.exports = BroadlinkApp;

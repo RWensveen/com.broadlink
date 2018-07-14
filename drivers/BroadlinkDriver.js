@@ -35,8 +35,9 @@ class BroadlinkDriver extends Homey.Driver {
 	 */
 	onInit(options) {
 		// options
-		this.CompatibilityID = options.CompatibilityID;
-		
+		if( options ) {
+			this.CompatibilityID = options.CompatibilityID;
+		}
 		// list of devices discovered during pairing 
 		this.discoveredDevices = [];
 	}

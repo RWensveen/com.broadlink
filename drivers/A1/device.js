@@ -54,25 +54,8 @@ class A1Device extends BroadlinkDevice {
 		this.light_level = LightLevel.unknown.value;
 		this.noise_level = NoiseLevel.unknown.value;
 	}
-	
-	
-	start_sensor_check( interval ) {
-		var that = this
-		this.checkTimer = setInterval( function() {
-			that.check_sensors();
-		},
-		interval * 60 * 1000);  // [minutes] to [msec]
-	}
-	
-	
-	stop_sensor_check() {
-		if( this.checkTimer ) {
-			clearInterval( this.checkTimer)
-			this.checkTimer = undefined
-		}
-	}
-	
-	
+
+
 	getAirQualityList(mode) {
 		if(mode == 'better') {
 			return [  
@@ -177,57 +160,11 @@ class A1Device extends BroadlinkDevice {
 		callback(null, args.variable.value < args.device.noise_level )
 	}
 
-		
-	onInit() {
-		super.onInit();
-					
-		this.getDriver()
-			.ready( () => {
-				this.start_sensor_check( this.getSetting('CheckInterval') )
-				//this.check_sensors();
-			})
-	}
 
-	
 	/**
-	 * This method is called when the user adds the device, called just after pairing.
-	 */
-	onAdded() {
-		super.onAdded();
-	}
-
-		
-	/**
-	 * This method will be called when a device has been removed.
-	 */
-	onDeleted() {
-		super.onDeleted();
-		this.stop_sensor_check();
-	}
-
-	
-	/**
-	 * Called when the device settings are changed by the user 
-	 * (so NOT called on programmatically changing settings)
-	 * 
-	 *  @param changedKeysArr   contains an array of keys that have been changed
-	 */
-	onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, callback ) {
-		
-		if( changedKeysArr.indexOf('CheckInterval') >= 0 ) {
-			this.stop_sensor_check()
-			this.start_sensor_check( newSettingsObj['CheckInterval'] )
-		}
-		callback( null, true );
-	}
-
-	
-	
-	/**
-     * 
-     *
+     * Called when the periodic timer expires
      */
-    check_sensors() 
+	onCheckInterval() 
     {
     	this._communicate.read_status()
     		.then( response => {
@@ -291,10 +228,10 @@ class A1Device extends BroadlinkDevice {
 				if( curr_noise       != this.noise_level ) { drv.a1_trigger_noise_level.trigger(this,{'noiselevel':str_noise},{}) }
     			
     		}, rejectReason => {
-    			Util.debugLog('**> device.check_sensors: ' + rejectReason)
+    			Util.debugLog('**> ' + this.getName() + '.onCheckInterval: ' + rejectReason)
     		})
     		.catch(err => {
-    			Util.debugLog('**> device.check_sensors: catch = ' + err)
+    			Util.debugLog('**> '+this.getName()+'.onCheckInterval: catch = ' + err)
     		})
      }
    

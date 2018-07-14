@@ -24,8 +24,7 @@ const Util = require('./../../lib/util.js');
 
 
 class BroadlinkSP1Driver extends BroadlinkDriver {
-	
-	
+
 
 	sp1_check_condition_on( args, state, callback ) { 
 		return args.device.check_condition_on( callback ) 
@@ -39,7 +38,7 @@ class BroadlinkSP1Driver extends BroadlinkDriver {
 		return args.device.do_action_off()
 	}
 
-	
+
 	onInit() {
 		super.onInit({
 			CompatibilityID: 0x0000  // SP1
