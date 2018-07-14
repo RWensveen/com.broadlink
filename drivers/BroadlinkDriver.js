@@ -41,6 +41,11 @@ class BroadlinkDriver extends Homey.Driver {
 		this.discoveredDevices = [];
 	}
 
+	
+	setCompatibilityID( id ) {
+		this.CompatibilityID = id;
+	}
+	
 
 	/**
 	 * 
@@ -65,7 +70,7 @@ class BroadlinkDriver extends Homey.Driver {
 				that._communicate.destroy();
 				that._communicate = undefined;
         	} catch( err ) { ; }
-       	}); 
+       	});
 		
 		socket.on( 'start_discover', function(userdata, callback ) {
 
@@ -111,7 +116,7 @@ class BroadlinkDriver extends Homey.Driver {
 				})
 		})
 		
-        socket.on('list_devices', function(data, callback) {
+		socket.on('list_devices', function(data, callback) {
 			return callback(null,that.discoveredDevices);
 		});
 	}

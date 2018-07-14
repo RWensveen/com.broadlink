@@ -18,15 +18,14 @@
 
 'use strict';
 
-const BroadlinkDriver = require('./../BroadlinkDriver');
+const BroadlinkRM3miniDriver = require('./../RM3_mini/driver');
 
 
-class BroadlinkRMProDriver extends BroadlinkDriver {
+class BroadlinkRMProDriver extends BroadlinkRM3miniDriver {
 	
 	onInit() {
-		super.onInit({
-			CompatibilityID: 0x273d   // RM PRO
-		});
+		super.onInit();
+		this.setCompatibilityID( 0x273d );  // RM PRO
 	}
 
 }
