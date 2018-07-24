@@ -61,22 +61,24 @@ class RM3miniDevice extends BroadlinkDevice {
 	 * 
 	 * @return [Promise] resolves once command is send
 	 */
-	executeCommand( args ) {
+	async executeCommand( args ) {
+	
 		let cmd = args['variable'];
-
-		var cmdData = this.dataStore.getCommandData( cmd.name )
+	
+		let cmdData = this.dataStore.getCommandData( cmd.name )
 		if( cmdData ) {
 			let drv = this.getDriver();
+			// send the command
+			await this._communicate.send_IR_RF_data( cmdData )
+
 			// RC_specific_sent: user entered command name
 			drv.rm3mini_specific_cmd_trigger.trigger( this, {}, { 'variable':cmd.name })
 			
 			// RC_sent_any: set token
 			drv.rm3mini_any_cmd_trigger.trigger( this, {'CommandSent':cmd.name}, {})
 			
-			// send the command
-			return this._communicate.send_IR_RF_data( cmdData )
+			cmdData = null;
 		}
-		else { return Promise.resolve(); }
 	}
 	
 	

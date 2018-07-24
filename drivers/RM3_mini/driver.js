@@ -31,7 +31,7 @@ class BroadlinkRM3miniDriver extends BroadlinkDriver {
 	}
 	
 	do_exec_cmd( args, state ) {
-		return args.device.executeCommand( args )
+		return args.device.executeCommand( args );
 	}
 	
 	
