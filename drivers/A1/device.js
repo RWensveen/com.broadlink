@@ -48,14 +48,25 @@ var NoiseLevel = Object.freeze( {
 class A1Device extends BroadlinkDevice {
 		
 	
-	constructor(t,e,i) {
-		super(t,e,i)
+//	constructor(t,e,i) {
+//		super(t,e,i)
+//		this.air_quality = AirQualityLevel.unknown.value;
+//		this.light_level = LightLevel.unknown.value;
+//		this.noise_level = NoiseLevel.unknown.value;
+//	}
+
+	onInit() {
+		super.onInit();
+		this.registerCapabilityListener('updateSensor', this.onCapabilityUpdateSensor.bind(this));
 		this.air_quality = AirQualityLevel.unknown.value;
 		this.light_level = LightLevel.unknown.value;
 		this.noise_level = NoiseLevel.unknown.value;
 	}
-
-
+	
+	onCapabilityUpdateSensor(onoff) {
+		this.onCheckInterval();
+	}
+	
 	getAirQualityList(mode) {
 		if(mode == 'better') {
 			return [  

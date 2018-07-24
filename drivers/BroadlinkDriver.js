@@ -74,7 +74,8 @@ class BroadlinkDriver extends Homey.Driver {
        	});
 		
 		socket.on( 'start_discover', function(userdata, callback ) {
-
+			that.discoveredDevices = [];
+			
 			Util.getHomeyIp()
 				.then ( localAddress => {
 					// get local address without port number

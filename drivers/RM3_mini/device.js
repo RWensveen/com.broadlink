@@ -142,7 +142,10 @@ class RM3miniDevice extends BroadlinkDevice {
 							
 							this.storeCmdSetting( cmdname )
 						}
-								
+					},
+					rejection => {
+						that.learn = false;
+						Util.debugLog('**> RM3miniDevice.onCapabilityLearnIR, rejected');
 					})
 					.catch( err => {
 						that.learn = false;

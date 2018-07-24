@@ -27,6 +27,15 @@
 		"email": "r966430@gmail.com"
 	},
 	"capabilities" : {
+		"updateSensor": {
+			"type": "boolean",
+			"title": {
+				"en": "Update now",
+				"nl": "Vernieuwen"
+			},
+			"getable": true,
+			"setable": true
+		},
 		"learnIRcmd": {
 			"type": "boolean",
 			"title": {
@@ -133,6 +142,7 @@
 		}
 	},
 	"capabilitiesOptions": {
+		"updateSensor":   { "preventInsights":true },
 		"learnIRcmd":     { "preventInsights":true },
 		"learnRFcmd":     { "preventInsights":true },
 		"a1_air_quality": { "preventInsights":true },
@@ -451,6 +461,7 @@
 			},
 			"class": "sensor",
 			"capabilities" : [
+				"updateSensor",
 				"measure_temperature",
 				"measure_humidity",
 				"a1_light_level",
@@ -461,6 +472,8 @@
 				"a1_noise_level_number"
 			],
 			"capabilitiesOptions": {
+			
+				"updateSensor":   { "preventInsights":true, "greyout": false },
 				"a1_air_quality": { "preventInsights":true },
 				"a1_light_level": { "preventInsights":true },
 				"a1_noise_level": { "preventInsights":true },
@@ -472,16 +485,18 @@
 				"components": [ 
 					{
 						"id": "icon",
-						"capabilities": []
+						"capabilities": [ 
+							"updateSensor" 
+						]
 					},
 					{
 						"id": "sensor",
 						"capabilities": [
-								"a1_air_quality",
-								"a1_noise_level",
-								"a1_light_level",
-								"measure_humidity",
-								"measure_temperature"
+							"a1_air_quality",
+							"a1_noise_level",
+							"a1_light_level",
+							"measure_humidity",
+							"measure_temperature"
 						],
 						"options": {
 							"icons": {
