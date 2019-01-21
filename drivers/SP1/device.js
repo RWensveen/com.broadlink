@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,61 +20,57 @@
 
 const Homey = require('homey');
 const BroadlinkDevice = require('./../BroadlinkDevice');
+const Util = require('./../../lib/util.js');
 
 
 class SP1Device  extends BroadlinkDevice {
 
 
     /**
-	 * Send a command to the device. The command was previously retrieved 
-	 * with check_IR_data() 
+	 * Send a command to the device. The command was previously retrieved
+	 * with check_IR_data()
 	 */
-	onCapabilityOnOff( mode ) {
-		return this._communicate.sp1_set_power_state(mode)
-			.then (response => {
-
-				if( mode != this.getCapabilityValue('onoff') ) {
-					let drv = this.getDriver();
-					drv.trigger_toggle.trigger(this,{},{})
-					if( mode ) {
-						drv.trigger_on.trigger(this,{},{})
-					}
-					else {
-						drv.trigger_off.trigger(this,{},{})
-					}
+	async onCapabilityOnOff( mode ) {
+		try {
+			Util.debugLog('SP1.onCapabilityOnOff');
+			let response = await this._communicate.sp1_set_power_state(mode)
+			if( mode != this.getCapabilityValue('onoff') ) {
+				let drv = this.getDriver();
+				drv.trigger_toggle.trigger(this,{},{})
+				if( mode ) {
+					drv.trigger_on.trigger(this,{},{})
 				}
-			}, rejection => {
-			})
-			.catch( err => {
+				else {
+					drv.trigger_off.trigger(this,{},{})
+				}
+			}
+		} catch( e ) {
 				Util.debugLog('**>SP1device.onCapabilityOnOff - catch = ' + err);
-				throw err;
-			})
+		}
 	}
-	
 
-	check_condition_on(callback) { 
+
+	check_condition_on(callback) {
 		let onoff = this.getCapabilityValue('onoff')
-		callback(null, onoff ) 
-	}
-	
-	do_action_on() {
-		this.onCapabilityOnOff( true )
-			.then( r => { this.setCapabilityValue('onoff', true);
-			})
+		callback(null, onoff )
 	}
 
-	do_action_off() {
-		this.onCapabilityOnOff( false )
-			.then( r => { this.setCapabilityValue('onoff', false);
-			})
+	async do_action_on() {
+		await onCapabilityOnOff( true );
+		this.setCapabilityValue('onoff', true);
 	}
 
-	
+	async do_action_off() {
+		await his.onCapabilityOnOff( false );
+		this.setCapabilityValue('onoff', false);
+	}
+
+
 	onInit() {
 		super.onInit();
 		this.registerCapabilityListener('onoff', this.onCapabilityOnOff.bind(this));
 	}
-	
+
 
 }
 

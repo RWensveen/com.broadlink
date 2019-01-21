@@ -8,9 +8,8 @@ Use [Homey](https://www.athom.com/) together with [Broadlink devices](http://www
 * [A1](http://www.ibroadlink.com/a1/) - Environment Sensor
 * [RM3 mini](http://www.ibroadlink.com/rmMini3/)
   The RM3 Mini is a wifi to IR (infrared) device. It can learn IR commands and transmit them.
-* [RM Pro](http://www.ibroadlink.com/rmPro)  - IR 
+* [RM Pro](http://www.ibroadlink.com/rmPro)  - IR
 * [RM Pro Plus](http://www.ibroadlink.com/rmPro+)   - IR + RF
-
 * SP1  - power socket switch
 * SP2  - power socket switch with nightlight and meter
 * SP3S - power socket switch with meter
@@ -27,7 +26,11 @@ See:
 - https://github.com/mjg59/python-broadlink
 - https://github.com/davorf/BlackBeanControl
 - https://github.com/frankjoke/ioBroker.broadlink2
+- https://github.com/lprhodes/homebridge-broadlink-rm/tree/master/helpers
+- http://peter.windridge.org.uk/playing-with-cheap-iot-devices  (hysen thermostat)
 
+Protocol:
+- https://blog.ipsumdomus.com/broadlink-smart-home-devices-complete-protocol-hack-bc0b4b397af1
 
 # NodeJS modules
 

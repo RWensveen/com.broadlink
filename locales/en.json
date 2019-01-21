@@ -47,5 +47,10 @@
     "quiet": "quiet",
     "normal": "normal",
     "noisy": "noisy"
+  },
+  "rf_learn": {
+    "long_press": "keep button pressed",
+    "multi_presses": "press button repeatedly",
+    "done": "stop pressing button"
   }
 }

@@ -1,11 +1,12 @@
 {
 	"id": "com.broadlink",
-	"version": "1.3.5",
+	"version": "2.0.1",
 	"compatibility": ">=1.5.0",
 	"sdk": 2,
 	"name": {
 		"en": "Broadlink"
 	},
+    "homeyCommunityTopicId": 6389,
 	"tags":{
 		"en": [ "IR", "Remote Control", "Infrared", "WiFi", "433", "433MHz", "Environement Sensor"]
 	},
@@ -15,9 +16,10 @@
 	},
 	"category": [
 		"appliances",
-    	"lights"
+    	"lights",
+    	"climate"
 	],
-	"permissions": ["homey:manager:api"],
+	"permissions": ["homey:manager:speech-output"],
 	"images": {
 		"large": "/assets/images/large.jpg",
 		"small": "/assets/images/small.jpg"
@@ -89,7 +91,7 @@
 				"en": "Light Level",
 				"nl": "Lichtniveau"
 			},
-			"values": [ 
+			"values": [
 				{ "id":"dark",    "title":{"en": "dark",    "nl":"donker"} },
 				{ "id":"dim",     "title":{"en": "dim",     "nl":"schemerig"} },
 				{ "id":"normal",  "title":{"en": "normal",  "nl":"normaal"} },
@@ -118,7 +120,7 @@
 				"en": "Noise Level",
 				"nl": "Geluidsniveau"
 			},
-			"values": [ 
+			"values": [
 				{ "id":"quiet",   "title":{"en": "quiet",   "nl":"stil"} },
 				{ "id":"normal",  "title":{"en": "normal",  "nl":"normaal"} },
 				{ "id":"noisy",   "title":{"en": "noisy",   "nl":"luidruchtig"} },
@@ -166,7 +168,7 @@
 			"class": "other",
 			"capabilities" : ["learnIRcmd"],
 			"mobile": {
-				"components": [ 
+				"components": [
 					{
 						"id": "icon",
 						"capabilities": []
@@ -260,7 +262,7 @@
 			"class": "other",
 			"capabilities" : ["learnIRcmd", "learnRFcmd"],
 			"mobile": {
-				"components": [ 
+				"components": [
 					{
 						"id": "icon",
 						"capabilities": []
@@ -368,7 +370,7 @@
 			"class": "other",
 			"capabilities" : ["learnIRcmd"],
 			"mobile": {
-				"components": [ 
+				"components": [
 					{
 						"id": "icon",
 						"capabilities": []
@@ -472,7 +474,7 @@
 				"a1_noise_level_number"
 			],
 			"capabilitiesOptions": {
-			
+
 				"updateSensor":   { "preventInsights":true, "greyout": false },
 				"a1_air_quality": { "preventInsights":true },
 				"a1_light_level": { "preventInsights":true },
@@ -482,11 +484,11 @@
 				"a1_noise_level_number": { "preventInsights":false }
 			},
 			"mobile": {
-				"components": [ 
+				"components": [
 					{
 						"id": "icon",
-						"capabilities": [ 
-							"updateSensor" 
+						"capabilities": [
+							"updateSensor"
 						]
 					},
 					{
@@ -1135,7 +1137,7 @@
 			{
 				"id": "mp1_onoff_change",
 				"title": { "en": "Switch has changed", "nl": "Schakelaar is omgezet"},
-				"args": [ 
+				"args": [
 					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" },
 					{
 						"name": "switchID",
@@ -1152,7 +1154,7 @@
 			{
 				"id": "mp1_onoff_on",
 				"title": { "en": "Switched on", "nl": "Schakelaar aangezet"},
-				"args": [ 
+				"args": [
 					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" },
 					{
 						"name": "switchID",
@@ -1169,7 +1171,7 @@
 			{
 				"id": "mp1_onoff_off",
 				"title": { "en": "Switched off", "nl": "Schakelaar uitgezet"},
-				"args": [ 
+				"args": [
 					{ "name": "device", "type": "device", "filter": "driver_uri=homey:app:com.broadlink&driver_id=MP1" },
 					{
 						"name": "switchID",

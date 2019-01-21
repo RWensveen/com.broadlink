@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,18 +19,20 @@
 'use strict';
 
 const Homey = require('homey');
-const Util = require('./../lib/util.js');
+//const Util = require('./../lib/util.js');
 
 
 /**
  * Main entry point for app.
  */
 class BroadlinkApp extends Homey.App {
-	
+
 	onInit() {
 
-	}	
-
+		Homey.on('memwarn', () => {
+			// simply ignore it
+		})
+	}
 }
 
 module.exports = BroadlinkApp;

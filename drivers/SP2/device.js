@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ class SP2Device extends BroadlinkDevice {
 			}
 		}
 	}
-	
+
 	generate_trigger_power(mode) {
 		if( mode != this.getCapabilityValue('onoff.power') ) {
 			let drv = this.getDriver();
@@ -51,170 +51,155 @@ class SP2Device extends BroadlinkDevice {
 			}
 		}
 	}
-	
-	
-	onCheckInterval( interval ) {
-		
-		this.get_energy()
-			.then ( energy => {
-				that.setCapabilityValue('measure_power', energy);
-				this._communicate.read_status()
-					.then( response => {    			
-						
-						let state = (( response[0] == 2 ) || ( response[0] == 3 ))
-						that.generate_trigger_nightlight(state);
-						that.setCapabilityValue('onoff.nightlight',state);
-						
-						state = (( response[0] == 1 ) || (response[0] == 3 ));
-						that.generate_trigger_power(state);
-						that.setCapabilityValue('onoff.power',state);
-					}, error => {
-				})
-			}, error => {
-		})
-	}
-	
-	
-	/**
-	 * 
-	 */
-	get_energy() {
-		return this._communicate.sp2_get_energy()
-			.then( response => {
-				let energy = response[3] * 256 + response[2] + (response[1]/100.0)
-				return energy
-			})
+
+
+	async onCheckInterval( interval ) {
+		try {
+			let energy = await this.get_energy()
+			this.setCapabilityValue('measure_power', energy);
+			
+			let response = await this._communicate.read_status()
+
+			let state = (( response[0] == 2 ) || ( response[0] == 3 ))
+			this.setCapabilityValue('onoff.nightlight',state);
+			this.generate_trigger_nightlight(state);
+
+			state = (( response[0] == 1 ) || (response[0] == 3 ));
+			this.setCapabilityValue('onoff.power',state);
+			this.generate_trigger_power(state);
+		} catch( e ) { ; }
 	}
 
-	
+
+	/**
+	 *
+	 */
+	async get_energy() {
+		try {
+			let response = await this._communicate.sp2_get_energy();
+			let energy = response[3] * 256 + response[2] + (response[1]/100.0);
+			return energy;
+		} catch( e ) {
+			return 0;
+		}
+	}
+
+
 	/**
 	 * Returns the night light state of the smart plug.
 	 */
-	check_nightlight() {
-		return this._communicate.read_status()
-			.then( response => {    			
-				let state = (( response[0] == 2 ) || ( response[0] == 3 ));
-				return state;
-			}, rejection => { 
-		});
+	async check_nightlight() {
+		try {
+			let response = await this._communicate.read_status()
+			return  (( response[0] == 2 ) || ( response[0] == 3 ));
+		} catch( e ) {
+			return false;
+		}
 	}
-			
+
 
 	/**
-	 * 
+	 *
 	 */
-	set_nightlight(state) {
-		return this.check_power()
-			.then( onoff => {
-		    	let level = 0
-				if(onoff) {
-					level = state ? 3 : 1;
-				}
-				else {
-					level = state ? 2 : 0;
-				}
-				return this._communicate.setPowerState(level)
-	    	}, rejection => {
-			})
+	async set_nightlight(state) {
+		let onoff = await this.check_power()
+    	let level = 0
+		if(onoff) {
+			level = state ? 3 : 1;
+		}
+		else {
+			level = state ? 2 : 0;
+		}
+		await this._communicate.setPowerState(level)
+		return true;
 	}
 
-	  
+
 	/**
 	 * Returns the power state of the smart plug.
 	 */
-	check_power() {
-		return this._communicate.read_status()
-			.then( response => {
-				let state = (( response[0] == 1 ) || (response[0] == 3 ));
-				return state;
-			})
-	  }
-	  
+	async check_power() {
+		try {
+			let response = await this._communicate.read_status()
+			return (( response[0] == 1 ) || (response[0] == 3 ));
+		} catch( e ) {
+			return false;
+		}
+	}
+
 
 	/**
 	 * Sets the power state of the smart plug.
 	 */
-	set_power(state) {
-		var that = this
-		return this.check_nightlight()
-			.then( onoff => {
-		    	let level = 0;
-				if(onoff) {
-					level = state ? 3 : 2;
-				}
-				else {
-					level = state ? 1 : 0;
-				}
-		    	return that._communicate.setPowerState(level);
-			})
+	async set_power(state) {
+		let onoff = await this.check_nightlight()
+    	let level = 0;
+		if(onoff) {
+			level = state ? 3 : 2;
+		}
+		else {
+			level = state ? 1 : 0;
+		}
+    	await this._communicate.setPowerState(level);
+    	return true;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
-	onCapabilityPowerOnOff( mode ) {
-		var that = this;
-	    return this.set_power( mode )
-	    	.then( response => {
-	    		that.generate_trigger_power(mode);
-	    	}, rejection => {
-	    	})
+	async onCapabilityPowerOnOff( mode ) {
+		try {
+			await this.set_power( mode )
+			this.generate_trigger_power(mode);
+		} catch (e) { ; }
 	}
 
 
 	/**
-	 * 
+	 *
 	 */
-	onCapabilityNightLightOnOff( mode ) {
-		var that = this;
-	    return this.set_nightlight( mode )
-	    	.then( response => {
-	    		that.generate_trigger_nightlight(mode);
-	    	}, rejection => {
-	    	})
+	async onCapabilityNightLightOnOff( mode ) {
+		try {
+			await this.set_nightlight( mode )
+			this.generate_trigger_nightlight( mode );
+		} catch(e) { ; }
 	}
 
 
-	check_condition_power_on(callback) { 
-		this.check_power()
-			.then( onoff => { callback(null, onoff );
-			}, rejection => { callback(null, false );
-			})
+	async check_condition_power_on(callback) {
+		let onoff = await this.check_power();
+		callback(null, onoff );
 	}
-	
-	check_condition_nightlight_on(callback) { 
-		this.check_nightlight()
-			.then( onoff => { callback(null, onoff );
-			}, rejection => { callback(null, false );
-			})
+
+	async check_condition_nightlight_on(callback) {
+		let onoff = await this.check_nightlight()
+		callback(null, onoff );
 	}
 
 
-	do_action_power_on() {
-		this.onCapabilityPowerOnOff(true)
-			.then( r => { this.setCapabilityValue('onoff.power', true);
-		})
+	async do_action_power_on() {
+		Util.debugLog('SP2Device.do_action_power_on');
+		await this.onCapabilityPowerOnOff(true)
+		this.setCapabilityValue('onoff.power', true);
 	}
 
-	do_action_power_off() {
-		this.onCapabilityPowerOnOff(false)
-			.then( r => { this.setCapabilityValue('onoff.power', false);
-		})	
+	async do_action_power_off() {
+		Util.debugLog('SP2Device.do_action_power_off');
+		await this.onCapabilityPowerOnOff(false);
+		this.setCapabilityValue('onoff.power', false);
 	}
 
-	do_action_nightlight_on() {
-		this.onCapabilityNightLightOnOff(true)
-			.then( r => { this.setCapabilityValue('onoff.nightlight', true)
-		})
+	async do_action_nightlight_on() {
+		await this.onCapabilityNightLightOnOff(true)
+		this.setCapabilityValue('onoff.nightlight', true)
 	}
 
-	do_action_nightlight_off() {
-		this.onCapabilityNightLightOnOff(false)
-			.then( r => { this.setCapabilityValue('onoff.nightlight', false)
-		})
+	async do_action_nightlight_off() {
+		await this.onCapabilityNightLightOnOff(false)
+		this.setCapabilityValue('onoff.nightlight', false)
 	}
 
-	
+
 	onInit() {
 		super.onInit();
 		this.registerCapabilityListener('onoff.power', this.onCapabilityPowerOnOff.bind(this));

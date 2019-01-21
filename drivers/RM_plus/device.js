@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,77 +18,86 @@
 
 'use strict';
 
+const Homey = require('homey');
 const RM3MiniDevice = require('./../RM3_mini/device');
 const Util = require('./../../lib/util.js');
 
 
 class RmPlusDevice extends RM3MiniDevice {
-	
-	
+
+
 	onInit() {
 		super.onInit();
 		this.learn = false;
-		
+
 		this.registerCapabilityListener('learnRFcmd', this.onCapabilityLearnRF.bind(this));
+	}
+
+	
+	onCapabilityLearnMode() {
+		return false;
 	}
 	
 
 	/**
+	 * 
+	 */
+	async stopRfLearning() {
+		try {
+			await this._communicate.cancelRFSweep();
+			Util.debugLog('RF detect done')
+		} catch( e ) {
+			Util.debugLog('stopRfLearning - catch:'+e)
+		}
+		this.learn = false;
+	}
+
+
+	/**
 	 * This method will be called when the learn state needs to be changed.
 	 * @param onoff
-	 * @returns {Promise}
+	 * @return \c TRUE if successful, \c FALSE otherwise
 	 */
-	onCapabilityLearnRF(onoff) {
-	    Util.debugLog('==>RmPlusDevice.onCapabilityLearnIR');
-	    if( this.learn ) { 
-	    	return Promise.resolve() 
+	async onCapabilityLearnRF(onoff) {
+	    Util.debugLog('==>RmPlusDevice.onCapabilityLearnRF');
+	    if( this.learn ) {
+	    	return true;
 	    }
 	    this.learn = true;
-	    
-	    var that = this
-	    return this._communicate.enterRFSweep()
-			.then( response => {
-				Util.debugLog('==>   sweeping');
-				that._communicate.checkRFData()
-					.then( data => {
-						Util.debugLog('==>  checked RF data ')
-						that._communicate.cancelRFSweep()
-							.then( d => {
-								that._communicate.checkRFData2()
-									.then( data => {
-										Util.debugLog('==>  checked RF data 2')
-										that.learn = false;
-										if( data ) {
-											let idx = that.dataStore.dataArray.length + 1;
-											let cmdname = 'cmd' + idx;
-											this.dataStore.addCommand( cmdname, data);
-							
-											this.storeCmdSetting( cmdname );
-										}
-									}, rej => { 
-										Util.debugLog('==>  check RF data 2: reject')
-									})
-							}, rej => { 
-								Util.debugLog('==>  check RF data 2: reject')
-							})
-					}, rej => { 
-						Util.debugLog('==>  check RF data : reject')
-						that._communicate.cancelRFSweep();
-					})
-					.catch( err => {
-						that.learn = false;
-						Util.debugLog('**> RMPlusDevice.onCapabilityLearnIR, error checking data: '+err);
-					})
-			}, rej => { 
-				Util.debugLog('==>  sweep : reject ')
-				that._communicate.cancelRFSweep();
-			})
-			.catch( err => {
-				Util.debugLog('**> error learning: '+err);
-				that.learn = false;
-			})
+
+		try {
+			Util.debugLog('==>   sweeping');
+			await this._communicate.enterRFSweep()
+
+			await Homey.ManagerSpeechOutput.say(Homey.__('rf_learn.long_press'))
+			Util.debugLog(`\x1b[31m[ACTION]\x1b[0m Keep holding that button!`)
+			let data = await this._communicate.checkRFData()
+			Util.debugLog('==>  checked RF data ')
+
+			await Homey.ManagerSpeechOutput.say(Homey.__('rf_learn.multi_presses'))
+			Util.debugLog(`\x1b[31m[ACTION]\x1b[0m Press the RF button multiple times with a pause between them.`);
+			data = await this._communicate.checkRFData2()
+			Util.debugLog('==>  checked RF data 2');
+
+			if( data ) {
+				let idx = this.dataStore.dataArray.length + 1;
+				let cmdname = 'rf-cmd' + idx;
+				this.dataStore.addCommand( cmdname, data);
+				await this.storeCmdSetting( cmdname );
+			}
+			await this.stopRfLearning();
+			await Homey.ManagerSpeechOutput.say(Homey.__('rf_learn.done'))
+			Util.debugLog('all done')
+			return true;
+
+		} catch( e ) {
+			await this.stopRfLearning();
+			await Homey.ManagerSpeechOutput.say(Homey.__('rf_learn.done'))
+			Util.debugLog('all done in catch:'+e)
+			return false;
+		}
 	}
-	
+
 }
 
 module.exports = RmPlusDevice;

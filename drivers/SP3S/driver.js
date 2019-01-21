@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,24 +20,28 @@
 
 const Homey = require('homey');
 const BroadlinkDriver = require('./../BroadlinkDriver');
+const Util = require('./../../lib/util.js');
 
 
 class SP3SDriver extends BroadlinkDriver {
 
 
-	check_condition_power_on( args, state, callback ) { 
+	check_condition_power_on( args, state, callback ) {
 		args.device.check_condition_power_on(callback)
 	}
 
-	check_condition_nightlight_on( args, state, callback ) { 
+	check_condition_nightlight_on( args, state, callback ) {
 		args.device.check_condition_nightlight_on(callback)
 	}
 
 	do_action_power_on(args,state) {
+		Util.debugLog('SPS3Driver.do_action_power_on');
+
 		return args.device.do_action_power_on()
 	}
 
 	do_action_power_off(args,state) {
+		Util.debugLog('SPS3Driver.do_action_power_off');
 		return args.device.do_action_power_off()
 	}
 
@@ -54,6 +58,8 @@ class SP3SDriver extends BroadlinkDriver {
 			CompatibilityID: 0x9479   // SP3S
 		});
 
+		Util.debugLog('SP3SDriver.onInit' );
+		
 		this.trigger_power_toggle = new Homey.FlowCardTriggerDevice('sp3s_onoff_power').register();
 		this.trigger_power_on = new Homey.FlowCardTriggerDevice('sp3s_onoff_power_on').register();
 		this.trigger_power_off = new Homey.FlowCardTriggerDevice('sp3s_onoff_power_off').register();
@@ -61,7 +67,7 @@ class SP3SDriver extends BroadlinkDriver {
 		this.trigger_nightlight_toggle = new Homey.FlowCardTriggerDevice('sp3s_onoff_nightlight').register();
 		this.trigger_nightlight_on = new Homey.FlowCardTriggerDevice('sp3s_onoff_nightlight_on').register();
 		this.trigger_nightlight_off = new Homey.FlowCardTriggerDevice('sp3s_onoff_nightlight_off').register();
-		
+
 		this.condition_power_on = new Homey.FlowCardCondition('sp3s_onoff_power_on');
 		this.condition_power_on
 			.register()

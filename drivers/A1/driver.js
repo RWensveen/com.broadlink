@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,50 +24,50 @@ const Homey = require('homey');
 
 
 class BroadlinkA1Driver extends BroadlinkDriver {
-	
-		
-	a1_check_condition_airquality( args, state, callback ) { 
+
+
+	a1_check_condition_airquality( args, state, callback ) {
 		return args.device.check_airquality_level(args,state,callback)
 	}
 
-	a1_check_condition_airquality_better( args, state, callback ) { 
+	a1_check_condition_airquality_better( args, state, callback ) {
 		return args.device.check_airquality_level_better(args,state,callback)
 	}
 
-	a1_check_condition_airquality_worse( args, state, callback ) { 
+	a1_check_condition_airquality_worse( args, state, callback ) {
 		return args.device.check_airquality_level_worse(args,state,callback)
 	}
 
-	a1_check_condition_lightlevel( args, state, callback ) { 
+	a1_check_condition_lightlevel( args, state, callback ) {
 		return args.device.check_lightlevel(args,state,callback)
 	}
 
-	a1_check_condition_lightlevel_darker( args, state, callback ) { 
+	a1_check_condition_lightlevel_darker( args, state, callback ) {
 		return args.device.check_lightlevel_darker(args,state,callback)
 	}
 
-	a1_check_condition_lightlevel_brighter( args, state, callback ) { 
+	a1_check_condition_lightlevel_brighter( args, state, callback ) {
 		return args.device.check_lightlevel_brighter(args,state,callback)
 	}
 
-	a1_check_condition_noiselevel( args, state, callback ) { 
+	a1_check_condition_noiselevel( args, state, callback ) {
 		return args.device.check_noiselevel(args,state,callback)
 	}
 
-	a1_check_condition_noiselevel_louder( args, state, callback ) { 
+	a1_check_condition_noiselevel_louder( args, state, callback ) {
 		return args.device.check_noiselevel_louder(args,state,callback)
 	}
 
-	a1_check_condition_noiselevel_softer( args, state, callback ) { 
+	a1_check_condition_noiselevel_softer( args, state, callback ) {
 		return args.device.check_noiselevel_softer(args,state,callback)
 	}
 
-	
+
 	onInit() {
 		super.onInit({
 			CompatibilityID: 0x2714   // A1
 		});
-		
+
 		this.a1_condition_air_quality = new Homey.FlowCardCondition('a1_air_quality');
 		this.a1_condition_air_quality
 			.register()
@@ -88,7 +88,7 @@ class BroadlinkA1Driver extends BroadlinkDriver {
 			.registerRunListener(this.a1_check_condition_airquality_worse.bind(this) )
 			.getArgument('variable')
 			.registerAutocompleteListener(( query, args ) => { return args.device.getAirQualityList('worse'); })
-			
+
 		this.a1_condition_light_level = new Homey.FlowCardCondition('a1_light_level');
 		this.a1_condition_light_level
 			.register()
@@ -109,7 +109,7 @@ class BroadlinkA1Driver extends BroadlinkDriver {
 			.registerRunListener(this.a1_check_condition_lightlevel_darker.bind(this) )
 			.getArgument('variable')
 			.registerAutocompleteListener(( query, args ) => { return args.device.getLightLevelList('darker'); })
-			
+
 		this.a1_condition_noise_level = new Homey.FlowCardCondition('a1_noise_level');
 		this.a1_condition_noise_level
 			.register()
@@ -130,8 +130,8 @@ class BroadlinkA1Driver extends BroadlinkDriver {
 			.registerRunListener(this.a1_check_condition_noiselevel_softer.bind(this) )
 			.getArgument('variable')
 			.registerAutocompleteListener(( query, args ) => { return args.device.getNoiseLevelList('softer'); })
-		
-		
+
+
 		this.a1_trigger_air_quality = new Homey.FlowCardTriggerDevice('a1_air_quality').register();
 		this.a1_trigger_light_level = new Homey.FlowCardTriggerDevice('a1_light_level').register();
 		this.a1_trigger_noise_level = new Homey.FlowCardTriggerDevice('a1_noise_level').register();

@@ -1,8 +1,8 @@
 <!--
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,7 +78,7 @@ function showError( msg ) {
 function add( data ) {
 
 	var ipAddressElement = document.getElementById('address');
-    var device = { 
+    var device = {
 			address: ipAddressElement.value.trim()
 	}
     if( device.address ) {
@@ -88,7 +88,7 @@ function add( data ) {
     	}
     	else {
     		showError( Homey.__('pair.discovering') );
-    		Homey.emit('start_discover', device, null )    		
+    		Homey.emit('start_discover', device, null )    
     	}
     }
     else {

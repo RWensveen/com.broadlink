@@ -47,5 +47,10 @@
     "quiet": "stil",
     "normal": "normal",
     "noisy": "luidruchtig"
+  },
+  "rf_learn": {
+    "long_press": "houd knop ingedrukt",
+    "multi_presses": "druk kort en vaak op knop",
+    "done": "stop met knop indrukken"
   }
 }

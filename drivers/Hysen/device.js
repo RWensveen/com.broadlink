@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,8 @@ const CRC16 = require('crc/lib/crc16_modbus');
 
 
 class HysenDevice  extends BroadlinkDevice {
-	
-	
+
+
 	/**
 	 * Get current room temperature in degrees celsius
 	 */
@@ -56,7 +56,7 @@ class HysenDevice  extends BroadlinkDevice {
 	 * Get full status (including timer schedule)
 	 */
 	get_full_status() {
-		
+
 		var payload = new Uint8Array([0x01,0x03,0x00,0x00,0x00,0x16])
 		return this.send_request(payload)
 			.then (response => {
@@ -88,7 +88,7 @@ class HysenDevice  extends BroadlinkDevice {
 				data['min'] =  payload[20];
 				data['sec'] =  payload[21];
 				data['dayofweek'] =  payload[22];
-	
+
 				weekday = [];
 				for( let i =0; i < 6; i++ ) {
 	  				weekday.append({'start_hour':payload[2*i + 23], 'start_minute':payload[2*i + 24],'temp':payload[i + 39]/2.0});
@@ -99,7 +99,7 @@ class HysenDevice  extends BroadlinkDevice {
 					weekend.append({'start_hour':payload[2*i + 23], 'start_minute':payload[2*i + 24],'temp':payload[i + 39]/2.0});
 				}
 				data['weekend'] = weekend;
-				
+
 				return data;
 
 			}, rejection => {
@@ -111,7 +111,7 @@ class HysenDevice  extends BroadlinkDevice {
 			})
 	}
 
-		
+
 	/**
 	 * Change controller mode
      * auto_mode = 1 for auto (scheduled/timed) mode, 0 for manual mode.
@@ -122,74 +122,74 @@ class HysenDevice  extends BroadlinkDevice {
      * The sensor command is currently experimental
      */
      set_mode( auto_mode, loop_mode, sensor) {
-		
+
 		if( sensor === undefined ) { sensor = 0; }
   		let mode_byte = ( (loop_mode + 1) << 4) + auto_mode
 		// Util.debugLog('Mode byte: ' + mode_byte)
-	
+
 		var payload = new Uint8Array([0x01,0x06,0x00,0x02,mode_byte,sensor])
 		return this.send_request(payload);
 	}
-	
-	
+
+
 	/**
 	 * Advanced settings
 	 * sensor_mode   Sensor mode (SEN)
-	 *                 0 for internal sensor, 
-	 *                 1 for external sensor, 
-	 *                 2 for internal control temperature, external limit temperature. 
+	 *                 0 for internal sensor,
+	 *                 1 for external sensor,
+	 *                 2 for internal control temperature, external limit temperature.
 	 *                 Factory default: 0.
-	 * osv           Set temperature range for external sensor 
-	 *                 osv = 5..99. 
+	 * osv           Set temperature range for external sensor
+	 *                 osv = 5..99.
 	 *                 Factory default: 42C
 	 * dif           Deadzone for floor temprature
-	 *                 dif = 1..9. 
+	 *                 dif = 1..9.
 	 *                 Factory default: 2C
-	 * svh           Upper temperature limit for internal sensor 
-	 *                 svh = 5..99. 
+	 * svh           Upper temperature limit for internal sensor
+	 *                 svh = 5..99.
 	 *                 Factory default: 35C
-	 * svl           Lower temperature limit for internal sensor 
-	 *                 svl = 5..99.  
+	 * svl           Lower temperature limit for internal sensor
+	 *                 svl = 5..99.
 	 *                 Factory default: 5C
-	 * adj           Actual temperature calibration 
-	 *                 adj = -0.5.  
+	 * adj           Actual temperature calibration
+	 *                 adj = -0.5.
 	 *                 Prescision 0.1C
-	 * fre           Anti-freezing function 
-	 *                 0 for anti-freezing function shut down,  
-	 *                 1 for anti-freezing function open.  
+	 * fre           Anti-freezing function
+	 *                 0 for anti-freezing function shut down,
+	 *                 1 for anti-freezing function open.
 	 *                 Factory default: 0
-	 * poweron       Power on memory 
-	 *                 0 for power on memory off,  
+	 * poweron       Power on memory
+	 *                 0 for power on memory off,
 	 *                 1 for power on memory on.
 	 *                 Factory default: 0
 	 */
 	set_advanced( loop_mode, sensor_mode, osv, dif, svh, svl, adj, fre, poweron) {
-    	let input_payload = new Uint8Array([0x01,0x10,0x00,0x02,0x00,0x05,0x0a, 
-    	                               loop_mode, sensor_mode, osv, dif, svh, svl, 
-    	                               ((adj*2)>>8 & 0xff), ((adj*2) & 0xff), 
+    	let input_payload = new Uint8Array([0x01,0x10,0x00,0x02,0x00,0x05,0x0a,
+    	                               loop_mode, sensor_mode, osv, dif, svh, svl,
+    	                               ((adj*2)>>8 & 0xff), ((adj*2) & 0xff),
     	                               fre, poweron])
 
 		return this.send_request(payload);
 	}
-	
-	
+
+
 	/**
-	 * For backwards compatibility only.  Prefer calling set_mode directly.  
+	 * For backwards compatibility only.  Prefer calling set_mode directly.
 	 * Note this function invokes loop_mode=0 and sensor=0.
 	 */
 	switch_to_auto() {
 		this.set_mode(1, 0);
 	}
-  
-  
+
+
 	/**
-	 * For backwards compatibility only.  Prefer calling set_mode directly.  
+	 * For backwards compatibility only.  Prefer calling set_mode directly.
 	 * Note this function invokes loop_mode=0 and sensor=0.
 	 */
 	switch_to_manual() {
     	this.set_mode(0, 0);
     }
-	
+
 	/**
 	 * Set temperature for manual mode (also activates manual mode if currently in automatic)
 	 */
@@ -197,10 +197,10 @@ class HysenDevice  extends BroadlinkDevice {
     	let payload = new Uint8Array([0x01,0x06,0x00,0x01,0x00,int(temp * 2)]);
 		return this.send_request(payload);
 	}
-	
-  
+
+
 	/**
-	 * Set device on(1) or off(0), does not deactivate Wifi connectivity.  
+	 * Set device on(1) or off(0), does not deactivate Wifi connectivity.
 	 * Remote lock disables control by buttons on thermostat.
 	 */
  	set_power( power, remote_lock ) {
@@ -217,7 +217,7 @@ class HysenDevice  extends BroadlinkDevice {
 		return this.send_request(payload);
 	}
 
-	
+
 	/**
 	 * Set timer schedule
 	 * Format is the same as you get from get_full_status.
@@ -227,7 +227,7 @@ class HysenDevice  extends BroadlinkDevice {
 	 * weekend is similar but only has 2 (e.g. switch on in morning and off in afternoon)
 	 */
 	set_schedule(weekday,weekend) {
-    
+
     	// Begin with some magic values ...
     	let input_payload = new Uint8Array([0x01,0x10,0x00,0x0a,0x00,0x0c,0x18])
 
@@ -250,15 +250,15 @@ class HysenDevice  extends BroadlinkDevice {
 		for( let i=0; i < 2; i++) {
 			input_payload.append( weekend[i]['temp'] * 2 )
 		}
-		
+
 		self.send_request(input_payload)
 	}
 
-    
+
 	onInit() {
 		super.onInit();
 	}
-	
+
 	/**
 	 * This method is called when the user adds the device, called just after pairing.
 	 */
@@ -267,7 +267,7 @@ class HysenDevice  extends BroadlinkDevice {
 		//Util.debugLog('==>HysenDevice.onAdded');
 	}
 
-		
+
 	/**
 	 * This method will be called when a device has been removed.
 	 */
@@ -290,19 +290,19 @@ class hysen(device):
     self.type = "Hysen heating controller"
 
   # Send a request
-  # input_payload should be a bytearray, usually 6 bytes, e.g. bytearray([0x01,0x06,0x00,0x02,0x10,0x00]) 
+  # input_payload should be a bytearray, usually 6 bytes, e.g. bytearray([0x01,0x06,0x00,0x02,0x10,0x00])
   # Returns decrypted payload
   # New behaviour: raises a ValueError if the device response indicates an error or CRC check fails
   # The function prepends length (2 bytes) and appends CRC
   def send_request(self,input_payload):
-    
+
     from PyCRC.CRC16 import CRC16
     crc = CRC16(modbus_flag=True).calculate(bytes(input_payload))
 
     # first byte is length, +2 for CRC16
     request_payload = bytearray([len(input_payload) + 2,0x00])
     request_payload.extend(input_payload)
-    
+
     # append CRC
     request_payload.append(crc & 0xFF)
     request_payload.append((crc >> 8) & 0xFF)
@@ -312,9 +312,9 @@ class hysen(device):
 
     # check for error
     err = response[0x22] | (response[0x23] << 8)
-    if err: 
+    if err:
       raise ValueError('broadlink_response_error',err)
-    
+
     response_payload = bytearray(self.decrypt(bytes(response[0x38:])))
 
     # experimental check on CRC in response (first 2 bytes are len, and trailing bytes are crc)
@@ -324,7 +324,7 @@ class hysen(device):
     crc = CRC16(modbus_flag=True).calculate(bytes(response_payload[2:response_payload_len]))
     if (response_payload[response_payload_len] == crc & 0xFF) and (response_payload[response_payload_len+1] == (crc >> 8) & 0xFF):
       return response_payload[2:response_payload_len]
-    else: 
+    else:
       raise ValueError('hysen_response_error','CRC check on response failed')
-      
+
 */

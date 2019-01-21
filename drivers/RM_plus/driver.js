@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,13 @@ const BroadlinkRM3miniDriver = require('./../RM3_mini/driver');
 
 
 class BroadlinkRMPlusDriver extends BroadlinkRM3miniDriver {
-	
+
 	onInit() {
 		super.onInit();
 		this.setCompatibilityID( 0x272A );  // RM Pro Plus 2
 	}
 
+	
 }
 
 module.exports = BroadlinkRMPlusDriver;

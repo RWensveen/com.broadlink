@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ const Util = require('./../../lib/util.js');
 
 
 class BroadlinkMP1Driver extends BroadlinkDriver {
-	
+
 	mp1_check_condition_on( args, state,callback ) {
 		args.device.check_condition_on( args.switchID, callback );
 	}
@@ -37,12 +37,12 @@ class BroadlinkMP1Driver extends BroadlinkDriver {
 		args.device.do_action_off( args.switchID )
 	}
 
-	
+
 	onInit() {
 		super.onInit({
 			CompatibilityID: 0x4EB5  // MP1
 		});
-		
+
 		this.trigger_toggle = new Homey.FlowCardTriggerDevice('mp1_onoff_change')
 			.register()
 			.registerRunListener( (args,state,callback) => {

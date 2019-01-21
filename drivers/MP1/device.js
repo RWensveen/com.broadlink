@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,12 +24,12 @@ const BroadlinkDevice = require('./../BroadlinkDevice');
 
 
 class MP1Device  extends BroadlinkDevice {
-	
-	
+
+
 	generate_trigger( sid, mode ) {
 		let capa = 'onoff.s' + sid
 		if( mode != this.getCapabilityValue( capa ) ) {
-			
+
 			let drv = this.getDriver();
 			drv.trigger_toggle.trigger(this,{},{"switchID":sid})
 			if( mode ) {
@@ -48,60 +48,53 @@ class MP1Device  extends BroadlinkDevice {
 	 * @param sid  [string] "1".."4"
 	 * @param mode [boolean] true, false
 	 */
-	set_onoff( sid, mode ) {
-		return this._communicate.mp1_set_power_state( sid, mode )
-			.then (response => { 
-				this.generate_trigger( sid, mode );
-				return Promise.resolve(true)
-			}, rejection => {
-				return Promise.reject('')
-			})
-			.catch( err => {
-			})
+	async set_onoff( sid, mode ) {
+		try {
+			await this._communicate.mp1_set_power_state( sid, mode )
+			this.generate_trigger( sid, mode );
+		} catch(e) { ; }
 	}
-	
+
+
 	/**
 	 * Returns the power state of the smart power strip.
 	 */
-	onCheckInterval() {
-		return this._communicate.mp1_check_power()
-    		.then( state => {
-    			let s1,s2,s3,s4;
-    			s1 = ( state & 0x01 );
-    			s2 = ( state & 0x02 );
-    			s3 = ( state & 0x04 );
-    			s4 = ( state & 0x08 );
-    			
-    			this.generate_trigger(1,s1)
-    			this.generate_trigger(2,s2)
-    			this.generate_trigger(3,s3)
-    			this.generate_trigger(4,s4)
-    			this.setCapabilityValue('onoff.s1', s1 );
-   				this.setCapabilityValue('onoff.s2', s2 );
-   				this.setCapabilityValue('onoff.s3', s3 );
-   				this.setCapabilityValue('onoff.s4', s4 );
-            }, rejection => {
-			})
-	}	
+	async onCheckInterval() {
+		try {
+			let state = await this._communicate.mp1_check_power()
+    		let s1,s2,s3,s4;
+    		s1 = ( state & 0x01 );
+    		s2 = ( state & 0x02 );
+    		s3 = ( state & 0x04 );
+    		s4 = ( state & 0x08 );
+    
+    		this.generate_trigger(1,s1)
+    		this.generate_trigger(2,s2)
+    		this.generate_trigger(3,s3)
+    		this.generate_trigger(4,s4)
+    		this.setCapabilityValue('onoff.s1', s1 );
+   			this.setCapabilityValue('onoff.s2', s2 );
+   			this.setCapabilityValue('onoff.s3', s3 );
+   			this.setCapabilityValue('onoff.s4', s4 );
+		} catch( e ) { ; }
+	}
 
-	check_condition_on( sid, callback ) { 
+	check_condition_on( sid, callback ) {
 		let capa = 'onoff.s' + sid
 		let onoff = this.getCapabilityValue( capa )
-		callback(null,onoff) 
+		callback(null,onoff)
 	}
 
-	do_action_on(sid) {
+	async do_action_on(sid) {
 		let capa = 'onoff.s' + sid
-		this.set_onoff(sid, true)
-			.then( r => { this.setCapabilityValue(capa, true);
-			})
+		await this.set_onoff(sid, true)
+		this.setCapabilityValue(capa, true);
 	}
 
-	do_action_off(sid) {
+	async do_action_off(sid) {
 		let capa = 'onoff.s' + sid
-		this.set_onoff(sid,false)
-			.then( r => { this.setCapabilityValue(capa, false);
-			})
+		await this.set_onoff(sid,false)
+		this.setCapabilityValue(capa, false);
 	}
 
 	onCapabilityOnOff_1(mode) { this.set_onoff( "1", mode ); }

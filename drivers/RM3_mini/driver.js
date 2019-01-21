@@ -1,8 +1,8 @@
 /**
  * Driver for Broadlink devices
- * 
+ *
  * Copyright 2018, R Wensveen
- * 
+ *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,28 +24,30 @@ const Util = require('./../../lib/util.js');
 
 
 class BroadlinkRM3miniDriver extends BroadlinkDriver {
-	
-	
+
+
 	check_condition_specific_cmd( args, state, callback ) {
 		args.device.check_condition_specific_cmd_sent( args, state, callback )
 	}
-	
+
 	do_exec_cmd( args, state ) {
 		return args.device.executeCommand( args );
 	}
-	
-	
+
+
 	onInit() {
+		Util.debugLog('RM3MiniDriver.onInit');
+		
 		super.onInit();
 		this.setCompatibilityID( 0x2737 )   // RM MINI
-		
+
 		this.rm3mini_action_send_cmd = new Homey.FlowCardAction('send_command');
 		this.rm3mini_action_send_cmd
 			.register()
 			.registerRunListener( this.do_exec_cmd.bind(this) )
 			.getArgument('variable')
 			.registerAutocompleteListener(( query, args ) => { return args.device.onAutoComplete(); });
-		
+
 		// Register a function to fill the trigger-flowcard 'RC_specific_sent' (see app.json)
 		this.rm3mini_specific_cmd_trigger = new Homey.FlowCardTriggerDevice('RC_specific_sent');
 		this.rm3mini_specific_cmd_trigger
