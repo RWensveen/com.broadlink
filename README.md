@@ -45,3 +45,11 @@ still some things to do:
 - add supported devices (see com.broadlink/lib/DeviceInfo for list)
 
 
+# Version
+
+* 1.3.5
+All seems ok, RF not working
+
+* 2.0.1
+Updated to Homey V2.0 to prevent app crashes
+  
