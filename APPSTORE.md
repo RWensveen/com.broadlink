@@ -40,9 +40,20 @@ This is done by pressing the 'learn' button (for IR or RF) in the mobile card of
 On the device, a LED will turn on indicating it is in learning mode, and you can press a button on
 a IR/RF Remote control.
 The command will be added to the device settings in Homey. In the device settings menu, you can
-give the command a more logical name, or delete it.
+give the command a more logical name, or delete it by clearing its name.
 Currently 20 to 30 commands are supported in the settings page of each device.
 It is not possible at this moment to change the order of the commands in the settings page.
+
+# RF learning
+Learning an RF command on a Plus device (e.g. RM Pro Plus) is done in several steps. Each step
+is told by Homey (English or Dutch).
+* press the RF-learn button in the device card
+* keep the button on your remote pressed continuously
+* press the button shortly, multiple times
+  -> the device the RF remote is controlling should understand the button. E.g for a lightswitch, 
+     the light will turn on and off repeatedly with the pressing of the button.
+* stop pressing the remote button
+* rename the command to something usefull 
 
 # Compatibility
 
