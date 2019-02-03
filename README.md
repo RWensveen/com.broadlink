@@ -15,7 +15,11 @@ Use [Homey](https://www.athom.com/) together with [Broadlink devices](http://www
 * SP3S - power socket switch with meter
 * MP1 - 4 way power socket switch
 
-Others will follow...
+# To be supported devices
+
+* Hysen thermostat
+
+Others might follow...
 
 
 # Reference
@@ -36,7 +40,6 @@ Protocol:
 
 requires the following NodeJS modules
 - dgram
-- cryptojs
 
 
 # To Do
@@ -48,8 +51,12 @@ still some things to do:
 # Version
 
 * 1.3.5
-All seems ok, RF not working
+All seems ok, but RF not working
 
 * 2.0.1
 Updated to Homey V2.0 to prevent app crashes
-  
+Use async/await wherever possible (easier to read compared to Promise)
+
+* 2.0.2
+Learning and transmitting RF (433MHz) works. Homey speech is used to inform the user on what to do.
+
