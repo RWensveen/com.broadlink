@@ -35,12 +35,12 @@ class BroadlinkSP2Driver extends BroadlinkDriver {
 	}
 
 	do_action_power_on(args,state) {
-		Util.debugLog('SP2Driver.do_action_power_on');
+		//Util.debugLog('SP2Driver.do_action_power_on');
 		return args.device.do_action_power_on()
 	}
 
 	do_action_power_off(args,state) {
-		Util.debugLog('SP2Driver.do_action_power_off');
+		//Util.debugLog('SP2Driver.do_action_power_off');
 		return args.device.do_action_power_off()
 	}
 

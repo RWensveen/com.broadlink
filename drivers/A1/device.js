@@ -64,7 +64,7 @@ class A1Device extends BroadlinkDevice {
 	}
 
 	onCapabilityUpdateSensor(onoff) {
-		Util.debugLog('updateSensor')
+		//Util.debugLog('updateSensor')
 		this.onCheckInterval();
 	}
 
@@ -240,7 +240,7 @@ class A1Device extends BroadlinkDevice {
 			if( curr_noise       != this.noise_level ) { drv.a1_trigger_noise_level.trigger(this,{'noiselevel':str_noise},{}) }
     
     	} catch( e ) {
-    		Util.debugLog('A1.onCheckInterval: ' + e );
+    		Util.debugLog('**> A1.onCheckInterval: ' + e );
     	}
      }
 

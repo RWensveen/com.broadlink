@@ -32,7 +32,7 @@ class SP1Device  extends BroadlinkDevice {
 	 */
 	async onCapabilityOnOff( mode ) {
 		try {
-			Util.debugLog('SP1.onCapabilityOnOff');
+			//Util.debugLog('SP1.onCapabilityOnOff');
 			let response = await this._communicate.sp1_set_power_state(mode)
 			if( mode != this.getCapabilityValue('onoff') ) {
 				let drv = this.getDriver();

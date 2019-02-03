@@ -115,7 +115,6 @@ class BroadlinkDevice extends Homey.Device {
 
 		if( changedKeysArr.indexOf('ipAddress') >= 0 ) {
 			this._communicate.setIPaddress( newSettingsObj['ipAddress'] )
-			Util.debugLog(this.getName() + ' - onSettings - new ipaddress = ' + this._communicate.ipAddress);
 		}
 		if( changedKeysArr.indexOf('CheckInterval') >= 0 ) {
 			this.stop_check_interval()
@@ -134,7 +133,7 @@ class BroadlinkDevice extends Homey.Device {
 	 * Start a timer to periodically access the device. the parent class must implement onCheckInterval()
 	 */
 	start_check_interval( interval ) {
-		Util.debugLog(this.getName()+' start check interval - ' + interval);
+		//Util.debugLog(this.getName()+' start check interval - ' + interval);
 		this.checkTimer = setInterval( function() {
 			this.onCheckInterval();
 		}.bind(this),

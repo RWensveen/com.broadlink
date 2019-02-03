@@ -35,13 +35,10 @@ class SP3SDriver extends BroadlinkDriver {
 	}
 
 	do_action_power_on(args,state) {
-		Util.debugLog('SPS3Driver.do_action_power_on');
-
 		return args.device.do_action_power_on()
 	}
 
 	do_action_power_off(args,state) {
-		Util.debugLog('SPS3Driver.do_action_power_off');
 		return args.device.do_action_power_off()
 	}
 
@@ -58,8 +55,6 @@ class SP3SDriver extends BroadlinkDriver {
 			CompatibilityID: 0x9479   // SP3S
 		});
 
-		Util.debugLog('SP3SDriver.onInit' );
-		
 		this.trigger_power_toggle = new Homey.FlowCardTriggerDevice('sp3s_onoff_power').register();
 		this.trigger_power_on = new Homey.FlowCardTriggerDevice('sp3s_onoff_power_on').register();
 		this.trigger_power_off = new Homey.FlowCardTriggerDevice('sp3s_onoff_power_off').register();

@@ -40,7 +40,7 @@ class RM3miniDevice extends BroadlinkDevice {
 		while( settingName in settings) {
 			//Util.debugLog( settingName );
 			if( settings[ settingName ].length == 0 ) {
-				Util.debugLog(this.getName()+' - storeCmdSettings - setting = '+settingName+', name = ' + cmdname );
+				//Util.debugLog(this.getName()+' - storeCmdSettings - setting = '+settingName+', name = ' + cmdname );
 				let s = {
 						[settingName] : cmdname
 						}
@@ -90,6 +90,8 @@ class RM3miniDevice extends BroadlinkDevice {
 		try {
 			let cmd = args['variable'];
 
+			//Util.debugLog('executeCommand '+cmd.name);
+
 			// send the command
 			let cmdData = this.dataStore.getCommandData( cmd.name )
 			await this._communicate.send_IR_RF_data( cmdData )
@@ -137,8 +139,6 @@ class RM3miniDevice extends BroadlinkDevice {
 	 *
 	 */
 	onInit() {
-		Util.debugLog('RM3MiniDevice.onInit' );
-		
 		super.onInit();
 		this.registerCapabilityListener('learnIRcmd', this.onCapabilityLearnIR.bind(this));
 		
@@ -158,13 +158,9 @@ class RM3miniDevice extends BroadlinkDevice {
 	    this.learn = true;
 
 	    try {
-    		Util.debugLog('RM3miniDevice.onCapabilityLearnIR - enter learning' );
 		    await this._communicate.enter_learning()
-            Util.debugLog('RM3miniDevice.onCapabilityLearnIR - start IR check' );
 	    	let data = await this._communicate.check_IR_data()
 	    	if( data ) {
-	    		Util.debugLog('RM3miniDevice.onCapabilityLearnIR - got command' );
-	    		
 	    		let idx = this.dataStore.dataArray.length + 1;
 	    		let cmdname = 'cmd' + idx;
 	    		this.dataStore.addCommand( cmdname, data);

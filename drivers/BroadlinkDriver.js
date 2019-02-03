@@ -98,11 +98,9 @@ class BroadlinkDriver extends Homey.Driver {
 			           		}
 			           		this.discoveredDevices.push( device )
 			           
-			           		Util.debugLog('->onPair.discovered = ' + JSON.stringify(device))
 			           		socket.emit('discovered', device )
 			           
 			           	},  rejectReason => {
-			           		Util.debugLog('**>onPair.reject: ' + rejectReason)
 			           		socket.emit('discovered', null )
 			           	})
 			           	.catch( err => {

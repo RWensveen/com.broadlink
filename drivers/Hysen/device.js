@@ -278,7 +278,7 @@ class HysenDevice  extends BroadlinkDevice {
 
 }
 
-module.exports = SysenDevice;
+module.exports = HysenDevice;
 
 
 

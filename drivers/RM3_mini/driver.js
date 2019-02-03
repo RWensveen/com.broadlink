@@ -36,8 +36,6 @@ class BroadlinkRM3miniDriver extends BroadlinkDriver {
 
 
 	onInit() {
-		Util.debugLog('RM3MiniDriver.onInit');
-		
 		super.onInit();
 		this.setCompatibilityID( 0x2737 )   // RM MINI
 

@@ -178,13 +178,13 @@ class SP2Device extends BroadlinkDevice {
 
 
 	async do_action_power_on() {
-		Util.debugLog('SP2Device.do_action_power_on');
+		//Util.debugLog('SP2Device.do_action_power_on');
 		await this.onCapabilityPowerOnOff(true)
 		this.setCapabilityValue('onoff.power', true);
 	}
 
 	async do_action_power_off() {
-		Util.debugLog('SP2Device.do_action_power_off');
+		//Util.debugLog('SP2Device.do_action_power_off');
 		await this.onCapabilityPowerOnOff(false);
 		this.setCapabilityValue('onoff.power', false);
 	}

@@ -27,8 +27,6 @@ class BroadlinkRMPlusDriver extends BroadlinkRM3miniDriver {
 		super.onInit();
 		this.setCompatibilityID( 0x272A );  // RM Pro Plus 2
 	}
-
-	
 }
 
 module.exports = BroadlinkRMPlusDriver;
