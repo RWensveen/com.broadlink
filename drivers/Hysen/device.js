@@ -55,18 +55,18 @@ class HysenDevice extends BroadlinkDevice {
 
 	
 	_updateCapabilities() {
-		Util.debugLog("==> hysen._updateCapabilities")
+		//Util.debugLog("==> hysen._updateCapabilities")
 		if( this.data['RoomTemperature'] ) {
-			Util.debugLog("_updateCapabilities - room temperature = "+this.data['RoomTemperature']);
+			//Util.debugLog("_updateCapabilities - room temperature = "+this.data['RoomTemperature']);
 			this.setCapabilityValue('measure_temperature', this.data['RoomTemperature'] );
 			this.setCapabilityValue('measure_temperature.room', this.data['RoomTemperature'] );
 		}
 		if( this.data['ExternalTemperature'] ) {
-			Util.debugLog("_updateCapabilities - external temperature = "+this.data['ExternalTemperature']);
+			//Util.debugLog("_updateCapabilities - external temperature = "+this.data['ExternalTemperature']);
 			this.setCapabilityValue('measure_temperature.outside', this.data['ExternalTemperature'] );
 		}
 		if( this.data['TargetTemperature'] ) {
-			Util.debugLog("_updateCapabilities - target_temperature = "+this.data['TargetTemperature']);
+			//Util.debugLog("_updateCapabilities - target_temperature = "+this.data['TargetTemperature']);
 			this.setCapabilityValue('target_temperature', this.data['TargetTemperature'] ); 
 		}
 	}
@@ -85,14 +85,14 @@ class HysenDevice extends BroadlinkDevice {
 		if( this.data['AntiFreezeMode'    ] ) { newSettings['AntiFreezeMode'    ] = this.data['AntiFreezeMode'    ]; }
 	
 		if( Object.keys(newSettings).length > 0) {
-			Util.debugLog('_updateSettings: ' + JSON.stringify(newSettings));
+			//Util.debugLog('_updateSettings: ' + JSON.stringify(newSettings));
 			this.setSettings( newSettings )
 		}
 	}
 	
 	_updateSetting( name, changedKeysArr, newSettingsObj ) {
 		if( changedKeysArr.indexOf(name) >= 0 ) {
-			Util.debugLog("==> hysen._updateSettings:"+name)
+			//Util.debugLog("==> hysen._updateSettings:"+name)
 			this.data[name] = newSettingsObj[name];
 			return true;
 		}
@@ -109,7 +109,7 @@ class HysenDevice extends BroadlinkDevice {
 	onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, callback ) {
 
 		super.onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, undefined );
-		Util.debugLog("==> hysen.onSettings");
+		//Util.debugLog("==> hysen.onSettings");
 		
 		let changed = false
 		
@@ -183,7 +183,7 @@ class HysenDevice extends BroadlinkDevice {
 	    	//resp[5] = 40
 	    	//resp[18]=5
 	    	//return resp
-	    	Util.debugLog( "<** hysen.send_request: Errorcode "+response.error + " in response")
+	    	//Util.debugLog( "**> hysen.send_request: Errorcode "+response.error + " in response")
 	    	throw( "Errorcode: " + response.error )
 	    }
 	}
@@ -192,7 +192,7 @@ class HysenDevice extends BroadlinkDevice {
 	 * Get current room temperature in degrees celsius
 	 */
 	async get_temperature() {
-		Util.debugLog("==> hysen.get_temperature")
+		//Util.debugLog("==> hysen.get_temperature")
 		
 		try {
 			var payload = new Uint8Array([0x01,0x03,0x00,0x00,0x00,0x08])
@@ -201,13 +201,11 @@ class HysenDevice extends BroadlinkDevice {
 			this.data['RoomTemperature'] = response[ 5 ] / 2.0;
 			this.data['ExternalTemperature'] = response[ 18 ] / 2.0;
 
-//			this._updateCapabilities();
+			this._updateCapabilities();
 		}
 		catch( err ) {
 			Util.debugLog('<** hysen.get_temperature - catch = ' + err);
-			this.data['RoomTemperature']=18.0
 		}
-		this._updateCapabilities();
 	}
 
 
@@ -215,7 +213,7 @@ class HysenDevice extends BroadlinkDevice {
 	 * Get full status (including timer schedule)
 	 */
 	async get_full_status() {
-		Util.debugLog("==> hysen.get_full_status");
+		//Util.debugLog("==> hysen.get_full_status");
 
 		try {
 			var payload = new Uint8Array([0x01,0x03,0x00,0x00,0x00,0x16]);
@@ -284,17 +282,17 @@ class HysenDevice extends BroadlinkDevice {
      */
      set_mode( AutoMode, LoopMode, sensor) {
     	 try {
-    		 Util.debugLog("==> hysen.set_mode");
+    		 //Util.debugLog("==> hysen.set_mode");
 
     		 if( sensor === undefined ) { sensor = 0; }
     		 let mode_byte = ( (LoopMode + 1) << 4) + AutoMode;
-    		 // Util.debugLog('Mode byte: ' + mode_byte)
+    		 //Util.debugLog('Mode byte: ' + mode_byte)
 
     		 var payload = new Uint8Array([0x01,0x06,0x00,0x02,mode_byte,sensor]);
     		 return this.send_request(payload);
     	 }
     	 catch( err ) {
-    		 Util.debugLog("<** hysen.set_mode: catch = " + err);
+    		 Util.debugLog("**> hysen.set_mode: catch = " + err);
     	 }
 	}
 
@@ -338,7 +336,7 @@ class HysenDevice extends BroadlinkDevice {
 	async set_advanced( LoopMode, SensorMode, TempRangeExtSensor, FloorTempDeadZone, SensorUpperLimit, 
 			      SensorLowerLimit, RoomTempAdjust, AntiFreezeMode, poweron) {
 		try {
-			Util.debugLog("==> hysen.set_advanced");
+			//Util.debugLog("==> hysen.set_advanced");
 
 			let payload = new Uint8Array([0x01,0x10,0x00,0x02,0x00,0x05,0x0a,
     	                               LoopMode, SensorMode, TempRangeExtSensor, 
@@ -349,7 +347,7 @@ class HysenDevice extends BroadlinkDevice {
 			await this.send_request(payload);
 		}
    	 	catch( err ) {
-   	 		Util.debugLog("<** hysen.set_advanced: catch = " + err);
+   	 		Util.debugLog("**> hysen.set_advanced: catch = " + err);
    	 	}
 	}
 
@@ -361,12 +359,12 @@ class HysenDevice extends BroadlinkDevice {
 	async set_temp(temp) {
    	 	this.data['TargetTemperature'] = temp
 		try {
-			Util.debugLog("==> hysen.set_temp: " + this.data['TargetTemperature']);
+			//Util.debugLog("==> hysen.set_temp: " + this.data['TargetTemperature']);
 			let payload = new Uint8Array([0x01,0x06,0x00,0x01,0x00,temp * 2]);
 			await this.send_request(payload);
 		}
    	 	catch( err ) {
-   	 		Util.debugLog("<** hysen.set_temp: catch = " + err);
+   	 		Util.debugLog("**> hysen.set_temp: catch = " + err);
    	 	}
 	}
 
@@ -376,7 +374,7 @@ class HysenDevice extends BroadlinkDevice {
 	 * Remote lock disables control by buttons on thermostat.
 	 */
  	async set_power( power, remote_lock ) {
-		Util.debugLog("==> hysen.set_power");
+		//Util.debugLog("==> hysen.set_power");
 
     	let payload = new Uint8Array([0x01,0x06,0x00,0x00,remote_lock,power]);
 		await this.send_request(payload);
@@ -389,13 +387,13 @@ class HysenDevice extends BroadlinkDevice {
 	 */
 	async set_time(hour, minute, second, day) {
 		try {
-			Util.debugLog("==> hysen.set_time");
+			//Util.debugLog("==> hysen.set_time");
 
 			let payload = new Uint8Array([0x01,0x10,0x00,0x08,0x00,0x02,0x04, hour, minute, second, day ]);
 			await this.send_request(payload);
 		}
    	 	catch( err ) {
-   	 		Util.debugLog("<** hysen.set_time: catch = " + err);
+   	 		Util.debugLog("**> hysen.set_time: catch = " + err);
    	 	}
 	}
 
@@ -410,7 +408,7 @@ class HysenDevice extends BroadlinkDevice {
 	 */
 	async set_schedule(weekday,weekend) {
 		try {
-		Util.debugLog("==> hysen.set_schedule")
+			//Util.debugLog("==> hysen.set_schedule")
 
 			// Begin with some magic values ...
 			let input_payload = new Uint8Array([0x01,0x10,0x00,0x0a,0x00,0x0c,0x18]);
@@ -438,13 +436,13 @@ class HysenDevice extends BroadlinkDevice {
 			await this.send_request(input_payload);
 		}
    	 	catch( err ) {
-   	 		Util.debugLog("<** hysen.set_schedule: catch = " + err);
+   	 		Util.debugLog("**> hysen.set_schedule: catch = " + err);
    	 	}
 	}
 
 	
 	async onCapabilityTargetTemperature( temp ) {
-		Util.debugLog('==> hysen.onCapabilityTargetTemperature - temp = '+temp );
+		//Util.debugLog('==> hysen.onCapabilityTargetTemperature - temp = '+temp );
 		await this.set_temp( temp )
 	}
 
@@ -462,11 +460,11 @@ class HysenDevice extends BroadlinkDevice {
 		this.data['SensorUpperLimit'] = 87.0
 		
 		setTimeout( function() {
-			Util.debugLog('==> hysen.onAdded.timeout');
+			//Util.debugLog('==> hysen.onAdded.timeout');
 			this.get_full_status()
 		}.bind(this), 10000 );  // timeout in [msec]
 
-		Util.debugLog("hysen.onInit");
+		//Util.debugLog("hysen.onInit");
 	}
 
 	
@@ -474,7 +472,7 @@ class HysenDevice extends BroadlinkDevice {
 	 * This method is called when the user adds the device, called just after pairing.
 	 */
 	async onAdded() {
-		Util.debugLog('hysen.onAdded');
+		//Util.debugLog('hysen.onAdded');
 		super.onAdded();
 		this.data = [];
 	}
@@ -486,7 +484,7 @@ class HysenDevice extends BroadlinkDevice {
 	onDeleted() {
 		super.onDeleted();
 		this.data = [];
-		Util.debugLog('hysen.onDeleted');
+		//Util.debugLog('hysen.onDeleted');
 	}
 
 }

@@ -50,7 +50,6 @@ class MP1Device  extends BroadlinkDevice {
 	 */
 	async set_onoff( sid, mode ) {
 		try {
-			Util.debugLog("==>MP1.set_onoff: sid=" + sid + " mode="+mode)
 			await this._communicate.mp1_set_power_state( sid, mode )
 			this.generate_trigger( sid, mode );
 		} catch(e) { ; }
