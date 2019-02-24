@@ -67,14 +67,14 @@ Correct SP1 device, so the app will not crash :-)<br>
 Add Hysen thermostat (implementation done, testing not done -> it might completely fail)<br>
 Move capability icons to /assets directory (i.s.o. /drivers/xxx/assets)<br>
 Correct app settings page to show current settings.<br>
-<P>
+<br>
 * 2.0.2<br>
 Learning and transmitting RF (433MHz) works. Homey speech is used to inform the user on what to do.
-<P>
+<br>
 * 2.0.1<br>
 Updated to Homey V2.0 to prevent app crashes
 Use async/await wherever possible (easier to read compared to Promise)
-<P>
+<br>
 * 1.3.5<br>
 All seems ok, but RF not working
 
