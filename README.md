@@ -49,6 +49,7 @@ Protocol:
 
 requires the following NodeJS modules
 - dgram
+- crc
 
 
 # To Do
