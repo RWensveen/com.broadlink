@@ -56,12 +56,12 @@ class SP1Device  extends BroadlinkDevice {
 	}
 
 	async do_action_on() {
-		await onCapabilityOnOff( true );
+		await this.onCapabilityOnOff( true );
 		this.setCapabilityValue('onoff', true);
 	}
 
 	async do_action_off() {
-		await his.onCapabilityOnOff( false );
+		await this.onCapabilityOnOff( false );
 		this.setCapabilityValue('onoff', false);
 	}
 

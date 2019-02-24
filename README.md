@@ -22,6 +22,15 @@ Use [Homey](https://www.athom.com/) together with [Broadlink devices](http://www
 Others might follow...
 
 
+# Debug and Error log
+
+In the application settings, there are 2 flags to enable logging: Debug and Sentry.
+- Debug logging dumps messages via the console log. This only works if the app is 
+  started in debug mode from a PC (using 'athom app run')
+- Sentry.IO is an error tracking system, which will create an error report for every
+  message send to it. Use this only if you want to report an issue, and can reproduce
+  it.
+
 # Reference
 
 This app is based on the hard work of other people.
@@ -50,13 +59,21 @@ still some things to do:
 
 # Version
 
-* 1.3.5
-All seems ok, but RF not working
+* 2.0.3
+Add user manual (in APPSTORE.md) explaining how to use RF learning.
+Correct sensor display of A1 device
+Correct SP1 device, so the app will not crash :-)
+Add Hysen thermostat (implementation done, testing not done -> it might completely fail)
+Move capability icons to /assets directory (i.s.o. /drivers/xxx/assets)
+Correct app settings page to show current settings.
+
+* 2.0.2
+Learning and transmitting RF (433MHz) works. Homey speech is used to inform the user on what to do.
 
 * 2.0.1
 Updated to Homey V2.0 to prevent app crashes
 Use async/await wherever possible (easier to read compared to Promise)
 
-* 2.0.2
-Learning and transmitting RF (433MHz) works. Homey speech is used to inform the user on what to do.
+* 1.3.5
+All seems ok, but RF not working
 

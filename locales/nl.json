@@ -8,7 +8,8 @@
     "save_settings_nocmd": " is nog niet bekend.",
     "save_settings_exist": " bestaat al.",
     "sensor_check": "Kan sensor waarden niet lezen van apparaat",
-    "invalid_response": "ongeldig antwoord van apparaat"
+    "invalid_response": "ongeldig antwoord van apparaat.",
+    "invalid_sensor_limits": "Ongeldige sensor grenzen."
   },
   "pair": {
     "title": "Broadlink Apparaat Toevoegen",
@@ -20,7 +21,7 @@
 	"address": "IP address",
 	"devicetype": "Device Type",
 	"error_no_discover": "Geen apparaat gevonden. Is het apparaat aan, en is het verbonden met het Wifi netwerk ?",
-	"found_another": "Ander apparaat gevonden: ",
+	"found_another": "Ander apparaat gevonden: __dev__ (__type__)",
 	"invalid_ipaddress": "Ongeldig IP adres",
 	"discovering": "Probeer apparaat te ontdekken..."
   },
@@ -29,7 +30,9 @@
   	"compatinfo": "In eenheidsmode, ieder apparaat dat gevonden wordt tijdens paren, zal geaccepteerd worden alsof het van het gewenste type is. Dit betekent dat het geinstalleerde apparaat aangesproken wordt alsof het een apparaat van dat type is. Hierdoor zullen niet alle (of zelfs geen enkele) van zijn mogelijkheden naar behoren werken.",
    	"compatmode": "Eenheidsmode",
    	"debuginfo": "Schrijf log teksten naar console. Werkt alleen als app in debug mode is geladen.",
-   	"debuglog" : "Logmode"
+   	"debuglog" : "Logmode",
+   	"errorreportinfo" : "Foutreporten via Sentry.IO",
+   	"errorreport" : "Sentry.IO"
   },
   "air_quality": {
     "excellent": "uitstekend",

@@ -47,7 +47,7 @@ class BroadlinkDriver extends Homey.Driver {
 		this.CompatibilityID = id;
 	}
 
-
+	
 	/**
 	 *
 	 *

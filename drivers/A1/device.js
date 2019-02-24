@@ -21,8 +21,12 @@
 const Homey = require('homey');
 const Util = require('./../../lib/util.js');
 const BroadlinkDevice = require('./../BroadlinkDevice');
+//const ManualInsights = require('./../../lib/ManualInsights.js');
 
 
+/*
+ * NOTE: these values should match the enums in app.json
+ */
 var AirQualityLevel = Object.freeze( {
 	excellent : { value: 1, name: 'excellent'},
 	good      : { value: 2, name: 'good'     },
@@ -46,28 +50,45 @@ var NoiseLevel = Object.freeze( {
 
 
 class A1Device extends BroadlinkDevice {
-
-
-//	constructor(t,e,i) {
-//		super(t,e,i)
-//		this.air_quality = AirQualityLevel.unknown.value;
-//		this.light_level = LightLevel.unknown.value;
-//		this.noise_level = NoiseLevel.unknown.value;
-//	}
-
+	
+	
 	onInit() {
 		super.onInit();
 		this.registerCapabilityListener('updateSensor', this.onCapabilityUpdateSensor.bind(this));
 		this.air_quality = AirQualityLevel.unknown.value;
 		this.light_level = LightLevel.unknown.value;
 		this.noise_level = NoiseLevel.unknown.value;
+		
+//		this.insights = new ManualInsights();
+//		this.insights.onInit();
+//		this.insights.getInsightsLog( this, 'a1_air_quality_number', "air quality");
+//		this.insights.getInsightsLog( this, 'a1_light_level_number', "light level");
+//		this.insights.getInsightsLog( this, 'a1_noise_level_number', "noise level");
 	}
+	
+	
+//	onRenamed() {
+//		this.insights.replaceInsightsLog( 'a1_air_quality_number', "air quality");
+//		this.insights.replaceInsightsLog( 'a1_light_level_number', "light level");
+//		this.insights.replaceInsightsLog( 'a1_noise_level_number', "noise level");
+//	}	
 
+	
+//	onDeleted() {
+//		super.onDeleted();
+//		//Util.debugLog('delete insightsLogs');
+//		this.insights.deleteInsightsLog('a1_air_quality_number');
+//		this.insights.deleteInsightsLog('a1_light_level_number');
+//		this.insights.deleteInsightsLog('a1_noise_level_number');
+//	}
+
+	
 	onCapabilityUpdateSensor(onoff) {
 		//Util.debugLog('updateSensor')
 		this.onCheckInterval();
 	}
 
+	
 	getAirQualityList(mode) {
 		if(mode == 'better') {
 			return [
@@ -161,15 +182,15 @@ class A1Device extends BroadlinkDevice {
 	}
 
 	check_noiselevel( args, state, callback )  {
-		callback(null, args.variable.value == args.device.noise_level )
+		callback(null, args.variable.value == args.device.noise_level );
 	}
 
 	check_noiselevel_softer( args, state, callback ) {
-		callback(null, args.variable.value > args.device.noise_level )
+		callback(null, args.variable.value > args.device.noise_level );
 	}
 
 	check_noiselevel_louder( args, state, callback ) {
-		callback(null, args.variable.value < args.device.noise_level )
+		callback(null, args.variable.value < args.device.noise_level );
 	}
 
 
@@ -179,14 +200,14 @@ class A1Device extends BroadlinkDevice {
 	async onCheckInterval()
     {
 		try {
-			let response = await this._communicate.read_status()
+			let response = await this._communicate.read_status();
     
    			let temperature = (response[0] * 10 + response[1]) / 10.0;
 	    	let humidity    = (response[2] * 10 + response[3]) / 10.0;
 	    	let str_light       = response[4];
 	    	let str_air_quality = response[6];
 	    	let str_noise       = response[8];
-    
+
 	    	let curr_air_quality = this.air_quality;
 	    	let curr_light       = this.light_level;
 	    	let curr_noise       = this.noise_level;
@@ -204,6 +225,7 @@ class A1Device extends BroadlinkDevice {
 			if( this.air_quality != AirQualityLevel.unknown.value ) {
 				this.setCapabilityValue('a1_air_quality', str_air_quality, true);
 				this.setCapabilityValue('a1_air_quality_number', this.air_quality);
+//				this.insights.addEntry('a1_air_quality_number', this.air_quality );
 			}
 
 			switch( str_light )
@@ -216,7 +238,8 @@ class A1Device extends BroadlinkDevice {
 			}
 	    	if ( this.light_level != LightLevel.unknown.value ) {
 	    		this.setCapabilityValue('a1_light_level', str_light, true);
-	    	    this.setCapabilityValue('a1_light_level_number', this.light_level);
+    	    	this.setCapabilityValue('a1_light_level_number', this.light_level);
+//    	    	this.insights.addEntry('a1_light_level_number', this.light_level );
 	    	}
 	    
 	    	switch( str_noise )
@@ -228,7 +251,8 @@ class A1Device extends BroadlinkDevice {
 	    	}
 	    	if( this.noise_level != NoiseLevel.unknown.value ) {
 	    	   	this.setCapabilityValue('a1_noise_level', str_noise, true);
-	    	   	this.setCapabilityValue('a1_noise_level_number', this.noise_level);
+    	    	this.setCapabilityValue('a1_noise_level_number', this.noise_level);
+//    	    	this.insights.addEntry('a1_noise_level_number', this.noise_level );
 	    	}
 	    
 	    	this.setCapabilityValue('measure_temperature', temperature );
@@ -238,10 +262,11 @@ class A1Device extends BroadlinkDevice {
 			if( curr_air_quality != this.air_quality ) { drv.a1_trigger_air_quality.trigger(this,{'airquality':str_air_quality},{}) }
 			if( curr_light       != this.light_level ) { drv.a1_trigger_light_level.trigger(this,{'lightlevel':str_light},{}) }
 			if( curr_noise       != this.noise_level ) { drv.a1_trigger_noise_level.trigger(this,{'noiselevel':str_noise},{}) }
-    
-    	} catch( e ) {
+    	
+		} catch( e ) {
     		Util.debugLog('**> A1.onCheckInterval: ' + e );
     	}
+    
      }
 
 

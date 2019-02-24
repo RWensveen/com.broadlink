@@ -1,6 +1,6 @@
 {
 	"id": "com.broadlink",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"compatibility": ">=1.5.0",
 	"sdk": 2,
 	"name": {
@@ -35,7 +35,7 @@
 				"en": "Update now",
 				"nl": "Vernieuwen"
 			},
-			"getable": true,
+			"getable": false,
 			"setable": true
 		},
 		"learnIRcmd": {
@@ -45,7 +45,8 @@
 				"nl": "Leer IR commando"
 			},
 			"getable": false,
-			"setable": true
+			"setable": true,
+			"insights" : false
 		},
 		"learnRFcmd": {
 			"type": "boolean",
@@ -54,7 +55,8 @@
 				"nl": "Leer RF commando"
 			},
 			"getable": false,
-			"setable": true
+			"setable": true,
+			"insights" : false
 		},
 		"a1_air_quality": {
 			"type": "enum",
@@ -70,20 +72,25 @@
 				{ "id": "unknown",   "title":{"en":"unknown",   "nl": "onbekend"} }
 			],
 			"getable": true,
-			"setable": true
+			"setable": false,
+			"insights": false,
+			"uiComponent": "sensor",
+			"icon":"/assets/icon_airquality.svg"
 		},
 		"a1_air_quality_number": {
 			"type": "number",
 			"title": {
 				"en": "Air Quality",
-				"nl": "Luchtkwaliteit"
+				"nl": "Luchtkwaliteit nbr"
 			},
 			"min":1,
 			"max":4,
 			"decimals": 0,
 			"chartType": "spline",
 			"getable": true,
-			"setable": true
+			"setable": false,
+			"uiComponent": null,
+			"insights": true
 		},
 		"a1_light_level": {
 			"type": "enum",
@@ -99,20 +106,25 @@
 				{ "id":"unknown", "title":{"en": "unknown", "nl":"onbekend"} }
 			],
 			"getable": true,
-			"setable": true
+			"setable": false,
+			"insights": false,
+			"uiComponent": "sensor",
+			"icon":"/assets/icon_lightlevel.svg"
 		},
 		"a1_light_level_number": {
 			"type": "number",
 			"title": {
 				"en": "Light",
-				"nl": "Licht"
+				"nl": "Licht nbr"
 			},
 			"min":1,
 			"max":4,
 			"decimals": 0,
 			"chartType": "spline",
 			"getable": true,
-			"setable": true
+			"setable": false,
+			"uiComponent": null,
+			"insights": true
 		},
 		"a1_noise_level": {
 			"type": "enum",
@@ -127,32 +139,26 @@
 				{ "id":"unknown", "title":{"en": "unknown", "nl":"onbekend"} }
 			],
 			"getable": true,
-			"setable": true
+			"setable": false,
+			"insights": false,
+			"uiComponent": "sensor",
+			"icon":"/assets/icon_noiselevel.svg"
 		},
 		"a1_noise_level_number": {
 			"type": "number",
 			"title": {
 				"en": "Noise Level",
-				"nl": "Geluidsniveau"
+				"nl": "Geluidsniveau nbr"
 			},
 			"min":1,
 			"max":3,
 			"decimals": 0,
 			"chartType": "spline",
 			"getable": true,
-			"setable": true
+			"setable": false,
+			"uiComponent": null,
+			"insights": true
 		}
-	},
-	"capabilitiesOptions": {
-		"updateSensor":   { "preventInsights":true },
-		"learnIRcmd":     { "preventInsights":true },
-		"learnRFcmd":     { "preventInsights":true },
-		"a1_air_quality": { "preventInsights":true },
-		"a1_light_level": { "preventInsights":true },
-		"a1_noise_level": { "preventInsights":true },
-		"a1_air_quality_number": { "preventInsights":false },
-		"a1_light_level_number": { "preventInsights":false },
-		"a1_noise_level_number": { "preventInsights":false }
 	},
 	"drivers": [
 		{
@@ -244,6 +250,19 @@
 							"label": { "en": "IP address", "nl": "IP adres" },
 							"value": "0.0.0.0",
 							"pattern": "^([1-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.(([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.){2}([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])$"
+						}
+					]
+				},
+				{
+					"type": "group",
+					"label": {
+						"en": "Maintainance", "nl":"Onderhoud" },
+					"children": [
+						{
+							"id": "Authenticate",
+							"type": "checkbox",
+							"value": false,
+							"label": { "en": "Re-authenticate device", "nl": "Apparaat opnieuw authenticeren" }
 						}
 					]
 				}
@@ -354,6 +373,19 @@
 							"pattern": "^([1-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.(([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.){2}([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])$"
 						}
 					]
+				},
+				{
+					"type": "group",
+					"label": {
+						"en": "Maintainance", "nl":"Onderhoud" },
+					"children": [
+						{
+							"id": "Authenticate",
+							"type": "checkbox",
+							"value": false,
+							"label": { "en": "Re-authenticate device", "nl": "Apparaat opnieuw authenticeren" }
+						}
+					]
 				}
 			]
 		},
@@ -448,6 +480,19 @@
 							"pattern": "^([1-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.(([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.){2}([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])$"
 						}
 					]
+				},
+				{
+					"type": "group",
+					"label": {
+						"en": "Maintainance", "nl":"Onderhoud" },
+					"children": [
+						{
+							"id": "Authenticate",
+							"type": "checkbox",
+							"value": false,
+							"label": { "en": "Re-authenticate device", "nl": "Apparaat opnieuw authenticeren" }
+						}
+					]
 				}
 			]
 		},
@@ -469,20 +514,10 @@
 				"a1_light_level",
 				"a1_air_quality",
 				"a1_noise_level",
-				"a1_light_level_number",
 				"a1_air_quality_number",
+				"a1_light_level_number",
 				"a1_noise_level_number"
 			],
-			"capabilitiesOptions": {
-
-				"updateSensor":   { "preventInsights":true, "greyout": false },
-				"a1_air_quality": { "preventInsights":true },
-				"a1_light_level": { "preventInsights":true },
-				"a1_noise_level": { "preventInsights":true },
-				"a1_air_quality_number": { "preventInsights":false },
-				"a1_light_level_number": { "preventInsights":false },
-				"a1_noise_level_number": { "preventInsights":false }
-			},
 			"mobile": {
 				"components": [
 					{
@@ -496,9 +531,7 @@
 						"capabilities": [
 							"a1_air_quality",
 							"a1_noise_level",
-							"a1_light_level",
-							"measure_humidity",
-							"measure_temperature"
+							"a1_light_level"
 						],
 						"options": {
 							"icons": {
@@ -562,6 +595,19 @@
 							"pattern": "^([1-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.(([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.){2}([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])$"
 						}
 					]
+				},
+				{
+					"type": "group",
+					"label": {
+						"en": "Maintainance", "nl":"Onderhoud" },
+					"children": [
+						{
+							"id": "Authenticate",
+							"type": "checkbox",
+							"value": false,
+							"label": { "en": "Re-authenticate device", "nl": "Apparaat opnieuw authenticeren" }
+						}
+					]
 				}
 			]
 		},
@@ -615,6 +661,19 @@
 							"label": { "en": "IP address", "nl": "IP adres" },
 							"value": "0.0.0.0",
 							"pattern": "^([1-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.(([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.){2}([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])$"
+						}
+					]
+				},
+				{
+					"type": "group",
+					"label": {
+						"en": "Maintainance", "nl":"Onderhoud" },
+					"children": [
+						{
+							"id": "Authenticate",
+							"type": "checkbox",
+							"value": false,
+							"label": { "en": "Re-authenticate device", "nl": "Apparaat opnieuw authenticeren" }
 						}
 					]
 				}
@@ -713,6 +772,19 @@
 							"pattern": "^([1-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.(([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.){2}([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])$"
 						}
 					]
+				},
+				{
+					"type": "group",
+					"label": {
+						"en": "Maintainance", "nl":"Onderhoud" },
+					"children": [
+						{
+							"id": "Authenticate",
+							"type": "checkbox",
+							"value": false,
+							"label": { "en": "Re-authenticate device", "nl": "Apparaat opnieuw authenticeren" }
+						}
+					]
 				}
 			]
 		},
@@ -807,6 +879,19 @@
 							"label": { "en": "IP address", "nl": "IP adres" },
 							"value": "0.0.0.0",
 							"pattern": "^([1-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.(([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.){2}([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])$"
+						}
+					]
+				},
+				{
+					"type": "group",
+					"label": {
+						"en": "Maintainance", "nl":"Onderhoud" },
+					"children": [
+						{
+							"id": "Authenticate",
+							"type": "checkbox",
+							"value": false,
+							"label": { "en": "Re-authenticate device", "nl": "Apparaat opnieuw authenticeren" }
 						}
 					]
 				}
@@ -907,6 +992,218 @@
 							"label": { "en": "IP address", "nl": "IP adres" },
 							"value": "0.0.0.0",
 							"pattern": "^([1-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.(([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.){2}([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])$"
+						}
+					]
+				},
+				{
+					"type": "group",
+					"label": {
+						"en": "Maintainance", "nl":"Onderhoud" },
+					"children": [
+						{
+							"id": "Authenticate",
+							"type": "checkbox",
+							"value": false,
+							"label": { "en": "Re-authenticate device", "nl": "Apparaat opnieuw authenticeren" }
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "Hysen",
+			"name": {
+				"en": "Hysen Thermostat",
+				"nl": "Hysen Thermostaat"
+			},
+			"images": {
+				"large": "/drivers/Hysen/assets/images/large.jpg",
+				"small": "/drivers/Hysen/assets/images/small.jpg"
+			},
+			"class": "thermostat",
+			"capabilities": [
+				"measure_temperature.room",
+				"measure_temperature.outside",
+				"measure_temperature",
+				"target_temperature"
+				],
+			"capabilitiesOptions": {
+				"measure_temperature.room": { "title": { "en": "Room", "nl": "Binnen" } },
+				"measure_temperature.outside": { "title": { "en": "Outside", "nl": "Buiten" } },
+				"target_temperature": {
+					"min": 5,
+					"max": 30,
+					"step": 0.5
+				}
+			},
+			"pair": [
+				{
+					"id": "start"
+				},
+				{
+					"id": "list_devices",
+					"template": "list_devices",
+					"navigation": {
+						"next": "add_devices"
+					}
+				},
+				{
+					"id": "add_devices",
+					"template": "add_devices"
+				}
+			],
+			"settings": [
+				{
+					"type": "group",
+					"label": {"en": "Timing", "nl": "Tijdschema"},
+					"children" : [
+						{
+							"id": "CheckInterval",
+							"type": "number",
+							"value": 1,
+							"label": {
+								"en": "Interval",
+								"nl": "Interval"
+							},
+							"hint": {
+								"en": "Time in minutes between reading of sensor values.",
+								"nl": "Tijd tussen het lezen van de sensor waarden, in minuten."
+							},
+							"attr": {
+								"min": 1,
+								"max": 3600
+							}
+						}
+					]
+				},
+				{
+					"type":"group",
+					"label": { "en": "Settings", "nl": "Instellingen" },
+					"children": [
+						{
+							"type": "number",
+							"id": "SensorMode",
+							"value": 0,
+							"label": { "en": "Sensor mode" },
+							"attr": { "min": 0, "max": 2 },
+							"hint": {
+								"en":"0 = internal sensor.\n1 = external sensor.\n2 = internal control/external limit.",
+								"nl":"0 = interne sensor.\n1 = externe sensor.\n2 = intern controle/extern limiet."
+							}
+						},
+						{
+							"type": "number",
+							"id": "TempRangeExtSensor",
+							"value": 42,
+							"label": { "en": "External Sensor Range", "nl":"Bereik externe sensor." },
+							"attr": { "min": 5, "max": 99 },
+							"hint": {
+								"en":"Set temperature range for external sensor. Default = 42C",
+								"nl":"Zet temperatuur bereik voor externe sensor. Standaard = 42C"
+							}
+						},
+						{
+							"type": "number",
+							"id": "RoomTempAdjust",
+							"value": 0.0,
+							"label": { "en": "Room Temperature Adjust", "nl":"Kamertemperatuur aanpassing." },
+							"attr": { "min": -5.0, "max": 5.0, "step": 0.1 },
+							"hint": {
+								"en":"Set temperature adjustment for room temperature.",
+								"nl":"Zet temperatuuraanpassing voor kamer sensor."
+							}
+						},
+						{
+							"type": "number",
+							"id": "AutoMode",
+							"value": 0,
+							"label": { "en": "Automatic mode", "nl":"Automatische mode." },
+							"attr": { "min": 0, "max": 1 },
+							"hint": {
+								"en":"0 = manual mode.\n1 = auto (scheduled/timed) mode.",
+								"nl":"0 = handmatig.\n1 = automatisch (schema/tijdklok)."
+							}
+						},
+						{
+							"type": "number",
+							"id": "LoopMode",
+							"value": 0,
+							"label": { "en": "Weekday/Weekend mode", "nl":"Week/Weekend mode" },
+							"attr": { "min": 0, "max": 2 },
+							"hint": {
+								"en":"0 = Saturday and Sunday follow the weekend schedule.\n1 = Only Sunday follow the weekend schedule.\n2 = Every day (including Saturday and Sunday) follows the weekday schedule.",
+								"nl":"0 = Zaterdag en zondag volgen weekend schema.\n1 = Alleen zondag volgt weekend schema.\n2 = Iedere dag (ook zaterdag en zondag) volgen week schema."
+							}
+						},
+						{
+							"type": "number",
+							"id": "FloorTempDeadZone",
+							"value": 2,
+							"label": { "en": "Deadzone for floor temperature", "nl":"Dode zone voor vloertemperatuur" },
+							"attr": { "min": 1, "max": 9 },
+							"hint": {
+								"en":"Deadzone for floor temprature. Default = 2C",
+								"nl":"Dode zone voor vloertemperatuur. Standaard = 2C"
+							}
+						},
+						{
+							"type": "number",
+							"id": "SensorUpperLimit",
+							"value": 35,
+							"label": { "en": "Upper temperature limit for internal sensor", "nl":"Bovengrens temperatuur voor interne sensor" },
+							"attr": { "min": 5, "max": 99 },
+							"hint": {
+								"en":"Default = 35C",
+								"nl":"Standaard = 35C"
+							}
+						},
+						{
+							"type": "number",
+							"id": "SensorLowerLimit",
+							"value": 5,
+							"label": { "en": "Lower temperature limit for internal sensor", "nl":"Ondergrens temperatuur voor interne sensor" },
+							"attr": { "min": 5, "max": 99 },
+							"hint": {
+								"en":"Upper temperature limit for internal sensor. Default = 5C",
+								"nl":"Ondergrens temperatuur voor interne sensor. Standaard = 5C"
+							}
+						},
+						{
+							"type": "number",
+							"id": "AntiFreezeMode",
+							"value": 0,
+							"label": { "en": "Anti Freeze mode", "nl":"Vorstbeschermingsmode" },
+							"attr": { "min": 0, "max": 1 },
+							"hint": {
+								"en":"0 = anti-freezing function shut down.\n1 = anti-freezing function open.\nDefault = 0",
+								"nl":"0 = vorstbescherming uit.\n1 = vorstbescherming aan.\nStandaard = 0"
+							}
+						}
+					]					
+				},
+				{
+					"type":"group",
+					"label": { "en": "Address", "nl": "Adres" },
+					"children": [
+						{
+							"type": "text",
+							"id": "ipAddress",
+							"label": { "en": "IP address", "nl": "IP adres" },
+							"value": "0.0.0.0",
+							"pattern": "^([1-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.(([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.){2}([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])$"
+						}
+					]
+				},
+				{
+					"type": "group",
+					"label": {
+						"en": "Maintainance", "nl":"Onderhoud" },
+					"children": [
+						{
+							"id": "Authenticate",
+							"type": "checkbox",
+							"value": false,
+							"label": { "en": "Re-authenticate device", "nl": "Apparaat opnieuw authenticeren" }
 						}
 					]
 				}

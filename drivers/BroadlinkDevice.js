@@ -57,6 +57,27 @@ class BroadlinkDevice extends Homey.Device {
 			})
 	}
 
+	
+	authenticateDevice() {
+		this._communicate.auth()
+			.then( (authenticationData ) => {
+				let newSettings = { key: Util.arrToHex(authenticationData.key),
+									id : Util.arrToHex(authenticationData.id)
+							  	   };
+
+				this.setSettings( newSettings )
+					.then( dummy => {
+						this.setSettings( {Authenticate:false})
+					})
+					.catch( err => {
+						Util.debugLog('**> settings error  * settings not saved *');
+					})
+			})
+			.catch( err => {
+				Util.debugLog( '**> authentication error: ' + err);
+			})
+	}
+	
 
 	/**
 	 * This method is called when the user adds the device, called just after pairing.
@@ -76,22 +97,7 @@ class BroadlinkDevice extends Homey.Device {
 		}
 		this._communicate.configure( options )
 
-		this._communicate.auth()
-			.then( (authenticationData ) => {
-				let newSettings = { key: Util.arrToHex(authenticationData.key),
-									id : Util.arrToHex(authenticationData.id)
-								  };
-
-				this.setSettings( newSettings )
-					.then( dummy => {
-					})
-					.catch( err => {
-						Util.debugLog('**> settings error  * settings not saved *');
-					})
-			})
-			.catch( err => {
-				Util.debugLog( '**> authentication error: ' + err);
-			})
+		this.authenticateDevice();
 	}
 
 	/**
@@ -112,13 +118,17 @@ class BroadlinkDevice extends Homey.Device {
 	 *  @param changedKeysArr   contains an array of keys that have been changed
 	 */
 	onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, callback ) {
-
+		Util.debugLog("=> BroadlinkDevice.onSettings()")
+		
 		if( changedKeysArr.indexOf('ipAddress') >= 0 ) {
 			this._communicate.setIPaddress( newSettingsObj['ipAddress'] )
 		}
 		if( changedKeysArr.indexOf('CheckInterval') >= 0 ) {
 			this.stop_check_interval()
 			this.start_check_interval( newSettingsObj['CheckInterval'] )
+		}
+		if( changedKeysArr.indexOf('Authenticate') >= 0 ) {
+			this.authenticateDevice();
 		}
 		if( callback ) {
 			/* only do callback if this functions was called by Homey.

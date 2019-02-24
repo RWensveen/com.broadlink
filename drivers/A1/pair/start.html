@@ -16,10 +16,6 @@
  * along with com.broadlink.  If not, see http://www.gnu.org/licenses/.
 -->
 
-<script>
-
-</script>
-
 <style type="text/css">
   span label {
     width: 100px
@@ -52,7 +48,7 @@
         </div>
 </td></TR><tr><td>
         <div class="messages">
-            <p class="broadlink-status broadlink-error" style="color: #ff6300;"><span class="broadlink-error-msg"></span></p>
+            <p id="broadlink-error" style="color: #ff6300;"> </p>
         </div>
 </td></TR><tr><td>
         <div class="form-group buttons">
@@ -70,8 +66,8 @@ Homey.setTitle(Homey.__('pair.title'));
 
 
 function showError( msg ) {
-	$('.broadlink-error').show();
-    $('.broadlink-error-msg').html( msg );
+ 	//document.getElementById('broadlink-error').style.display = "none";
+	document.getElementById('broadlink-error').innerHTML = msg;
 }
 
 
@@ -97,6 +93,13 @@ function add( data ) {
 }
 
 
+//function called when user pressed button
+function cancel(data) {
+	Homey.emit('disconnect');
+	Homey.done();
+}
+
+
 Homey.on('discovered', function (device) {
 
 	if( device ) {
@@ -104,21 +107,14 @@ Homey.on('discovered', function (device) {
 			Homey.showView('list_devices');
 		}
 		else {
-			showError( Homey.__('pair.found_another') + device.data.name + '(' + device.data.devtype + ')');
+			showError( Homey.__('pair.found_another', {'dev': device.data.name, 'type': device.data.devtype.toString('hex') }));
 		}
 	}
 	else {
 		showError( Homey.__('pair.error_no_discover') );
 	}
-
 })
 
-
-// function called when user pressed button
-function cancel(data) {
-	Homey.emit('disconnect');
-	Homey.done();
-}
 
 
 </script>

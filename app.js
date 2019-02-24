@@ -21,14 +21,13 @@
 const Homey = require('homey');
 //const Util = require('./../lib/util.js');
 
-
 /**
  * Main entry point for app.
  */
 class BroadlinkApp extends Homey.App {
 
 	onInit() {
-
+		
 		Homey.on('memwarn', () => {
 			// simply ignore it
 		})

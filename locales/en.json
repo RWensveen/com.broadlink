@@ -8,7 +8,8 @@
     "save_settings_nocmd": " is not known yet",
     "save_settings_exist": " already exists",
     "sensor_check": "Cannot get sensor values from device",
-    "invalid_response": "invalid response from device"
+    "invalid_response": "invalid response from device",
+    "invalid_sensor_limits": "Invalid sensor limits"
   },
   "pair": {
     "title": "Pair Broadlink Device",
@@ -20,7 +21,7 @@
 	"address": "IP address",
 	"devicetype": "Device Type",
 	"error_no_discover": "No device discovered. Did you switch it on, and is it connectect to your WiFi network ?",
-	"found_another": "Found another device: ",
+	"found_another": "Found another device: __dev__ (__type__)",
 	"invalid_ipaddress": "Invalid IP address",
 	"discovering": "Discovering device..."
   },
@@ -29,7 +30,9 @@
   	"compatinfo": "In compatibility mode, any device found during pairing will be accepted as the selected device type. This means the device paired will be treated as the choosen device type. As a result, not all (if any) of the capablities of the device will work properly",
   	"compatmode": "Compatibility Mode",
    	"debuginfo": "Write logging text to console. This is only valid if app is loaded in debug mode.",
-   	"debuglog" : "Log Mode"
+   	"debuglog" : "Log Mode",
+   	"errorreportinfo" : "Error reports using Sentry.IO",
+   	"errorreport" : "Sentry.IO"
   },
   "air_quality": {
     "excellent": "excellent",

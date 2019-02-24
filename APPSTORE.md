@@ -16,8 +16,11 @@ Use [Homey](https://www.athom.com/) together with [Broadlink devices](http://www
 * SP3S - power socket switch with meter
 * MP1 - 4 way power socket switch
 
-
 See compatibility list further on.
+
+# Soon to be supported devices
+
+* HYSEN - Thermostats by Hysen
 
 # Device configuration
 
@@ -44,22 +47,88 @@ give the command a more logical name, or delete it by clearing its name.
 Currently 20 to 30 commands are supported in the settings page of each device.
 It is not possible at this moment to change the order of the commands in the settings page.
 
-# RF learning
-Learning an RF command on a Plus device (e.g. RM Pro Plus) is done in several steps. Each step
-is told by Homey (English or Dutch).
-* press the RF-learn button in the device card
-* keep the button on your remote pressed continuously
-* press the button shortly, multiple times
-  -> the device the RF remote is controlling should understand the button. E.g for a lightswitch, 
-     the light will turn on and off repeatedly with the pressing of the button.
-* stop pressing the remote button
-* rename the command to something usefull 
 
+# Learning RF commands with RM Pro Plus
+
+Once the RM-Pro-plus device is installed in Homey, it can learn RF commands.
+Note that the RF must operate on 433 MHz, as this is the only band the RM-Pro-plus can understand.
+Check your RF remote/device if this is the case.
+
+Homey will talk you through the learing process, so be somewhere close to it.
+As learing can be rather tricky, it is highly advisable to have the RF-device you want to control
+available also.
+
+**Learning Sequence**
+
+Learning is done as follows:
+  
+1.  make sure the volume of the speaker in Homey is set to a clearly audible level.
+    => open the app
+    -> more
+    -> Settings
+    -> Sound
+    -> Volume  (set to a level)
+
+2. Open the device page
+    => open the app
+    -> Devices
+    -> RM Pro Plus (or the name you gave it)
+
+3. Get hold of your RF-remote
+4. Press the 'Learn RF button'
+5. Homey will tell you to continuously press the button on your remote.
+   So, press the button, and keep it pressed.
+6. Homey will then tell you to press the button repeatedly.
+   So, press the button, release it, press it, release it (but not too fast).
+
+   As it is important that the RM-Pro-plus understands the button presses, 
+   it is best you verify you are pressing the button at the correct speed.
+   You can do this as follows:
+    - switch on the device you want to control with your RF-remote
+    - press the button on the RF-remote, and observe your device responding to it.
+    - release the button.
+    - keep on repeating the press/release steps.
+    - your device should respond to each button press.
+    
+7. Homey will tell you to stop pressing the button.
+   The RM-Pro-plus now has learned the command.
+   
+You can now repeat the learning process for another button, or you can give 
+the command just learned a meaningfull name
+
+8. Give the command a meaningfull name
+   -> Settings (the icon top-right on your screen)
+   -> Advanced Settings
+
+   a.  Rename the command (tap on the name, edit it, save it)
+   b.  Remove the command (tap on the name, clear the name, save it)
+
+
+** Using learned commands**
+
+Both InfraRed and RF commands can now be used in an identical way.
+All commands the RM-Pro-plus has learned, are available only in flows.
+When creating a flow, you can use the command (or any command) as a trigger 
+to start the flow.
+In the 'then' part, you can select your RM-Pro-plus device, and select the 
+command from the list of available commands.
+
+If you like to use a button to send a command, you can create a Virtual Device, 
+which will trigger a flow (as described above).
+
+   
 # Compatibility
 
 A large number of devices are compatible with eachother.
 Also, broadlink devices are sold as OEM products, with a different name.
-The following table lists which devices are compatible.
+
+If you have a device which should be supported, but is not recognized by this Broadlink app,
+you can set the '**Compatibility Mode**' in the App settings.
+Once set, a discovered device will be added as the type you are trying to install.
+This will work if you install the correct device. If you install a wrong device (e.g trying
+to install a SP1 switch, but the device is a RM3 Mini), your device will not work. 
+
+The following table lists which devices are already added as compatible to the app:
 
 <table border=1>
 <tr><th> Supported Device  </th><th> Compatible Device               </th></tr>
@@ -99,10 +168,11 @@ The following table lists which devices are compatible.
 <tr><td>MP1                </td><td> MP1                             <br>
                                      Hontar MP1                      </td></tr>
 
+<tr><td colspan = 2><i>Future enhancements</i></td></tr>
+
 <tr><td>HYSEN              </td><td> Hysen                           </td></tr>
 
 <tr><td>S1C                </td><td> S1C (SmartOne Alarm Kit)        </td></tr>
 
 <tr><td>DOOYA              </td><td> Dooya DT360E (DOOYA curtain v2) </td></tr>
 </table>
-

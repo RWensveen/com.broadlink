@@ -62,7 +62,7 @@ class BroadlinkA1Driver extends BroadlinkDriver {
 		return args.device.check_noiselevel_softer(args,state,callback)
 	}
 
-
+	
 	onInit() {
 		super.onInit({
 			CompatibilityID: 0x2714   // A1
