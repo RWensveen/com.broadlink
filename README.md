@@ -60,21 +60,21 @@ still some things to do:
 
 # Version
 
-* 2.0.3
-Add user manual (in APPSTORE.md) explaining how to use RF learning.
-Correct sensor display of A1 device
-Correct SP1 device, so the app will not crash :-)
-Add Hysen thermostat (implementation done, testing not done -> it might completely fail)
-Move capability icons to /assets directory (i.s.o. /drivers/xxx/assets)
-Correct app settings page to show current settings.
-
-* 2.0.2
+* 2.0.3<br>
+Add user manual (in APPSTORE.md) explaining how to use RF learning.<br>
+Correct sensor display of A1 device<br>
+Correct SP1 device, so the app will not crash :-)<br>
+Add Hysen thermostat (implementation done, testing not done -> it might completely fail)<br>
+Move capability icons to /assets directory (i.s.o. /drivers/xxx/assets)<br>
+Correct app settings page to show current settings.<br>
+<P>
+* 2.0.2<br>
 Learning and transmitting RF (433MHz) works. Homey speech is used to inform the user on what to do.
-
-* 2.0.1
+<P>
+* 2.0.1<br>
 Updated to Homey V2.0 to prevent app crashes
 Use async/await wherever possible (easier to read compared to Promise)
-
-* 1.3.5
+<P>
+* 1.3.5<br>
 All seems ok, but RF not working
 
