@@ -97,14 +97,14 @@ function add( data ) {
 }
 
 
-Homey.on('discovered', function (device) {
+Homey.on('discovered', function ( deviceData ) {
 
 	if( device ) {
 		if( device.isCompatible ) {
 			Homey.showView('list_devices');
 		}
 		else {
-			showError( Homey.__('pair.found_another') + device.data.name + '(' + device.data.devtype + ')');
+			showError( Homey.__('pair.found_another', {'dev': device.data.name, 'type': device.data.devtype.toString('hex') }));
 		}
 	}
 	else {

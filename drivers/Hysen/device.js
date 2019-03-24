@@ -53,27 +53,55 @@ class HysenDevice extends BroadlinkDevice {
 		return await this.get_temperature();
 	}
 
+	check_parentalmode_on(callback) {
+		callback(null, this.data['ParentalMode'] )
+	}
+
+	async do_action_parentalmode_on() {
+		this.data['ParentalMode'] = true
+		await this.set_power( this.data['power'], true )
+		this.setCapabilityValue('parental_mode', true);
+	}
+
+	async do_action_parentalmode_off() {
+		this.data['ParentalMode'] = false
+		await this.set_power( this.data['power'], false )
+		this.setCapabilityValue('parental_mode', false);
+	}
+
+	_trigger_parentalmode() {
+		let drv = this.getDriver();
+		if( this.data['ParentalMode'] ) {
+			drv.trigger_parentalmode_on.trigger(this,{},{})
+		}
+		else {
+			drv.trigger_parentalmode_off.trigger(this,{},{})
+		}
+		drv.trigger_parentalmode_toggle.trigger(this,{},{})
+	}
 	
 	_updateCapabilities() {
-		//Util.debugLog("==> hysen._updateCapabilities")
-		if( this.data['RoomTemperature'] ) {
-			//Util.debugLog("_updateCapabilities - room temperature = "+this.data['RoomTemperature']);
-			this.setCapabilityValue('measure_temperature', this.data['RoomTemperature'] );
+		this.setCapabilityValue('measure_temperature', this.data['RoomTemperature'] );
+
+		if( this.getCapabilities().indexOf('measure_temperature.room') > -1 ) {
 			this.setCapabilityValue('measure_temperature.room', this.data['RoomTemperature'] );
 		}
-		if( this.data['ExternalTemperature'] ) {
-			//Util.debugLog("_updateCapabilities - external temperature = "+this.data['ExternalTemperature']);
+		if( this.getCapabilities().indexOf('measure_temperature.outside') > -1 ) {
 			this.setCapabilityValue('measure_temperature.outside', this.data['ExternalTemperature'] );
 		}
 		if( this.data['TargetTemperature'] ) {
-			//Util.debugLog("_updateCapabilities - target_temperature = "+this.data['TargetTemperature']);
 			this.setCapabilityValue('target_temperature', this.data['TargetTemperature'] ); 
+		}
+		if( this.data['ParentalMode'] != this.getCapabilityValue('parental_mode') ) {
+			this._trigger_parentalmode()
+			this.setCapabilityValue('parental_mode', this.data['ParentalMode'] );
 		}
 	}
 	
-	_updateSettings() {
+	
+	_updateAllSettings() {
 		let newSettings = {};
-		
+
 		if( this.data['TempRangeExtSensor'] ) { newSettings['TempRangeExtSensor'] = this.data['TempRangeExtSensor']; }
 		if( this.data['SensorMode'        ] ) { newSettings['SensorMode'        ] = this.data['SensorMode'        ]; }
 		if( this.data['RoomTempAdjust'    ] ) { newSettings['RoomTempAdjust'    ] = this.data['RoomTempAdjust'    ]; }
@@ -83,16 +111,16 @@ class HysenDevice extends BroadlinkDevice {
 		if( this.data['SensorUpperLimit'  ] ) { newSettings['SensorUpperLimit'  ] = this.data['SensorUpperLimit'  ]; }
 		if( this.data['SensorLowerLimit'  ] ) { newSettings['SensorLowerLimit'  ] = this.data['SensorLowerLimit'  ]; }
 		if( this.data['AntiFreezeMode'    ] ) { newSettings['AntiFreezeMode'    ] = this.data['AntiFreezeMode'    ]; }
-	
+
 		if( Object.keys(newSettings).length > 0) {
-			//Util.debugLog('_updateSettings: ' + JSON.stringify(newSettings));
+			//Util.debugLog("_updateAllSettings: " + JSON.stringify(newSettings));
 			this.setSettings( newSettings )
 		}
 	}
 	
+	
 	_updateSetting( name, changedKeysArr, newSettingsObj ) {
 		if( changedKeysArr.indexOf(name) >= 0 ) {
-			//Util.debugLog("==> hysen._updateSettings:"+name)
 			this.data[name] = newSettingsObj[name];
 			return true;
 		}
@@ -106,20 +134,16 @@ class HysenDevice extends BroadlinkDevice {
 	 *
 	 *  @param changedKeysArr   contains an array of keys that have been changed
 	 */
-	onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, callback ) {
-
+	async onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, callback ) {
 		super.onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, undefined );
-		//Util.debugLog("==> hysen.onSettings");
-		
 		let changed = false
-		
+
 		// sanity check
 		let upperlimit = this.data['SensorUpperLimit'];
 		let lowerlimit = this.data['SensorLowerLimit'];
 		if( changedKeysArr.indexOf('SensorUpperLimit') >= 0 ) { upperlimit = newSettingsObj['SensorUpperLimit'] }
 		if( changedKeysArr.indexOf('SensorLowerLimit') >= 0 ) { lowerlimit = newSettingsObj['SensorLowerLimit'] }
 		if( upperlimit <= lowerlimit ) {
-			//Util.debugLog('Invalid sensor limits.');
 			callback( Homey.__("invalid_sensor_limits") );
 		}
 		else {
@@ -128,23 +152,35 @@ class HysenDevice extends BroadlinkDevice {
 				this.start_check_interval( newSettingsObj['CheckInterval'] )
 			}
 			changed |= this._updateSetting( 'TempRangeExtSensor', changedKeysArr, newSettingsObj );
-			changed |= this._updateSetting( 'SensorMode', changedKeysArr, newSettingsObj );
+			changed |= this._updateSetting( 'SensorMode', changedKeysArr, newSettingsObj );     // string: needs Number(x)
 			changed |= this._updateSetting( 'RoomTempAdjust', changedKeysArr, newSettingsObj );
-			changed |= this._updateSetting( 'AutoMode', changedKeysArr, newSettingsObj );
-			changed |= this._updateSetting( 'LoopMode', changedKeysArr, newSettingsObj );
+			changed |= this._updateSetting( 'AutoMode', changedKeysArr, newSettingsObj );       // string
+			changed |= this._updateSetting( 'LoopMode', changedKeysArr, newSettingsObj );       // string
 			changed |= this._updateSetting( 'FloorTempDeadZone', changedKeysArr, newSettingsObj );
 			changed |= this._updateSetting( 'SensorUpperLimit', changedKeysArr, newSettingsObj );
 			changed |= this._updateSetting( 'SensorLowerLimit', changedKeysArr, newSettingsObj );
-			changed |= this._updateSetting( 'AntiFreezeMode', changedKeysArr, newSettingsObj );
-			
+			changed |= this._updateSetting( 'AntiFreezeMode', changedKeysArr, newSettingsObj );  // string
+
 			if( changed ) {
-				this.set_advanced( this.data['LoopMode'], this.data['SensorMode'], this.data['TempRangeExtSensor'], 
-									this.data['FloorTempDeadZone'], this.data['SensorUpperLimit'], this.data['SensorLowerLimit'], 
-									this.data['RoomTempAdjust'], this.data['AntiFreezeMode'], this.data['poweron']);
-			
-				this.set_mode( this.data['AutoMode'], this.data['LoopMode'] /*, sensor*/ );
+				await this.set_advanced( Number(this.data['LoopMode']), Number(this.data['SensorMode']), this.data['TempRangeExtSensor'], 
+						this.data['FloorTempDeadZone'], this.data['SensorUpperLimit'], this.data['SensorLowerLimit'], 
+						this.data['RoomTempAdjust'], Number(this.data['AntiFreezeMode']), this.data['poweron']);
+
+				await this.set_mode( Number(this.data['AutoMode']), Number(this.data['LoopMode']) /*, sensor*/ );
 			}
-		
+
+			if( changedKeysArr.indexOf("AdjustClock") >= 0 ) {
+				let d = new Date()
+				let day = d.getDay()
+				if( day == 0 ) { day = 7 }  // sunday = 7, not 0
+				await this.set_time(d.getHours(), d.getMinutes(), d.getSeconds(), day)
+				d = undefined
+				
+				setTimeout( function(d) {
+					this.setSettings( {AdjustClock:false})
+				}.bind(this), 2000 );  // timeout in [msec]
+			}
+			
 			if( callback ) {
 				/* only do callback if this functions was called by Homey.
 				 * if it was called by another class, that class will do the callback.
@@ -179,10 +215,6 @@ class HysenDevice extends BroadlinkDevice {
 	    	return resp
 	    }
 	    else {
-	    	//resp = new Uint8Array( 19 )
-	    	//resp[5] = 40
-	    	//resp[18]=5
-	    	//return resp
 	    	//Util.debugLog( "**> hysen.send_request: Errorcode "+response.error + " in response")
 	    	throw( "Errorcode: " + response.error )
 	    }
@@ -192,19 +224,20 @@ class HysenDevice extends BroadlinkDevice {
 	 * Get current room temperature in degrees celsius
 	 */
 	async get_temperature() {
-		//Util.debugLog("==> hysen.get_temperature")
-		
 		try {
 			var payload = new Uint8Array([0x01,0x03,0x00,0x00,0x00,0x08])
 			var response = await this.send_request(payload)
 
+			//Util.debugLog("==> hysen.get_temperature: " + Util.asHex(response))
+
 			this.data['RoomTemperature'] = response[ 5 ] / 2.0;
+			this.data['TargetTemperature'] = response[ 6 ] / 2.0;
 			this.data['ExternalTemperature'] = response[ 18 ] / 2.0;
 
 			this._updateCapabilities();
 		}
 		catch( err ) {
-			Util.debugLog('<** hysen.get_temperature - catch = ' + err);
+			Util.debugLog("**> hysen.get_temperature - catch = " + err);
 		}
 	}
 
@@ -213,83 +246,87 @@ class HysenDevice extends BroadlinkDevice {
 	 * Get full status (including timer schedule)
 	 */
 	async get_full_status() {
-		//Util.debugLog("==> hysen.get_full_status");
-
 		try {
 			var payload = new Uint8Array([0x01,0x03,0x00,0x00,0x00,0x16]);
 			var response = await this.send_request(payload);
 
-			//Util.debugLog('==>Hysendevice.get_full_status - ' + Util.asHex(response));
+			//Util.debugLog("==> hysen.get_full_status - " + Util.asHex(response));
 
-			this.data['remote_lock'] =  response.payload[3] & 1;
-			this.data['power'] =  response.payload[4] & 1;
-			this.data['active'] =  (response.payload[4] >> 4) & 1;
-			this.data['temp_manual'] =  (response.payload[4] >> 6) & 1;
-			this.data['RoomTemperature'] =  (response.payload[5] & 255)/2.0;
-			this.data['TargetTemperture'] =  (response.payload[6] & 255)/2.0;
-			this.data['AutoMode'] =  response.payload[7] & 15;
-			this.data['LoopMode'] =  (response.payload[7] >> 4) & 15;
-			this.data['SensorMode'] = response.payload[8];
-			this.data['TempRangeExtSensor'] = response.payload[9];
-			this.data['FloorTempDeadZone'] = response.payload[10];
-			this.data['SensorUpperLimit'] = response.payload[11];
-			this.data['SensorLowerLimit'] = response.payload[12];
-			this.data['RoomTempAdjust'] = ((response.payload[13] << 8) + response.payload[14])/2.0;
+			this.data['ParentalMode'] = ( response[3] & 1 ) ? true : false;
+			this.data['power'] =  response[4] & 1;
+			this.data['active'] =  (response[4] >> 4) & 1;
+			this.data['temp_manual'] =  (response[4] >> 6) & 1;
+			this.data['RoomTemperature'] =  response[5]/2.0;
+			this.data['TargetTemperture'] =  response[6]/2.0;
+			this.data['AutoMode'] =  (response[7] & 15).toString();
+			this.data['LoopMode'] =  ((response[7] >> 4) & 0x0F).toString();
+			this.data['SensorMode'] = response[8].toString();
+			this.data['TempRangeExtSensor'] = response[9];
+			this.data['FloorTempDeadZone'] = response[10];
+			this.data['SensorUpperLimit'] = response[11];
+			this.data['SensorLowerLimit'] = response[12];
+			this.data['RoomTempAdjust'] = (response[13] << 8) + response[14];
 			if( this.data['RoomTempAdjust'] > 32767 ) {
-		  		this.data['RoomTempAdjust'] = 32767 - this.data['RoomTempAdjust'];
+		  		this.data['RoomTempAdjust'] = this.data['RoomTempAdjust'] - 65538;
 		  	}
-			this.data['AntiFreezeMode'] = response.payload[15];
-			this.data['poweron'] = response.payload[16];
-			this.data['unknown'] = response.payload[17];
-			this.data['ExternalTemperature'] = (response.payload[18] & 255)/2.0;
-			this.data['hour'] =  response.payload[19];
-			this.data['min'] =  response.payload[20];
-			this.data['sec'] =  response.payload[21];
-			this.data['dayofweek'] =  response.payload[22];
+			this.data['RoomTempAdjust'] = this.data['RoomTempAdjust'] / 2.0
+			this.data['AntiFreezeMode'] = response[15].toString();
+			this.data['poweron'] = response[16];
+			this.data['unknown'] = response[17];
+			this.data['ExternalTemperature'] = response[18]/2.0;
+			this.data['hour'] =  response[19];
+			this.data['min'] =  response[20];
+			this.data['sec'] =  response[21];
+			this.data['dayofweek'] =  response[22];
 
-			weekday = [];
+			let weekday = [];
 			for( let i =0; i < 6; i++ ) {
-	  			weekday.append({'start_hour':response.payload[2*i + 23], 
-	  						    'start_minute':response.payload[2*i + 24],
-	  						    'temp':response.payload[i + 39]/2.0});
+	  			weekday['start_hour'] = response[2*i + 23] 
+	  			weekday['start_minute' ] = response[2*i + 24]
+	  			weekday['temp'] = response[i + 39]/2.0;
 			}
 			this.data['weekday'] = weekday;
 			
-			weekend = [];
+			let weekend = [];
 			for( let i =6; i < 8; i++ ) {
-				weekend.append({'start_hour':response.payload[2*i + 23], 
-							    'start_minute':response.payload[2*i + 24],
-							    'temp':response.payload[i + 39]/2.0});
+				weekend['start_hour'] = response[2*i + 23] 
+				weekend['start_minute'] = response[2*i + 24]
+				weekend['temp'] = response[i + 39]/2.0;
 			}
 			this.data['weekend'] = weekend;
+
+			this._updateCapabilities(); 
+			this._updateAllSettings();
+
+			//Util.debugLog("Hysendevice.get_full_status: rommtemp = " + this.data['RoomTemperature'] + " = " + JSON.stringify(this.data));
 		}
 		catch( err ) {
-			Util.debugLog('<** hysen.get_full_status - catch = ' + err);
+			Util.debugLog("**> hysen.get_full_status - catch = " + err);
 		}
-		this._updateCapabilities(); 
-		this._updateSettings();
 	}
 
 
 	/**
 	 * Change controller mode
-     * auto_mode = 1 for auto (scheduled/timed) mode, 0 for manual mode.
-     * Manual mode will activate last used temperature.  In typical usage call set_temp to activate manual control and set temp.
-     * LoopMode refers to index in [ "12345,67", "123456,7", "1234567" ]
-     * E.g. LoopMode = 0 ("12345,67") means Saturday and Sunday follow the "weekend" schedule
-     * LoopMode = 2 ("1234567") means every day (including Saturday and Sunday) follows the "weekday" schedule
+     * AutoMode 
+     *              Manual mode will activate last used temperature.  In typical usage call set_target_temperature() to 
+     *              activate manual control and set temperature.
+     *                 0 for manual mode
+     *                 1 for auto (scheduled/timed) mode
+     * LoopMode     Scheduling mode for days
+     *                 index in [ "12345,67", "123456,7", "1234567" ]
+     *                 0 ("12345,67") means Saturday and Sunday follow the "weekend" schedule
+     *                 1 ("123456,7") means Saturday follows weekday and Sunday follows "weekend" schedule
+     *                 2 ("1234567") means every day (including Saturday and Sunday) follows the "weekday" schedule
      * The sensor command is currently experimental
      */
-     set_mode( AutoMode, LoopMode, sensor) {
+     async set_mode( AutoMode, LoopMode, sensor) {
     	 try {
-    		 //Util.debugLog("==> hysen.set_mode");
-
     		 if( sensor === undefined ) { sensor = 0; }
     		 let mode_byte = ( (LoopMode + 1) << 4) + AutoMode;
-    		 //Util.debugLog('Mode byte: ' + mode_byte)
 
     		 var payload = new Uint8Array([0x01,0x06,0x00,0x02,mode_byte,sensor]);
-    		 return this.send_request(payload);
+    		 await this.send_request(payload);
     	 }
     	 catch( err ) {
     		 Util.debugLog("**> hysen.set_mode: catch = " + err);
@@ -299,51 +336,55 @@ class HysenDevice extends BroadlinkDevice {
 
 	/**
 	 * Advanced settings
-	 * sensor_mode   Sensor mode (SEN)
+     * LoopMode     Scheduling mode for days
+     *                 index in [ "12345,67", "123456,7", "1234567" ]
+     *                 0 ("12345,67") means Saturday and Sunday follow the "weekend" schedule
+     *                 1 ("123456,7") means Saturday follows weekday and Sunday follows "weekend" schedule
+     *                 2 ("1234567") means every day (including Saturday and Sunday) follows the "weekday" schedule
+	 * SensorMode   Sensor mode (SEN)
 	 *                 0 for internal sensor,
 	 *                 1 for external sensor,
 	 *                 2 for internal control temperature, external limit temperature.
 	 *                 Factory default: 0.
-	 * TempRangeExtSensor           Set temperature range for external sensor
+	 * TempRangeExtSensor
+	 *              Set temperature range for external sensor
 	 *                 TempRangeExtSensor = 5..99.
 	 *                 Factory default: 42C
 	 * FloorTempDeadZone
-	 *               Deadzone for floor temprature
+	 *              Deadzone for floor temprature
 	 *                 dif = 1..9.
 	 *                 Factory default: 2C
 	 * SensorUpperLimit
-	 *               Upper temperature limit for internal sensor
+	 *              Upper temperature limit for internal sensor
 	 *                 SensorUpperLimit = 5..99.
 	 *                 Factory default: 35C
 	 * SensorLowerLimit
-	 *               Lower temperature limit for internal sensor
+	 *              Lower temperature limit for internal sensor
 	 *                 SensorLowerLimit = 5..99.
 	 *                 Factory default: 5C
 	 * RoomTempAdjust
-	 *               Actual temperature calibration
+	 *              Actual temperature calibration
 	 *                 adj = -0.5.
 	 *                 Prescision 0.1C
 	 * AntiFreezeMode
-	 *               Anti-freezing function
+	 *              Anti-freezing function
 	 *                 0 for anti-freezing function shut down,
 	 *                 1 for anti-freezing function open.
 	 *                 Factory default: 0
-	 * poweron       Power on memory
+	 * poweron      Power on memory
 	 *                 0 for power on memory off,
 	 *                 1 for power on memory on.
 	 *                 Factory default: 0
 	 */
 	async set_advanced( LoopMode, SensorMode, TempRangeExtSensor, FloorTempDeadZone, SensorUpperLimit, 
-			      SensorLowerLimit, RoomTempAdjust, AntiFreezeMode, poweron) {
+			      		SensorLowerLimit, RoomTempAdjust, AntiFreezeMode, poweron) {
 		try {
-			//Util.debugLog("==> hysen.set_advanced");
-
 			let payload = new Uint8Array([0x01,0x10,0x00,0x02,0x00,0x05,0x0a,
-    	                               LoopMode, SensorMode, TempRangeExtSensor, 
-    	                               FloorTempDeadZone, SensorUpperLimit, SensorLowerLimit,
+    	                               LoopMode, SensorMode, 
+    	                               TempRangeExtSensor, FloorTempDeadZone, 
+    	                               SensorUpperLimit, SensorLowerLimit,
     	                               ((RoomTempAdjust*2)>>8 & 0xff), ((RoomTempAdjust*2) & 0xff),
     	                               AntiFreezeMode, poweron]);
-
 			await this.send_request(payload);
 		}
    	 	catch( err ) {
@@ -352,43 +393,45 @@ class HysenDevice extends BroadlinkDevice {
 	}
 
 
-
 	/**
 	 * Set temperature for manual mode (also activates manual mode if currently in automatic)
 	 */
-	async set_temp(temp) {
-   	 	this.data['TargetTemperature'] = temp
+	async set_target_temperature(temp) {
 		try {
-			//Util.debugLog("==> hysen.set_temp: " + this.data['TargetTemperature']);
-			let payload = new Uint8Array([0x01,0x06,0x00,0x01,0x00,temp * 2]);
+	   	 	let payload = new Uint8Array([0x01,0x06,0x00,0x01,0x00,temp * 2]);
 			await this.send_request(payload);
 		}
    	 	catch( err ) {
-   	 		Util.debugLog("**> hysen.set_temp: catch = " + err);
+   	 		Util.debugLog("**> hysen.set_target_temperature: catch = " + err);
    	 	}
 	}
 
 
 	/**
 	 * Set device on(1) or off(0), does not deactivate Wifi connectivity.
-	 * Remote lock disables control by buttons on thermostat.
+	 * ParentalMode disables control by buttons on thermostat.
 	 */
- 	async set_power( power, remote_lock ) {
-		//Util.debugLog("==> hysen.set_power");
-
-    	let payload = new Uint8Array([0x01,0x06,0x00,0x00,remote_lock,power]);
-		await this.send_request(payload);
+ 	async set_power( power, ParentalMode ) {
+		try {
+			let payload = new Uint8Array([0x01,0x06,0x00,0x00, ParentalMode ? 1:0, power]);
+			await this.send_request(payload);
+		}
+   	 	catch( err ) {
+   	 		Util.debugLog("**> hysen.set_power: catch = " + err);
+   	 	}
 	}
 
  	
 	/**
 	 * set time on device
-	 * n.b. day=1 is Monday, ..., day=7 is Sunday
+	 * 
+	 * hour    [0..23]
+	 * minute  [0..59]
+	 * second  [0..59]
+	 * day     [1..7]   1 = Monday, 2 = Tuesday, ... , 7 = Sunday
 	 */
 	async set_time(hour, minute, second, day) {
 		try {
-			//Util.debugLog("==> hysen.set_time");
-
 			let payload = new Uint8Array([0x01,0x10,0x00,0x08,0x00,0x02,0x04, hour, minute, second, day ]);
 			await this.send_request(payload);
 		}
@@ -442,29 +485,33 @@ class HysenDevice extends BroadlinkDevice {
 
 	
 	async onCapabilityTargetTemperature( temp ) {
-		//Util.debugLog('==> hysen.onCapabilityTargetTemperature - temp = '+temp );
-		await this.set_temp( temp )
+		this.data['TargetTemperature'] = temp
+		await this.set_target_temperature( temp )
+	}
+
+	async onCapabilityParentalMode( mode ) {
+		this.data['ParentalMode'] = mode
+		await this.set_power( this.data['power'], mode )
+		this._trigger_parentalmode()
 	}
 
 	
 	async onInit() {
-		super.onInit();
-		this.data = [];
-		this.registerCapabilityListener('target_temperature', this.onCapabilityTargetTemperature.bind(this));
-		
-		// set default, otherwise temp-setting on phone might not work
-		this.data['TargetTemperature'] = 5;
-		this.data['RoomTemperature'] = 5;
-		this.data['ExternalTemperature'] = 5;
-		
-		this.data['SensorUpperLimit'] = 87.0
-		
-		setTimeout( function() {
-			//Util.debugLog('==> hysen.onAdded.timeout');
-			this.get_full_status()
-		}.bind(this), 10000 );  // timeout in [msec]
+		try {
+			super.onInit();
+			this.data = [];
+			this.registerCapabilityListener('target_temperature', this.onCapabilityTargetTemperature.bind(this));
+			this.registerCapabilityListener('parental_mode', this.onCapabilityParentalMode.bind(this));
 
-		//Util.debugLog("hysen.onInit");
+			setTimeout( async function() {
+				try {
+					await this.get_full_status()
+					await this.get_temperature()
+				}
+				catch( error ) { Util.debugLog("**> HysenDevice.onInit: catch = " + error) }
+			}.bind(this), 4000 );  // timeout in [msec]
+		}
+		catch( error ) { Util.debugLog("**> HysenDevice.onInit: catch = " + error) }
 	}
 
 	
@@ -472,9 +519,7 @@ class HysenDevice extends BroadlinkDevice {
 	 * This method is called when the user adds the device, called just after pairing.
 	 */
 	async onAdded() {
-		//Util.debugLog('hysen.onAdded');
 		super.onAdded();
-		this.data = [];
 	}
 
 
@@ -484,13 +529,8 @@ class HysenDevice extends BroadlinkDevice {
 	onDeleted() {
 		super.onDeleted();
 		this.data = [];
-		//Util.debugLog('hysen.onDeleted');
 	}
 
 }
 
 module.exports = HysenDevice;
-
-
-
-

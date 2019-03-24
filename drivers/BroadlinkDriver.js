@@ -39,7 +39,7 @@ class BroadlinkDriver extends Homey.Driver {
 			this.CompatibilityID = options.CompatibilityID;
 		}
 		// list of devices discovered during pairing
-		this.discoveredDevices = [];
+		this.discoveredDevice = undefined
 	}
 
 
@@ -65,14 +65,14 @@ class BroadlinkDriver extends Homey.Driver {
 
         socket.on('disconnect', function() {
         	try {
-				this.discoveredDevices = [];
+				this.discoveredDevice = undefined;
 				this._communicate.destroy();
 				this._communicate = undefined;
         	} catch( err ) { ; }
        	}.bind(this) );
 
 		socket.on( 'start_discover', function(userdata, callback ) {
-			this.discoveredDevices = [];
+			this.discoveredDevice = undefined;
 
 			Util.getHomeyIp()
 				.then ( function( localAddress ) {
@@ -86,19 +86,19 @@ class BroadlinkDriver extends Homey.Driver {
 			           		var devinfo = DeviceInfo.getDeviceInfo(info.devtype,this.CompatibilityID)
 			           		var readableMac = Util.asHex(info.mac).replace(/,/g,':')
 
-			           		var device = {
-			           				name: devinfo.name + ' ('+readableMac+')',
-			           				data: { name     : devinfo.name,
-			           						mac      : Util.arrToHex(info.mac),
-			           						devtype  : info.devtype.toString()
-			           						},
-			           				settings: { ipAddress: info.ipAddress
-			           						},
+			           		this.discoveredDevice = { 
+			           				device : {
+			           					name: devinfo.name + ' ('+readableMac+')',
+			           					data: { name     : devinfo.name,
+			           							mac      : Util.arrToHex(info.mac),
+			           							devtype  : info.devtype.toString()
+			           					},
+			           					settings: { ipAddress: info.ipAddress
+			           					}
+			           				},
 			           				isCompatible: devinfo.isCompatible
 			           		}
-			           		this.discoveredDevices.push( device )
-			           
-			           		socket.emit('discovered', device )
+			           		socket.emit('discovered', this.discoveredDevice )
 			           
 			           	},  rejectReason => {
 			           		socket.emit('discovered', null )
@@ -114,13 +114,60 @@ class BroadlinkDriver extends Homey.Driver {
 				})
 		}.bind(this))
 
+		socket.on('properties_set', function( properties, callback ) {
+			// only used for HYSEN device.
+			if( ! properties[ 'externalSensor' ] ) {
+				this.discoveredDevice.device['capabilities'] = [
+					"measure_temperature",
+					"target_temperature",
+					"parental_mode"
+					]
+				this.discoveredDevice.device['capabilitiesOptions' ] = {
+					"target_temperature": {
+						"min": 5,
+						"max": 30,
+						"step": 0.5
+					}
+				}
+			}
+			else {
+				this.discoveredDevice.device['capabilities'] = [
+					"measure_temperature.room",
+					"measure_temperature.outside",
+					"measure_temperature",
+					"target_temperature",
+					"parental_mode"
+					]
+				this.discoveredDevice.device['capabilitiesOptions' ] = {
+					"measure_temperature.room": { "title": { "en": "Room", "nl": "Binnen2" } },
+					"measure_temperature.outside": { "title": { "en": "Outside", "nl": "Buiten2" } },
+					"target_temperature": {
+						"min": 5,
+						"max": 30,
+						"step": 0.5
+					}
+				}
+			}
+/*
+			// no external sensor: remove from capabilities
+			if( ! properties[ 'externalSensor' ] ) {
+				let i = this.discoveredDevice.device['capabilities'].indexOf('measure_temperature.outside')
+				if( i > -1) {
+					this.discoveredDevice.device['capabilities'].splice( i,1 )
+				}
+				i = this.discoveredDevice.device['capabilitiesOptions'].indexOf('measure_temperature.outside')
+				if( i > -1) {
+					this.discoveredDevice.device['capabilitiesOptions'].splice( i,1 )
+				}
+			}
+*/
+			socket.emit('properties_done',null)
+		}.bind(this));
+		
 		socket.on('list_devices', function(data, callback) {
-			return callback(null,this.discoveredDevices);
+			return callback(null,this.discoveredDevice.device);
 		}.bind(this));
 	}
-
-
 }
-
 
 module.exports = BroadlinkDriver;
