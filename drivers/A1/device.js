@@ -21,7 +21,6 @@
 const Homey = require('homey');
 const Util = require('./../../lib/util.js');
 const BroadlinkDevice = require('./../BroadlinkDevice');
-//const ManualInsights = require('./../../lib/ManualInsights.js');
 
 
 /*
@@ -58,33 +57,10 @@ class A1Device extends BroadlinkDevice {
 		this.air_quality = AirQualityLevel.unknown.value;
 		this.light_level = LightLevel.unknown.value;
 		this.noise_level = NoiseLevel.unknown.value;
-		
-//		this.insights = new ManualInsights();
-//		this.insights.onInit();
-//		this.insights.getInsightsLog( this, 'a1_air_quality_number', "air quality");
-//		this.insights.getInsightsLog( this, 'a1_light_level_number', "light level");
-//		this.insights.getInsightsLog( this, 'a1_noise_level_number', "noise level");
 	}
-	
-	
-//	onRenamed() {
-//		this.insights.replaceInsightsLog( 'a1_air_quality_number', "air quality");
-//		this.insights.replaceInsightsLog( 'a1_light_level_number', "light level");
-//		this.insights.replaceInsightsLog( 'a1_noise_level_number', "noise level");
-//	}	
-
-	
-//	onDeleted() {
-//		super.onDeleted();
-//		//Util.debugLog('delete insightsLogs');
-//		this.insights.deleteInsightsLog('a1_air_quality_number');
-//		this.insights.deleteInsightsLog('a1_light_level_number');
-//		this.insights.deleteInsightsLog('a1_noise_level_number');
-//	}
 
 	
 	onCapabilityUpdateSensor(onoff) {
-		//Util.debugLog('updateSensor')
 		this.onCheckInterval();
 	}
 
@@ -225,7 +201,6 @@ class A1Device extends BroadlinkDevice {
 			if( this.air_quality != AirQualityLevel.unknown.value ) {
 				this.setCapabilityValue('a1_air_quality', str_air_quality, true);
 				this.setCapabilityValue('a1_air_quality_number', this.air_quality);
-//				this.insights.addEntry('a1_air_quality_number', this.air_quality );
 			}
 
 			switch( str_light )
@@ -236,10 +211,9 @@ class A1Device extends BroadlinkDevice {
 				case 3  : this.light_level = LightLevel.bright.value  ; str_light = LightLevel.bright.name;  break;
 				default : this.light_level = LightLevel.unknown.value ; str_light = LightLevel.unknown.name; break;
 			}
-	    	if ( this.light_level != LightLevel.unknown.value ) {
+	    	if( this.light_level != LightLevel.unknown.value ) {
 	    		this.setCapabilityValue('a1_light_level', str_light, true);
     	    	this.setCapabilityValue('a1_light_level_number', this.light_level);
-//    	    	this.insights.addEntry('a1_light_level_number', this.light_level );
 	    	}
 	    
 	    	switch( str_noise )
@@ -252,7 +226,6 @@ class A1Device extends BroadlinkDevice {
 	    	if( this.noise_level != NoiseLevel.unknown.value ) {
 	    	   	this.setCapabilityValue('a1_noise_level', str_noise, true);
     	    	this.setCapabilityValue('a1_noise_level_number', this.noise_level);
-//    	    	this.insights.addEntry('a1_noise_level_number', this.noise_level );
 	    	}
 	    
 	    	this.setCapabilityValue('measure_temperature', temperature );
