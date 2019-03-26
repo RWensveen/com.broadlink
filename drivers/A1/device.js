@@ -1,7 +1,7 @@
 /**
  * Driver for Broadlink devices
  *
- * Copyright 2018, R Wensveen
+ * Copyright 2018-2019, R Wensveen
  *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify

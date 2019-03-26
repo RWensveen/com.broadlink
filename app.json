@@ -1405,6 +1405,132 @@
 			"settings": [
 				{
 					"type": "group",
+					"label": {"en": "Schedule", "nl": "Schema"},
+					"children" : [
+						{
+							"id": "weekday1",
+							"type": "text",
+							"label": { "en": "weekday 1 - time", "nl": "weekdag 1 - tijd" },
+							"pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+							"hint": { "en": "schedule time. format = HH:MM", "nl": "schema tijd. formaat = HH:MM"},
+							"value":  "00:00"
+						},
+						{
+							"id": "weekdaytemp1",
+							"type": "number",
+							"value": 20.0,
+							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
+							"label": { "en": "weekday 1 - temp", "nl": "weekdag 1 - temp" }
+						},
+						{
+							"id": "weekday2",
+							"type": "text",
+							"label": { "en": "weekday 2 - time", "nl": "weekdag 2 - tijd" },
+							"pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+							"hint": { "en": "schedule time. format = HH:MM", "nl": "schema tijd. formaat = HH:MM"},
+							"value":  "00:00"
+						},
+						{
+							"id": "weekdaytemp2",
+							"type": "number",
+							"value": 20.0,
+							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
+							"label": { "en": "weekday 2 - temp", "nl": "weekdag 2 - temp" }
+						},
+						{
+							"id": "weekday3",
+							"type": "text",
+							"label": { "en": "weekday 3 - time", "nl": "weekdag 3 - tijd" },
+							"pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+							"hint": { "en": "schedule time. format = HH:MM", "nl": "schema tijd. formaat = HH:MM"},
+							"value":  "00:00"
+						},
+						{
+							"id": "weekdaytemp3",
+							"type": "number",
+							"value": 20.0,
+							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
+							"label": { "en": "weekday 3 - temp", "nl": "weekdag 3 - temp" }
+						},
+						{
+							"id": "weekday4",
+							"type": "text",
+							"label": { "en": "weekday 4 - time", "nl": "weekdag 4 - tijd" },
+							"pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+							"hint": { "en": "schedule time. format = HH:MM", "nl": "schema tijd. formaat = HH:MM"},
+							"value":  "00:00"
+						},
+						{
+							"id": "weekdaytemp4",
+							"type": "number",
+							"value": 20.0,
+							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
+							"label": { "en": "weekday 4 - temp", "nl": "weekdag 4 - temp" }
+						},
+						{
+							"id": "weekday5",
+							"type": "text",
+							"label": { "en": "weekday 5 - time", "nl": "weekdag 5 - tijd" },
+							"pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+							"hint": { "en": "schedule time. format = HH:MM", "nl": "schema tijd. formaat = HH:MM"},
+							"value":  "00:00"
+						},
+						{
+							"id": "weekdaytemp5",
+							"type": "number",
+							"value": 20.0,
+							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
+							"label": { "en": "weekday 5 - temp", "nl": "weekdag 5 - temp" }
+						},
+						{
+							"id": "weekday6",
+							"type": "text",
+							"label": { "en": "weekday 6 - time", "nl": "weekdag 6 - tijd" },
+							"pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+							"hint": { "en": "schedule time. format = HH:MM", "nl": "schema tijd. formaat = HH:MM"},
+							"value":  "00:00"
+						},
+						{
+							"id": "weekdaytemp6",
+							"type": "number",
+							"value": 20.0,
+							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
+							"label": { "en": "weekday 6 - temp", "nl": "weekdag 6 - temp" }
+						},
+						{
+							"id": "weekend1",
+							"type": "text",
+							"label": { "en": "weekend 1 - time", "nl": "weekend 1 - tijd" },
+							"pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+							"hint": { "en": "schedule time. format = HH:MM", "nl": "schema tijd. formaat = HH:MM"},
+							"value":  "00:00"
+						},
+						{
+							"id": "weekendtemp1",
+							"type": "number",
+							"value": 20.0,
+							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
+							"label": { "en": "weekend 1 - temp", "nl": "weekend 1 - temp" }
+						},
+						{
+							"id": "weekend2",
+							"type": "text",
+							"label": { "en": "weekend 2 - time", "nl": "weekend 2 - tijd" },
+							"pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+							"hint": { "en": "schedule time. format = HH:MM", "nl": "schema tijd. formaat = HH:MM"},
+							"value":  "00:00"
+						},
+						{
+							"id": "weekendtemp2",
+							"type": "number",
+							"value": 20.0,
+							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
+							"label": { "en": "weekend 2 - temp", "nl": "weekend 2 - temp" }
+						}
+					]
+				},
+				{
+					"type": "group",
 					"label": {"en": "Timing", "nl": "Tijdschema"},
 					"children" : [
 						{

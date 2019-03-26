@@ -1,7 +1,7 @@
 /**
  * Driver for Broadlink devices
  *
- * Copyright 2018, R Wensveen
+ * Copyright 2018-2019, R Wensveen
  *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
@@ -200,12 +200,12 @@ class RM3miniDevice extends BroadlinkDevice {
 			if(newName.length > 0) {
 				if(oldName.length > 0) {
 					if( this.dataStore.findCommand( newName ) >= 0 ) {
-						callback( Homey.__('errors.save_settings') + newName + Homey.__('errors.save_settings_exist'), false);
+						callback( Homey.__('errors.save_settings_exist', { 'cmd': newName } ), false);
 						return;
 					}
 				}
 				else {
-					callback( Homey.__('errors.save_settings') + newName + Homey.__('errors.save_settings_nocmd'), null);
+					callback( Homey.__('errors.save_settings_nocmd', {'cmd': newName }), null);
 					return;
 				}
 			}

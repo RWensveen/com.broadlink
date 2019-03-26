@@ -4,12 +4,12 @@
     "decrypt_payload": "Cannot decrypt response: no payload.",
     "decrypt_keylength": "Cannot decrypt response: invalid key length.",
     "discover_local_ip": "Cannot discover devices: local IP address unknown.",
-    "save_settings": "Cannot save changes: command ",
-    "save_settings_nocmd": " is not known yet",
-    "save_settings_exist": " already exists",
+    "save_settings_nocmd": "Cannot save changes: command  __cmd__ is not known yet",
+    "save_settings_exist": "Cannot save changes: command  __cmd__ already exists",
     "sensor_check": "Cannot get sensor values from device",
-    "invalid_response": "invalid response from device",
-    "invalid_sensor_limits": "Invalid sensor limits"
+    "invalid_response": "Invalid response from device",
+    "invalid_sensor_limits": "Invalid sensor limits",
+    "invalid_schedule_time": "Invalid schedule time"
   },
   "pair": {
     "title": "Pair Broadlink Device",
@@ -23,7 +23,9 @@
 	"error_no_discover": "No device discovered. Did you switch it on, and is it connectect to your WiFi network ?",
 	"found_another": "Found another device: __dev__ (__type__)",
 	"invalid_ipaddress": "Invalid IP address",
-	"discovering": "Discovering device..."
+	"discovering": "Discovering device...",
+	"has_sensors":"Has external sensor",
+	"properties":"Properties"
   },
   "settings":{
   	"title": "Broadlink Debug Settings",

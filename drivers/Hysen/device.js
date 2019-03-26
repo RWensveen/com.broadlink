@@ -1,7 +1,7 @@
 /**
  * Driver for Broadlink devices
  *
- * Copyright 2018, R Wensveen
+ * Copyright 2018-2019, R Wensveen
  *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
@@ -112,6 +112,23 @@ class HysenDevice extends BroadlinkDevice {
 		if( this.data['SensorLowerLimit'  ] ) { newSettings['SensorLowerLimit'  ] = this.data['SensorLowerLimit'  ]; }
 		if( this.data['AntiFreezeMode'    ] ) { newSettings['AntiFreezeMode'    ] = this.data['AntiFreezeMode'    ]; }
 
+		newSettings['weekday1'    ] = this.data['schedule'][0]['time'] 
+		newSettings['weekday2'    ] = this.data['schedule'][1]['time'] 
+		newSettings['weekday3'    ] = this.data['schedule'][2]['time'] 
+		newSettings['weekday4'    ] = this.data['schedule'][3]['time'] 
+		newSettings['weekday5'    ] = this.data['schedule'][4]['time'] 
+		newSettings['weekday6'    ] = this.data['schedule'][5]['time'] 
+		newSettings['weekend1'    ] = this.data['schedule'][6]['time'] 
+		newSettings['weekend2'    ] = this.data['schedule'][7]['time'] 
+		newSettings['weekdaytemp1'] = this.data['schedule'][0]['temp']
+		newSettings['weekdaytemp2'] = this.data['schedule'][1]['temp']
+		newSettings['weekdaytemp3'] = this.data['schedule'][2]['temp']
+		newSettings['weekdaytemp4'] = this.data['schedule'][3]['temp']
+		newSettings['weekdaytemp5'] = this.data['schedule'][4]['temp']
+		newSettings['weekdaytemp6'] = this.data['schedule'][5]['temp']
+		newSettings['weekendtemp1'] = this.data['schedule'][6]['temp']
+		newSettings['weekendtemp2'] = this.data['schedule'][7]['temp']
+		
 		if( Object.keys(newSettings).length > 0) {
 			//Util.debugLog("_updateAllSettings: " + JSON.stringify(newSettings));
 			this.setSettings( newSettings )
@@ -125,6 +142,42 @@ class HysenDevice extends BroadlinkDevice {
 			return true;
 		}
 		return false;
+	}
+	
+	_updateSchedule( dayname, tempname, index, changedKeysArr, newSettingsObj ) {
+		let changed = false
+		if( changedKeysArr.indexOf(dayname) >= 0 )
+		{
+			this.data['schedule'][index]['time'] = newSettingsObj[dayname]
+			changed = true
+		}
+		if( changedKeysArr.indexOf(tempname) >= 0 )
+		{
+			this.data['schedule'][index]['temp'] = Number( newSettingsObj[tempname] )
+			changed = true
+		}
+		return changed
+	}
+	
+	
+	_isValidTime( dayname,  changedKeysArr, newSettingsObj )
+	{
+		try
+		{
+			if( changedKeysArr.indexOf(dayname) >= 0 )
+			{
+				if( newSettingsObj[dayname].length != 5 ) { return false }
+				if( newSettingsObj[dayname][2] != ':' ) { return false }
+				
+				let h = Number( newSettingsObj[dayname].substring( 0,2 ) )
+				if( ( h<0) || (h>23) ) { return false }
+				
+				h = Number( newSettingsObj[dayname].substring( 3,5 ) )
+				if( ( h<0) || (h>59) ) { return false }
+			}		
+			return true
+		}
+		catch( err ) { return false }
 	}
 	
 	
@@ -144,13 +197,30 @@ class HysenDevice extends BroadlinkDevice {
 		if( changedKeysArr.indexOf('SensorUpperLimit') >= 0 ) { upperlimit = newSettingsObj['SensorUpperLimit'] }
 		if( changedKeysArr.indexOf('SensorLowerLimit') >= 0 ) { lowerlimit = newSettingsObj['SensorLowerLimit'] }
 		if( upperlimit <= lowerlimit ) {
-			callback( Homey.__("invalid_sensor_limits") );
+			callback( Homey.__("errors.invalid_sensor_limits") );
+			return
 		}
-		else {
+		
+		if( ( ! this._isValidTime( 'weekday1',  changedKeysArr, newSettingsObj ) ) ||
+			( ! this._isValidTime( 'weekday2',  changedKeysArr, newSettingsObj ) ) ||
+			( ! this._isValidTime( 'weekday3',  changedKeysArr, newSettingsObj ) ) ||
+			( ! this._isValidTime( 'weekday4',  changedKeysArr, newSettingsObj ) ) ||
+			( ! this._isValidTime( 'weekday5',  changedKeysArr, newSettingsObj ) ) ||
+			( ! this._isValidTime( 'weekday6',  changedKeysArr, newSettingsObj ) ) ||
+			( ! this._isValidTime( 'weekend1',  changedKeysArr, newSettingsObj ) ) ||
+			( ! this._isValidTime( 'weekend2',  changedKeysArr, newSettingsObj ) ) )
+		{
+			callback( Homey.__('errors.invalid_schedule_time') );
+			return
+		}
+
+		// Update Interval
 			if( changedKeysArr.indexOf('CheckInterval') >= 0 ) {
 				this.stop_check_interval()
 				this.start_check_interval( newSettingsObj['CheckInterval'] )
 			}
+			
+			// Device settings
 			changed |= this._updateSetting( 'TempRangeExtSensor', changedKeysArr, newSettingsObj );
 			changed |= this._updateSetting( 'SensorMode', changedKeysArr, newSettingsObj );     // string: needs Number(x)
 			changed |= this._updateSetting( 'RoomTempAdjust', changedKeysArr, newSettingsObj );
@@ -160,6 +230,14 @@ class HysenDevice extends BroadlinkDevice {
 			changed |= this._updateSetting( 'SensorUpperLimit', changedKeysArr, newSettingsObj );
 			changed |= this._updateSetting( 'SensorLowerLimit', changedKeysArr, newSettingsObj );
 			changed |= this._updateSetting( 'AntiFreezeMode', changedKeysArr, newSettingsObj );  // string
+			changed |= this._updateSchedule( 'weekday1', 'weekdaytemp1', 0, changedKeysArr, newSettingsObj )
+			changed |= this._updateSchedule( 'weekday2', 'weekdaytemp2', 1, changedKeysArr, newSettingsObj )
+			changed |= this._updateSchedule( 'weekday3', 'weekdaytemp3', 2, changedKeysArr, newSettingsObj )
+			changed |= this._updateSchedule( 'weekday4', 'weekdaytemp4', 3, changedKeysArr, newSettingsObj )
+			changed |= this._updateSchedule( 'weekday5', 'weekdaytemp5', 4, changedKeysArr, newSettingsObj )
+			changed |= this._updateSchedule( 'weekday6', 'weekdaytemp6', 5, changedKeysArr, newSettingsObj )
+			changed |= this._updateSchedule( 'weekend1', 'weekendtemp1', 6, changedKeysArr, newSettingsObj )
+			changed |= this._updateSchedule( 'weekend2', 'weekendtemp2', 7, changedKeysArr, newSettingsObj )
 
 			if( changed ) {
 				await this.set_advanced( Number(this.data['LoopMode']), Number(this.data['SensorMode']), this.data['TempRangeExtSensor'], 
@@ -167,8 +245,11 @@ class HysenDevice extends BroadlinkDevice {
 						this.data['RoomTempAdjust'], Number(this.data['AntiFreezeMode']), this.data['poweron']);
 
 				await this.set_mode( Number(this.data['AutoMode']), Number(this.data['LoopMode']) /*, sensor*/ );
-			}
 
+				await this.set_schedule( this.data['schedule'] )
+			}
+			
+			// Device clock
 			if( changedKeysArr.indexOf("AdjustClock") >= 0 ) {
 				let d = new Date()
 				let day = d.getDay()
@@ -180,14 +261,14 @@ class HysenDevice extends BroadlinkDevice {
 					this.setSettings( {AdjustClock:false})
 				}.bind(this), 2000 );  // timeout in [msec]
 			}
-			
+				
 			if( callback ) {
 				/* only do callback if this functions was called by Homey.
 				 * if it was called by another class, that class will do the callback.
 				 */
 				callback( null, true );
 			}
-		}
+		
 	}
 
 	
@@ -236,9 +317,7 @@ class HysenDevice extends BroadlinkDevice {
 
 			this._updateCapabilities();
 		}
-		catch( err ) {
-			Util.debugLog("**> hysen.get_temperature - catch = " + err);
-		}
+		catch( err ) { Util.debugLog("**> hysen.get_temperature - catch = " + err) }
 	}
 
 
@@ -278,31 +357,21 @@ class HysenDevice extends BroadlinkDevice {
 			this.data['min'] =  response[20];
 			this.data['sec'] =  response[21];
 			this.data['dayofweek'] =  response[22];
-
-			let weekday = [];
-			for( let i =0; i < 6; i++ ) {
-	  			weekday['start_hour'] = response[2*i + 23] 
-	  			weekday['start_minute' ] = response[2*i + 24]
-	  			weekday['temp'] = response[i + 39]/2.0;
-			}
-			this.data['weekday'] = weekday;
 			
-			let weekend = [];
-			for( let i =6; i < 8; i++ ) {
-				weekend['start_hour'] = response[2*i + 23] 
-				weekend['start_minute'] = response[2*i + 24]
-				weekend['temp'] = response[i + 39]/2.0;
+			let schedule = [];
+			for( let i =0; i < 8; i++ ) { schedule[i] = {} }
+			for( let i =0; i < 8; i++ ) {
+				let h = response[2*i + 23]
+				let m = response[2*i + 24]
+				schedule[i]['time'] = ( h < 10 ? '0'+h : h.toString() ) + ":" + ( m < 10 ? '0'+m : m.toString() )
+	  			schedule[i]['temp'] = response[i + 39]/2.0;
 			}
-			this.data['weekend'] = weekend;
-
+			this.data['schedule'] = schedule;
+						
 			this._updateCapabilities(); 
 			this._updateAllSettings();
-
-			//Util.debugLog("Hysendevice.get_full_status: rommtemp = " + this.data['RoomTemperature'] + " = " + JSON.stringify(this.data));
 		}
-		catch( err ) {
-			Util.debugLog("**> hysen.get_full_status - catch = " + err);
-		}
+		catch( err ) { Util.debugLog("**> hysen.get_full_status - catch = " + err) }
 	}
 
 
@@ -328,9 +397,7 @@ class HysenDevice extends BroadlinkDevice {
     		 var payload = new Uint8Array([0x01,0x06,0x00,0x02,mode_byte,sensor]);
     		 await this.send_request(payload);
     	 }
-    	 catch( err ) {
-    		 Util.debugLog("**> hysen.set_mode: catch = " + err);
-    	 }
+    	 catch( err ) { Util.debugLog("**> hysen.set_mode: catch = " + err) }
 	}
 
 
@@ -387,9 +454,7 @@ class HysenDevice extends BroadlinkDevice {
     	                               AntiFreezeMode, poweron]);
 			await this.send_request(payload);
 		}
-   	 	catch( err ) {
-   	 		Util.debugLog("**> hysen.set_advanced: catch = " + err);
-   	 	}
+   	 	catch( err ) { Util.debugLog("**> hysen.set_advanced: catch = " + err) }
 	}
 
 
@@ -401,9 +466,7 @@ class HysenDevice extends BroadlinkDevice {
 	   	 	let payload = new Uint8Array([0x01,0x06,0x00,0x01,0x00,temp * 2]);
 			await this.send_request(payload);
 		}
-   	 	catch( err ) {
-   	 		Util.debugLog("**> hysen.set_target_temperature: catch = " + err);
-   	 	}
+   	 	catch( err ) { Util.debugLog("**> hysen.set_target_temperature: catch = " + err) }
 	}
 
 
@@ -416,9 +479,7 @@ class HysenDevice extends BroadlinkDevice {
 			let payload = new Uint8Array([0x01,0x06,0x00,0x00, ParentalMode ? 1:0, power]);
 			await this.send_request(payload);
 		}
-   	 	catch( err ) {
-   	 		Util.debugLog("**> hysen.set_power: catch = " + err);
-   	 	}
+   	 	catch( err ) { Util.debugLog("**> hysen.set_power: catch = " + err) }
 	}
 
  	
@@ -435,9 +496,7 @@ class HysenDevice extends BroadlinkDevice {
 			let payload = new Uint8Array([0x01,0x10,0x00,0x08,0x00,0x02,0x04, hour, minute, second, day ]);
 			await this.send_request(payload);
 		}
-   	 	catch( err ) {
-   	 		Util.debugLog("**> hysen.set_time: catch = " + err);
-   	 	}
+   	 	catch( err ) { Util.debugLog("**> hysen.set_time: catch = " + err) }
 	}
 
 
@@ -449,38 +508,33 @@ class HysenDevice extends BroadlinkDevice {
 	 * Each one specifies the thermostat temp that will become effective at start_hour:start_minute
 	 * weekend is similar but only has 2 (e.g. switch on in morning and off in afternoon)
 	 */
-	async set_schedule(weekday,weekend) {
+	/**
+	 * schedule = array[0..7]['time' | 'temp']
+	 * where [x]['time] in format "00:00"
+	 * weekday = schedule[0..5]
+	 * weekend = schedule[6..7]
+	*/
+	async set_schedule(schedule) {
 		try {
 			//Util.debugLog("==> hysen.set_schedule")
 
 			// Begin with some magic values ...
 			let input_payload = new Uint8Array([0x01,0x10,0x00,0x0a,0x00,0x0c,0x18]);
+			let payload = new Uint8Array( 24 )
 
-			// Now simply append times/temps
-			// weekday times
-			for( let i=0; i < 6; i++) {
-				input_payload.append( weekday[i]['start_hour'] );
-				input_payload.append( weekday[i]['start_minute'] );
+			// times 
+			for( let i=0; i < 8; i++) {
+				payload[i*2    ] = Number( schedule[i]['time'].substring( 0,2 ) );  // hour
+				payload[i*2 +1 ] = Number( schedule[i]['time'].substring( 3,5 ) );  // minute
 			}
-			// weekend times
-			for( let i=0; i < 2; i++) {
-				input_payload.append( weekend[i]['start_hour'] );
-				input_payload.append( weekend[i]['start_minute'] );
-			}
-			// weekday temperatures
-			for( let i=0; i < 6; i++) {
-				input_payload.append( weekday[i]['temp'] * 2 );
-			}
-			// weekend temperatures
-			for( let i=0; i < 2; i++) {
-				input_payload.append( weekend[i]['temp'] * 2 );
+			// temperatures
+			for( let i=0; i < 8; i++) {
+				payload[i +16 ] = schedule[i]['temp'] * 2;
 			}
 
-			await this.send_request(input_payload);
+			await this.send_request( Util.concatTypedArrays(input_payload,payload) );
 		}
-   	 	catch( err ) {
-   	 		Util.debugLog("**> hysen.set_schedule: catch = " + err);
-   	 	}
+   	 	catch( err ) { Util.debugLog("**> hysen.set_schedule: catch = " + err) }
 	}
 
 	

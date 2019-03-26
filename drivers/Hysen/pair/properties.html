@@ -1,7 +1,7 @@
 <!--
  * Driver for Broadlink devices
  *
- * Copyright 2018, R Wensveen
+ * Copyright 2018-2019, R Wensveen
  *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
@@ -38,13 +38,13 @@
 </style>
 
 
-<p data-i18n="Properties">Properties</p>
-    <div class="broadlink-pairing">
+<p data-i18n="pair.properties"></p>
+<div class="broadlink-pairing">
 <table>
 <TR><TD>
         <div class="form-group">
             <input type="checkbox" class="form-control" id="externalSensor">
-            <label for="Sensors" data-i18n="Sensors">Has external sensor</label>
+            <label for="Sensors" data-i18n="pair.has_sensors"></label>
         </div>
 </td></TR><tr><td>
         <div class="form-group buttons">
@@ -59,13 +59,12 @@
 
 <script type="text/javascript">
 
-Homey.setTitle('Properties');
+Homey.setTitle(Homey.__('pair.properties'));
 
 Homey.on('properties_done', function (d) {
 	Homey.showView("add_devices")
 	//Homey.nextView();
 })
-
 
 function add( data ) {
 	var val = document.getElementById('externalSensor').checked;

@@ -4,12 +4,12 @@
     "decrypt_payload": "Kan anwoord niet ontsleutelen: geen data in bericht.",
     "decrypt_keylength": "Kan anwoord niet ontsleutelen: foutive sleutel lengte.",
     "discover_local_ip": "Kan geen apparaten ontdekken: locaal IP adres is onbekend.",
-    "save_settings": "Kan instellingen niet bewaren: commando ",
-    "save_settings_nocmd": " is nog niet bekend.",
-    "save_settings_exist": " bestaat al.",
+    "save_settings_nocmd": "Kan instellingen niet bewaren: commando __cmd__ is nog niet bekend.",
+    "save_settings_exist": "Kan instellingen niet bewaren: commando __cmd__ bestaat al.",
     "sensor_check": "Kan sensor waarden niet lezen van apparaat",
     "invalid_response": "ongeldig antwoord van apparaat.",
-    "invalid_sensor_limits": "Ongeldige sensor grenzen."
+    "invalid_sensor_limits": "Ongeldige sensor grenzen.",
+    "invalid_schedule_time": "Ongeldige schema tijd"
   },
   "pair": {
     "title": "Broadlink Apparaat Toevoegen",
@@ -23,7 +23,9 @@
 	"error_no_discover": "Geen apparaat gevonden. Is het apparaat aan, en is het verbonden met het Wifi netwerk ?",
 	"found_another": "Ander apparaat gevonden: __dev__ (__type__)",
 	"invalid_ipaddress": "Ongeldig IP adres",
-	"discovering": "Probeer apparaat te ontdekken..."
+	"discovering": "Probeer apparaat te ontdekken...",
+	"has_sensors":"Heeft externe sensor",
+	"properties":"Eigenschappen"
   },
   "settings":{
   	"title": "Broadlink Debug Instellingen",

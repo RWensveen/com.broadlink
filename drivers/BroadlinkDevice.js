@@ -1,7 +1,7 @@
 /**
  * Driver for Broadlink devices
  *
- * Copyright 2018, R Wensveen
+ * Copyright 2018-2019, R Wensveen
  *
  * This file is part of com.broadlink
  * com.broadlink is free software: you can redistribute it and/or modify
@@ -118,7 +118,7 @@ class BroadlinkDevice extends Homey.Device {
 	 *  @param changedKeysArr   contains an array of keys that have been changed
 	 */
 	onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, callback ) {
-		Util.debugLog("=> BroadlinkDevice.onSettings()")
+		//Util.debugLog("=> BroadlinkDevice.onSettings()")
 		
 		if( changedKeysArr.indexOf('ipAddress') >= 0 ) {
 			this._communicate.setIPaddress( newSettingsObj['ipAddress'] )
