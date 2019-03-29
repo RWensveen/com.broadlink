@@ -28,13 +28,11 @@ class BroadlinkDriver extends Homey.Driver {
 
 
 	/**
-	 * Method that will be called when a driver is initialized. It will register Flow Cards
-	 * for the respective drivers.
-	 * @param options {Object}
-	 * @returns {Error}
+	 * Method that will be called when a driver is initialized. 
+	 * @param options {Object}.CompatibilityID
 	 */
 	onInit(options) {
-		// options
+
 		if( options ) {
 			this.CompatibilityID = options.CompatibilityID;
 		}
@@ -43,13 +41,17 @@ class BroadlinkDriver extends Homey.Driver {
 	}
 
 
+	/**
+	 * Set the CompatibilityID for this device
+	 */
 	setCompatibilityID( id ) {
 		this.CompatibilityID = id;
 	}
 
 	
 	/**
-	 *
+	 * Handles the backend of the pairing sequence.
+	 * Communication to the frontend is done via events => socket.emit('x')
 	 *
 	 */
 	onPair(socket) {
@@ -139,8 +141,8 @@ class BroadlinkDriver extends Homey.Driver {
 					"parental_mode"
 					]
 				this.discoveredDevice.device['capabilitiesOptions' ] = {
-					"measure_temperature.room": { "title": { "en": "Room", "nl": "Binnen2" } },
-					"measure_temperature.outside": { "title": { "en": "Outside", "nl": "Buiten2" } },
+					"measure_temperature.room": { "title": { "en": "Room", "nl": "Binnen" } },
+					"measure_temperature.outside": { "title": { "en": "Outside", "nl": "Buiten" } },
 					"target_temperature": {
 						"min": 5,
 						"max": 30,
@@ -148,19 +150,7 @@ class BroadlinkDriver extends Homey.Driver {
 					}
 				}
 			}
-/*
-			// no external sensor: remove from capabilities
-			if( ! properties[ 'externalSensor' ] ) {
-				let i = this.discoveredDevice.device['capabilities'].indexOf('measure_temperature.outside')
-				if( i > -1) {
-					this.discoveredDevice.device['capabilities'].splice( i,1 )
-				}
-				i = this.discoveredDevice.device['capabilitiesOptions'].indexOf('measure_temperature.outside')
-				if( i > -1) {
-					this.discoveredDevice.device['capabilitiesOptions'].splice( i,1 )
-				}
-			}
-*/
+
 			socket.emit('properties_done',null)
 		}.bind(this));
 		

@@ -200,75 +200,74 @@ class HysenDevice extends BroadlinkDevice {
 			callback( Homey.__("errors.invalid_sensor_limits") );
 			return
 		}
-		
+
 		if( ( ! this._isValidTime( 'weekday1',  changedKeysArr, newSettingsObj ) ) ||
-			( ! this._isValidTime( 'weekday2',  changedKeysArr, newSettingsObj ) ) ||
-			( ! this._isValidTime( 'weekday3',  changedKeysArr, newSettingsObj ) ) ||
-			( ! this._isValidTime( 'weekday4',  changedKeysArr, newSettingsObj ) ) ||
-			( ! this._isValidTime( 'weekday5',  changedKeysArr, newSettingsObj ) ) ||
-			( ! this._isValidTime( 'weekday6',  changedKeysArr, newSettingsObj ) ) ||
-			( ! this._isValidTime( 'weekend1',  changedKeysArr, newSettingsObj ) ) ||
-			( ! this._isValidTime( 'weekend2',  changedKeysArr, newSettingsObj ) ) )
+				( ! this._isValidTime( 'weekday2',  changedKeysArr, newSettingsObj ) ) ||
+				( ! this._isValidTime( 'weekday3',  changedKeysArr, newSettingsObj ) ) ||
+				( ! this._isValidTime( 'weekday4',  changedKeysArr, newSettingsObj ) ) ||
+				( ! this._isValidTime( 'weekday5',  changedKeysArr, newSettingsObj ) ) ||
+				( ! this._isValidTime( 'weekday6',  changedKeysArr, newSettingsObj ) ) ||
+				( ! this._isValidTime( 'weekend1',  changedKeysArr, newSettingsObj ) ) ||
+				( ! this._isValidTime( 'weekend2',  changedKeysArr, newSettingsObj ) ) )
 		{
 			callback( Homey.__('errors.invalid_schedule_time') );
 			return
 		}
 
 		// Update Interval
-			if( changedKeysArr.indexOf('CheckInterval') >= 0 ) {
-				this.stop_check_interval()
-				this.start_check_interval( newSettingsObj['CheckInterval'] )
-			}
-			
-			// Device settings
-			changed |= this._updateSetting( 'TempRangeExtSensor', changedKeysArr, newSettingsObj );
-			changed |= this._updateSetting( 'SensorMode', changedKeysArr, newSettingsObj );     // string: needs Number(x)
-			changed |= this._updateSetting( 'RoomTempAdjust', changedKeysArr, newSettingsObj );
-			changed |= this._updateSetting( 'AutoMode', changedKeysArr, newSettingsObj );       // string
-			changed |= this._updateSetting( 'LoopMode', changedKeysArr, newSettingsObj );       // string
-			changed |= this._updateSetting( 'FloorTempDeadZone', changedKeysArr, newSettingsObj );
-			changed |= this._updateSetting( 'SensorUpperLimit', changedKeysArr, newSettingsObj );
-			changed |= this._updateSetting( 'SensorLowerLimit', changedKeysArr, newSettingsObj );
-			changed |= this._updateSetting( 'AntiFreezeMode', changedKeysArr, newSettingsObj );  // string
-			changed |= this._updateSchedule( 'weekday1', 'weekdaytemp1', 0, changedKeysArr, newSettingsObj )
-			changed |= this._updateSchedule( 'weekday2', 'weekdaytemp2', 1, changedKeysArr, newSettingsObj )
-			changed |= this._updateSchedule( 'weekday3', 'weekdaytemp3', 2, changedKeysArr, newSettingsObj )
-			changed |= this._updateSchedule( 'weekday4', 'weekdaytemp4', 3, changedKeysArr, newSettingsObj )
-			changed |= this._updateSchedule( 'weekday5', 'weekdaytemp5', 4, changedKeysArr, newSettingsObj )
-			changed |= this._updateSchedule( 'weekday6', 'weekdaytemp6', 5, changedKeysArr, newSettingsObj )
-			changed |= this._updateSchedule( 'weekend1', 'weekendtemp1', 6, changedKeysArr, newSettingsObj )
-			changed |= this._updateSchedule( 'weekend2', 'weekendtemp2', 7, changedKeysArr, newSettingsObj )
+		if( changedKeysArr.indexOf('CheckInterval') >= 0 ) {
+			this.stop_check_interval()
+			this.start_check_interval( newSettingsObj['CheckInterval'] )
+		}
 
-			if( changed ) {
-				await this.set_advanced( Number(this.data['LoopMode']), Number(this.data['SensorMode']), this.data['TempRangeExtSensor'], 
-						this.data['FloorTempDeadZone'], this.data['SensorUpperLimit'], this.data['SensorLowerLimit'], 
-						this.data['RoomTempAdjust'], Number(this.data['AntiFreezeMode']), this.data['poweron']);
+		// Device settings
+		changed |= this._updateSetting( 'TempRangeExtSensor', changedKeysArr, newSettingsObj );
+		changed |= this._updateSetting( 'SensorMode', changedKeysArr, newSettingsObj );     // string: needs Number(x)
+		changed |= this._updateSetting( 'RoomTempAdjust', changedKeysArr, newSettingsObj );
+		changed |= this._updateSetting( 'AutoMode', changedKeysArr, newSettingsObj );       // string
+		changed |= this._updateSetting( 'LoopMode', changedKeysArr, newSettingsObj );       // string
+		changed |= this._updateSetting( 'FloorTempDeadZone', changedKeysArr, newSettingsObj );
+		changed |= this._updateSetting( 'SensorUpperLimit', changedKeysArr, newSettingsObj );
+		changed |= this._updateSetting( 'SensorLowerLimit', changedKeysArr, newSettingsObj );
+		changed |= this._updateSetting( 'AntiFreezeMode', changedKeysArr, newSettingsObj );  // string
+		changed |= this._updateSchedule( 'weekday1', 'weekdaytemp1', 0, changedKeysArr, newSettingsObj )
+		changed |= this._updateSchedule( 'weekday2', 'weekdaytemp2', 1, changedKeysArr, newSettingsObj )
+		changed |= this._updateSchedule( 'weekday3', 'weekdaytemp3', 2, changedKeysArr, newSettingsObj )
+		changed |= this._updateSchedule( 'weekday4', 'weekdaytemp4', 3, changedKeysArr, newSettingsObj )
+		changed |= this._updateSchedule( 'weekday5', 'weekdaytemp5', 4, changedKeysArr, newSettingsObj )
+		changed |= this._updateSchedule( 'weekday6', 'weekdaytemp6', 5, changedKeysArr, newSettingsObj )
+		changed |= this._updateSchedule( 'weekend1', 'weekendtemp1', 6, changedKeysArr, newSettingsObj )
+		changed |= this._updateSchedule( 'weekend2', 'weekendtemp2', 7, changedKeysArr, newSettingsObj )
 
-				await this.set_mode( Number(this.data['AutoMode']), Number(this.data['LoopMode']) /*, sensor*/ );
+		if( changed ) {
+			await this.set_advanced( Number(this.data['LoopMode']), Number(this.data['SensorMode']), this.data['TempRangeExtSensor'], 
+									 this.data['FloorTempDeadZone'], this.data['SensorUpperLimit'], this.data['SensorLowerLimit'], 
+									 this.data['RoomTempAdjust'], Number(this.data['AntiFreezeMode']), this.data['poweron']);
 
-				await this.set_schedule( this.data['schedule'] )
-			}
-			
-			// Device clock
-			if( changedKeysArr.indexOf("AdjustClock") >= 0 ) {
-				let d = new Date()
-				let day = d.getDay()
-				if( day == 0 ) { day = 7 }  // sunday = 7, not 0
-				await this.set_time(d.getHours(), d.getMinutes(), d.getSeconds(), day)
-				d = undefined
-				
-				setTimeout( function(d) {
-					this.setSettings( {AdjustClock:false})
-				}.bind(this), 2000 );  // timeout in [msec]
-			}
-				
-			if( callback ) {
-				/* only do callback if this functions was called by Homey.
-				 * if it was called by another class, that class will do the callback.
-				 */
-				callback( null, true );
-			}
-		
+			await this.set_mode( Number(this.data['AutoMode']), Number(this.data['LoopMode']) /*, sensor*/ );
+
+			await this.set_schedule( this.data['schedule'] )
+		}
+
+		// Device clock
+		if( changedKeysArr.indexOf("AdjustClock") >= 0 ) {
+			let d = new Date()
+			let day = d.getDay()
+			if( day == 0 ) { day = 7 }  // sunday = 7, not 0
+			await this.set_time(d.getHours(), d.getMinutes(), d.getSeconds(), day)
+			d = undefined
+
+			setTimeout( function(d) {
+				this.setSettings( {AdjustClock:false})
+			}.bind(this), 2000 );  // timeout in [msec]
+		}
+
+		if( callback ) {
+			/* only do callback if this functions was called by Homey.
+			 * if it was called by another class, that class will do the callback.
+			 */
+			callback( null, true );
+		}
 	}
 
 	
@@ -504,13 +503,12 @@ class HysenDevice extends BroadlinkDevice {
 	 * Set timer schedule
 	 * Format is the same as you get from get_full_status.
 	 * weekday is a list (ordered) of 6 dicts like:
-	 * {'start_hour':17, 'start_minute':30, 'temp': 22 }
-	 * Each one specifies the thermostat temp that will become effective at start_hour:start_minute
+	 * {'time': "17:30", 'temp': 22 }
+	 * Each one specifies the thermostat temp that will become effective at 'time'
 	 * weekend is similar but only has 2 (e.g. switch on in morning and off in afternoon)
-	 */
-	/**
+	 *
 	 * schedule = array[0..7]['time' | 'temp']
-	 * where [x]['time] in format "00:00"
+	 *                   where [x]['time] in format "00:00"
 	 * weekday = schedule[0..5]
 	 * weekend = schedule[6..7]
 	*/
@@ -522,7 +520,7 @@ class HysenDevice extends BroadlinkDevice {
 			let input_payload = new Uint8Array([0x01,0x10,0x00,0x0a,0x00,0x0c,0x18]);
 			let payload = new Uint8Array( 24 )
 
-			// times 
+			// times (format 'hh:mm'
 			for( let i=0; i < 8; i++) {
 				payload[i*2    ] = Number( schedule[i]['time'].substring( 0,2 ) );  // hour
 				payload[i*2 +1 ] = Number( schedule[i]['time'].substring( 3,5 ) );  // minute
@@ -582,7 +580,7 @@ class HysenDevice extends BroadlinkDevice {
 	 */
 	onDeleted() {
 		super.onDeleted();
-		this.data = [];
+		this.data = undefined;
 	}
 
 }

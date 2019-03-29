@@ -9,12 +9,12 @@
     "sensor_check": "Kan sensor waarden niet lezen van apparaat",
     "invalid_response": "ongeldig antwoord van apparaat.",
     "invalid_sensor_limits": "Ongeldige sensor grenzen.",
-    "invalid_schedule_time": "Ongeldige schema tijd"
+    "invalid_schedule_time": "Ongeldige schema tijd",
+    "no_key_detected": "no toets gedetecteerd"
   },
   "pair": {
     "title": "Broadlink Apparaat Toevoegen",
     "nosettings": "Niet alle velden zijn ingevuld.",
-    "invalidsettings":"Gebruik juiste formaat voor IP adres.",
     "intro": "Configureer het apparaat met de e-Control app op een smartphone.<br>Zoek dan het IP adres op de WiFi router.",
 	"cancel": "Stop",
 	"add": "Toevoegen",

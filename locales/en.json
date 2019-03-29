@@ -9,12 +9,12 @@
     "sensor_check": "Cannot get sensor values from device",
     "invalid_response": "Invalid response from device",
     "invalid_sensor_limits": "Invalid sensor limits",
-    "invalid_schedule_time": "Invalid schedule time"
+    "invalid_schedule_time": "Invalid schedule time",
+    "no_key_detected": "no key detected"
   },
   "pair": {
     "title": "Pair Broadlink Device",
     "nosettings": "Please fill in all the fields.",
-    "invalidsettings":"Please use correct format for address and mac",
     "intro": "Configure the device with the e-Control app on a smartphone.<br>Get the IP address from your wifi router.",
 	"cancel": "Cancel",
 	"add": "Add",

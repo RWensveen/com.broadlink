@@ -1,6 +1,6 @@
 {
 	"id": "com.broadlink",
-	"version": "2.0.3",
+	"version": "2.0.4",
 	"compatibility": ">=1.5.0",
 	"sdk": 2,
 	"name": {
@@ -8,7 +8,7 @@
 	},
     "homeyCommunityTopicId": 6389,
 	"tags":{
-		"en": [ "IR", "Remote Control", "Infrared", "WiFi", "433", "433MHz", "Environement Sensor"]
+		"en": [ "IR", "Remote Control", "Infrared", "WiFi", "433", "433MHz", "Environement Sensor", "Thermostat"]
 	},
 	"description": {
 		"en": "Adds support for Broadlink devices.",
@@ -81,7 +81,7 @@
 			"type": "number",
 			"title": {
 				"en": "Air Quality",
-				"nl": "Luchtkwaliteit nbr"
+				"nl": "Luchtkwaliteit"
 			},
 			"min":1,
 			"max":4,
@@ -115,7 +115,7 @@
 			"type": "number",
 			"title": {
 				"en": "Light",
-				"nl": "Licht nbr"
+				"nl": "Licht"
 			},
 			"min":1,
 			"max":4,
@@ -148,7 +148,7 @@
 			"type": "number",
 			"title": {
 				"en": "Noise Level",
-				"nl": "Geluidsniveau nbr"
+				"nl": "Geluidsniveau"
 			},
 			"min":1,
 			"max":3,
@@ -1420,7 +1420,7 @@
 							"type": "number",
 							"value": 20.0,
 							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
-							"label": { "en": "weekday 1 - temp", "nl": "weekdag 1 - temp" }
+							"label": { "en": "weekday 1 - temperature", "nl": "weekdag 1 - temperatuur" }
 						},
 						{
 							"id": "weekday2",
@@ -1435,7 +1435,7 @@
 							"type": "number",
 							"value": 20.0,
 							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
-							"label": { "en": "weekday 2 - temp", "nl": "weekdag 2 - temp" }
+							"label": { "en": "weekday 2 - temperature", "nl": "weekdag 2 - temperatuur" }
 						},
 						{
 							"id": "weekday3",
@@ -1450,7 +1450,7 @@
 							"type": "number",
 							"value": 20.0,
 							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
-							"label": { "en": "weekday 3 - temp", "nl": "weekdag 3 - temp" }
+							"label": { "en": "weekday 3 - temperature", "nl": "weekdag 3 - temperatuur" }
 						},
 						{
 							"id": "weekday4",
@@ -1465,7 +1465,7 @@
 							"type": "number",
 							"value": 20.0,
 							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
-							"label": { "en": "weekday 4 - temp", "nl": "weekdag 4 - temp" }
+							"label": { "en": "weekday 4 - temperature", "nl": "weekdag 4 - temperatuur" }
 						},
 						{
 							"id": "weekday5",
@@ -1480,7 +1480,7 @@
 							"type": "number",
 							"value": 20.0,
 							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
-							"label": { "en": "weekday 5 - temp", "nl": "weekdag 5 - temp" }
+							"label": { "en": "weekday 5 - temperature", "nl": "weekdag 5 - temperatuur" }
 						},
 						{
 							"id": "weekday6",
@@ -1495,7 +1495,7 @@
 							"type": "number",
 							"value": 20.0,
 							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
-							"label": { "en": "weekday 6 - temp", "nl": "weekdag 6 - temp" }
+							"label": { "en": "weekday 6 - temperature", "nl": "weekdag 6 - temperatuur" }
 						},
 						{
 							"id": "weekend1",
@@ -1510,7 +1510,7 @@
 							"type": "number",
 							"value": 20.0,
 							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
-							"label": { "en": "weekend 1 - temp", "nl": "weekend 1 - temp" }
+							"label": { "en": "weekend 1 - temperature", "nl": "weekend 1 - temperatuur" }
 						},
 						{
 							"id": "weekend2",
@@ -1525,7 +1525,7 @@
 							"type": "number",
 							"value": 20.0,
 							"attr": { "min": 1.0, "max":99.5, "step": 0.5 },
-							"label": { "en": "weekend 2 - temp", "nl": "weekend 2 - temp" }
+							"label": { "en": "weekend 2 - temperature", "nl": "weekend 2 - temperatuur" }
 						}
 					]
 				},
@@ -1562,9 +1562,9 @@
 							"label": { "en": "Sensor mode" },
 							"value": "0",
 							"values": [
-								{ "id":"0", "label":{"en": "internal sensor",   "nl":"interne sensor"} },
-								{ "id":"1", "label":{"en": "external sensor",  "nl":"externe sensor"} },
-								{ "id":"2", "label":{"en": "intern:control / extern:limit temperature",   "nl":"intern:controle / extern: temperatuurlimiet"} }
+								{ "id":"0", "label":{"en": "internal sensor", "nl":"interne sensor"} },
+								{ "id":"1", "label":{"en": "external sensor", "nl":"externe sensor"} },
+								{ "id":"2", "label":{"en": "intern:control / extern:limit temperature", "nl":"intern:controle / extern: temperatuurlimiet"} }
 							]
 						},
 						{
@@ -1694,6 +1694,61 @@
 							"type": "checkbox",
 							"value": false,
 							"label": { "en": "Adjust clock to current time of Homey", "nl": "Zet de klok gelijk met de klok van Homey" }
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "Dooya",
+			"name": {
+				"en": "Dooya curtain controler",
+				"nl": "Dooya gordijn controller"
+			},
+			"images": {
+				"large": "./drivers/Dooya/assets/images/large.jpg",
+				"small": "./drivers/Dooya/assets/images/small.jpg"
+			},
+			"class": "curtain",
+			"capabilities": [ "windowcoverings_closed", "button.1", "button.2", "button.3" ],
+			"capabilitiesOptions": {
+				"button.1":  { "title": { "en": "Open",  "nl": "Open" } },
+				"button.2":  { "title": { "en": "Close", "nl": "Dicht" } },
+				"button.3":  { "title": { "en": "Stop",  "nl": "Stop" } }
+			},
+			"pair": [
+				{
+					"id": "start",
+					"navigation": { "next": "list_devices" }
+				},
+				{
+					"id": "list_devices",
+					"template": "list_devices",
+					"navigation": { "next": "add_devices" }
+				},
+				{
+					"id": "add_devices",
+					"template": "add_devices"
+				}
+			],
+			"settings": [
+				{
+					"type":"group",
+					"label": {
+						"en": "Address",
+						"nl": "Adres"
+					},
+					"children": [
+						{
+							"type": "text",
+							"id": "ipAddress",
+							"label": { "en": "IP address", "nl": "IP adres" },
+							"value": "0.0.0.0",
+							"pattern": "^([1-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.(([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.){2}([0-9]|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])$",
+							"hint": {
+								"en": "Note that the IP Address must also be mentioned in this apps whitelist.",
+								"nl": "Zorg er wel voor dat het IP Adress ook in de whitelist van deze app staat."
+							}
 						}
 					]
 				}

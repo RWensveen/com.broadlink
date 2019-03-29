@@ -58,6 +58,9 @@ class BroadlinkDevice extends Homey.Device {
 	}
 
 	
+	/**
+	 * 
+	 */
 	authenticateDevice() {
 		this._communicate.auth()
 			.then( (authenticationData ) => {
@@ -70,7 +73,7 @@ class BroadlinkDevice extends Homey.Device {
 						this.setSettings( {Authenticate:false})
 					})
 					.catch( err => {
-						Util.debugLog('**> settings error  * settings not saved *');
+						Util.debugLog('**> settings error, settings not saved *');
 					})
 			})
 			.catch( err => {
@@ -118,7 +121,6 @@ class BroadlinkDevice extends Homey.Device {
 	 *  @param changedKeysArr   contains an array of keys that have been changed
 	 */
 	onSettings( oldSettingsObj, newSettingsObj, changedKeysArr, callback ) {
-		//Util.debugLog("=> BroadlinkDevice.onSettings()")
 		
 		if( changedKeysArr.indexOf('ipAddress') >= 0 ) {
 			this._communicate.setIPaddress( newSettingsObj['ipAddress'] )
@@ -143,11 +145,11 @@ class BroadlinkDevice extends Homey.Device {
 	 * Start a timer to periodically access the device. the parent class must implement onCheckInterval()
 	 */
 	start_check_interval( interval ) {
-		//Util.debugLog(this.getName()+' start check interval - ' + interval);
+		
 		this.checkTimer = setInterval( function() {
-			this.onCheckInterval();
-		}.bind(this),
-		interval * 60000);  // [minutes] to [msec]
+												this.onCheckInterval();
+											}.bind(this),
+										interval * 60000);  // [minutes] to [msec]
 	}
 
 
