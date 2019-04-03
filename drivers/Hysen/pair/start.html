@@ -32,42 +32,47 @@
         flex-wrap: wrap;
         width: 100%;
     }
-    .buttons, .messages {
+    .messages {
         padding-top: 14px;
+        color: #ff6300;
     }
+    .next-button {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+    
 </style>
 
 
 <p data-i18n="pair.intro"></p>
-    <div class="broadlink-pairing">
-<table>
-<TR><TD>
-        <div class="form-group">
+<div class="broadlink-pairing">
+   <table>
+      <TR><TD>
+         <div class="form-group">
             <label for="address" data-i18n="pair.address"></label>
             <input type="text" class="form-control" id="address" placeholder="0.0.0.0">
-        </div>
-</td></TR><tr><td>
-        <div class="messages">
-            <p class="broadlink-status broadlink-error" style="color: #ff6300;"><span class="broadlink-error-msg"></span></p>
-        </div>
-</td></TR><tr><td>
-        <div class="form-group buttons">
-	        <table><TR>
-	           <TD align="left"><button  id="add"    onclick="add()"    class="button" data-i18n="pair.add"></button>
-	           <TD align="right"><button id="cancel" onclick="cancel()" class="button" data-i18n="pair.cancel"></button>
-            </TR></table>
-        </div>
-</table>
+         </div>
+      </td></TR><tr><td>
+         <div class="messages">
+            <p id="broadlink-error"><span id="broadlink-error-msg"></span></p>
+         </div>
+      </td></TR>
+   </table>
 </div>
+<div class="next-button">
+   <button  id="next" onclick="add()" data-i18n="pair.next" ></button>
+</div>
+
 
 <script type="text/javascript">
 
-Homey.setTitle(Homey.__('pair.title'));
+//Homey.setTitle(Homey.__('pair.title'));
 
 
 function showError( msg ) {
-	$('.broadlink-error').show();
-    $('.broadlink-error-msg').html( msg );
+	$('#broadlink-error').show();
+    $('#broadlink-error-msg').html( msg );
 }
 
 
@@ -97,7 +102,7 @@ Homey.on('discovered', function ( deviceData ) {
 
 	if( deviceData ) {
 		if( deviceData.isCompatible ) {
-			Homey.showView('list_devices');
+			Homey.showView('list_devices')
 		}
 		else {
 			showError( Homey.__('pair.found_another', {'dev': deviceData.device.data.name,
@@ -108,13 +113,6 @@ Homey.on('discovered', function ( deviceData ) {
 		showError( Homey.__('pair.error_no_discover') );
 	}
 })
-
-
-// function called when user pressed button
-function cancel(data) {
-	Homey.emit('disconnect');
-	Homey.done();
-}
 
 
 </script>

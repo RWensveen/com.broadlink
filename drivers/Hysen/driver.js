@@ -20,6 +20,7 @@
 
 const BroadlinkDriver = require('./../BroadlinkDriver');
 const Homey = require('homey');
+const Util = require('./../../lib/util.js');
 
 
 class HysenDriver extends BroadlinkDriver {
@@ -59,6 +60,58 @@ class HysenDriver extends BroadlinkDriver {
 			.registerRunListener(this.do_action_parentalmode_off.bind(this))
 	}
 
+	/**
+	 * Handles the backend of the pairing sequence.
+	 * Communication to the frontend is done via events => socket.emit('x')
+	 *
+	 */
+	onPair(socket) {
+		super.onPair(socket);
+		
+		socket.on('properties_set', function( data, callback ) {
+			// data = { 'externalSensor': val, 'deviceList': deviceData }
+			Util.debugLog('properties_set -> data = '+JSON.stringify(data))
+			
+			// only used for HYSEN device.
+			if( ! data[ 'externalSensor' ] ) {
+				Util.debugLog("==>Broadlink: NO ext sensor");
+				data['deviceList'][0]['capabilities'] = [
+					"measure_temperature",
+					"target_temperature",
+					"parental_mode"
+					]
+				data['deviceList'][0]['capabilitiesOptions' ] = {
+					"target_temperature": {
+						"min": 5,
+						"max": 30,
+						"step": 0.5
+					}
+				}
+			}
+			else {
+				Util.debugLog("==>Broadlink: HAS ext sensor");
+				data['deviceList'][0]['capabilities'] = [
+					"measure_temperature.room",
+					"measure_temperature.outside",
+					"measure_temperature",
+					"target_temperature",
+					"parental_mode"
+					]
+				data['deviceList'][0]['capabilitiesOptions' ] = {
+					"measure_temperature.room": { "title": { "en": "Room", "nl": "Binnen" } },
+					"measure_temperature.outside": { "title": { "en": "Outside", "nl": "Buiten" } },
+					"target_temperature": {
+						"min": 5,
+						"max": 30,
+						"step": 0.5
+					}
+				}
+			}
+			Util.debugLog("==>Broadlink props: " + JSON.stringify(data));
+
+			return callback(null,data['deviceList']);
+		}.bind(this));
+	}
 }
 
 module.exports = HysenDriver;

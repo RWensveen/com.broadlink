@@ -17,66 +17,55 @@
 -->
 
 <style type="text/css">
-  span label {
-    width: 100px
-  }
-  p {text-align:center}
-  table,td {width:100% ; height:100%}
+   p {
+      text-align:center
+   }
+   .next-button {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+   }
 </style>
 
-
-<style type="text/css">
-    .broadlink-pairing {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        width: 100%;
-    }
-    .buttons, .messages {
-        padding-top: 14px;
-    }
-</style>
-
-
-<p data-i18n="pair.properties"></p>
-<div class="broadlink-pairing">
-<table>
-<TR><TD>
-        <div class="form-group">
-            <input type="checkbox" class="form-control" id="externalSensor">
-            <label for="Sensors" data-i18n="pair.has_sensors"></label>
-        </div>
-</td></TR><tr><td>
-        <div class="form-group buttons">
-	        <table><TR>
-	           <TD align="left"><button  id="add"    onclick="add()"    class="button" data-i18n="pair.add"></button>
-	           <TD align="right"><button id="cancel" onclick="cancel()" class="button" data-i18n="pair.cancel"></button>
-            </TR></table>
-        </div>
-</td></TR>
-</table>
+<p id="deviceName"></p>
+<BR>
+<div>
+   <input type="checkbox" id="externalSensor" checked>
+   &nbsp;&nbsp;&nbsp;
+   <label data-i18n="pair.has_sensors"></label>
 </div>
+
+<div class="next-button">
+   <button onclick="add()" data-i18n="pair.next" ></button>
+</div>
+
 
 <script type="text/javascript">
 
 Homey.setTitle(Homey.__('pair.properties'));
 
-Homey.on('properties_done', function (d) {
-	Homey.showView("add_devices")
-	//Homey.nextView();
+var deviceData = null
+Homey.getViewStoreValue('add_devices', 'devices', 
+		function( err,data) {
+			deviceData = data
+			document.getElementById('deviceName').innerHTML = data[0].name
 })
-
-function add( data ) {
-	var val = document.getElementById('externalSensor').checked;
-	var properties = { 'externalSensor': val }
-	Homey.emit('properties_set', properties, null )    
+		
+		
+function doneSettingProperties( err, data ) {
+	Homey.setViewStoreValue('add_devices', 'devices', data,
+			function(err) {
+				Homey.showView( 'add_devices')
+	})
 }
 
 
-// function called when user pressed button
-function cancel(data) {
-	Homey.emit('disconnect');
-	Homey.done();
+function add( data ) {
+	var val = document.getElementById('externalSensor').checked;
+	var properties = { 'externalSensor': val, 
+					   'deviceList': deviceData 
+					 }
+	Homey.emit('properties_set', properties, doneSettingProperties )    
 }
 
 

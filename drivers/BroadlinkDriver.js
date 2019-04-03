@@ -67,6 +67,7 @@ class BroadlinkDriver extends Homey.Driver {
 
         socket.on('disconnect', function() {
         	try {
+        		Util.debugLog('disconnect')
 				this.discoveredDevice = undefined;
 				this._communicate.destroy();
 				this._communicate = undefined;
@@ -115,49 +116,13 @@ class BroadlinkDriver extends Homey.Driver {
 					socket.emit('discovered',null)
 				})
 		}.bind(this))
-
-		socket.on('properties_set', function( properties, callback ) {
-			// only used for HYSEN device.
-			if( ! properties[ 'externalSensor' ] ) {
-				this.discoveredDevice.device['capabilities'] = [
-					"measure_temperature",
-					"target_temperature",
-					"parental_mode"
-					]
-				this.discoveredDevice.device['capabilitiesOptions' ] = {
-					"target_temperature": {
-						"min": 5,
-						"max": 30,
-						"step": 0.5
-					}
-				}
-			}
-			else {
-				this.discoveredDevice.device['capabilities'] = [
-					"measure_temperature.room",
-					"measure_temperature.outside",
-					"measure_temperature",
-					"target_temperature",
-					"parental_mode"
-					]
-				this.discoveredDevice.device['capabilitiesOptions' ] = {
-					"measure_temperature.room": { "title": { "en": "Room", "nl": "Binnen" } },
-					"measure_temperature.outside": { "title": { "en": "Outside", "nl": "Buiten" } },
-					"target_temperature": {
-						"min": 5,
-						"max": 30,
-						"step": 0.5
-					}
-				}
-			}
-
-			socket.emit('properties_done',null)
-		}.bind(this));
 		
 		socket.on('list_devices', function(data, callback) {
+			//Util.debugLog("==>Broadlink - found device: " + JSON.stringify(this.discoveredDevice.device));
 			return callback(null,this.discoveredDevice.device);
 		}.bind(this));
 	}
 }
 
 module.exports = BroadlinkDriver;
+

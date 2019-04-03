@@ -14,18 +14,18 @@
   },
   "pair": {
     "title": "Pair Broadlink Device",
-    "nosettings": "Please fill in all the fields.",
     "intro": "Configure the device with the e-Control app on a smartphone.<br>Get the IP address from your wifi router.",
 	"cancel": "Cancel",
 	"add": "Add",
 	"address": "IP address",
-	"devicetype": "Device Type",
 	"error_no_discover": "No device discovered. Did you switch it on, and is it connectect to your WiFi network ?",
 	"found_another": "Found another device: __dev__ (__type__)",
 	"invalid_ipaddress": "Invalid IP address",
 	"discovering": "Discovering device...",
 	"has_sensors":"Has external sensor",
-	"properties":"Properties"
+	"properties":"Properties",
+	"select_device":"Select device",
+	"next":"Next &gt;"
   },
   "settings":{
   	"title": "Broadlink Debug Settings",

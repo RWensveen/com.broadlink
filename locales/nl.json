@@ -14,18 +14,18 @@
   },
   "pair": {
     "title": "Broadlink Apparaat Toevoegen",
-    "nosettings": "Niet alle velden zijn ingevuld.",
     "intro": "Configureer het apparaat met de e-Control app op een smartphone.<br>Zoek dan het IP adres op de WiFi router.",
 	"cancel": "Stop",
 	"add": "Toevoegen",
 	"address": "IP address",
-	"devicetype": "Device Type",
 	"error_no_discover": "Geen apparaat gevonden. Is het apparaat aan, en is het verbonden met het Wifi netwerk ?",
 	"found_another": "Ander apparaat gevonden: __dev__ (__type__)",
 	"invalid_ipaddress": "Ongeldig IP adres",
 	"discovering": "Probeer apparaat te ontdekken...",
 	"has_sensors":"Heeft externe sensor",
-	"properties":"Eigenschappen"
+	"properties":"Eigenschappen",
+	"select_device":"Selecteer het apparaat",
+	"next":"Volgende &gt;"
   },
   "settings":{
   	"title": "Broadlink Debug Instellingen",

@@ -53,7 +53,7 @@ class SP2Device extends BroadlinkDevice {
 	}
 
 
-	async onCheckInterval( interval ) {
+	async onCheckInterval() {
 		try {
 			let energy = await this.get_energy()
 			this.setCapabilityValue('measure_power', energy);

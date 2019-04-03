@@ -1368,21 +1368,8 @@
 			},
 			"class": "thermostat",
 			"capabilities": [
-				"measure_temperature.room",
-				"measure_temperature.outside",
-				"measure_temperature",
-				"target_temperature",
 				"parental_mode"
 				],
-			"capabilitiesOptions": {
-				"measure_temperature.room": { "title": { "en": "Room", "nl": "Binnen" } },
-				"measure_temperature.outside": { "title": { "en": "Outside", "nl": "Buiten" } },
-				"target_temperature": {
-					"min": 5,
-					"max": 30,
-					"step": 0.5
-				}
-			},
 			"pair": [
 				{
 					"id": "start",
@@ -1585,8 +1572,8 @@
 							"value": 0.0,
 							"attr": { "min": -5.0, "max": 5.0, "step": 0.1 },
 							"hint": {
-								"en":"Set temperature adjustment for room temperature.",
-								"nl":"Zet temperatuuraanpassing voor kamer sensor."
+								"en":"Set temperature adjustment for room temperature, in steps of 0.5 degree",
+								"nl":"Zet temperatuuraanpassing voor kamer sensor, in stappen van 0.5 graden."
 							}
 						},
 						{
@@ -1603,15 +1590,15 @@
 							"id": "LoopMode",
 							"type": "radio",
 							"label": { "en": "Weekday/Weekend mode", "nl":"Week/Weekend mode" },
-							"value": "0",
+							"value": "1",
 							"values": [
-								{ "id": "0", "label": { "en":"Sat,Sun = weekend",
+								{ "id": "1", "label": { "en":"Sat,Sun = weekend",
 														"nl":"Za,zo = weekend" } },
 
-								{ "id": "1", "label": { "en":"Sun = weekend",
+								{ "id": "2", "label": { "en":"Sun = weekend",
 														"nl":"Zo = weekend" } },
 
-								{ "id": "2", "label": { "en":"All weekday",
+								{ "id": "3", "label": { "en":"All weekday",
 														"nl":"Allen weekdagen" } }
 							],
 							"hint": {
@@ -1710,16 +1697,16 @@
 				"small": "./drivers/Dooya/assets/images/small.jpg"
 			},
 			"class": "curtain",
-			"capabilities": [ "windowcoverings_closed", "button.1", "button.2", "button.3" ],
+			"capabilities": [ "windowcoverings_closed", "button.open", "button.close", "button.stop" ],
 			"capabilitiesOptions": {
-				"button.1":  { "title": { "en": "Open",  "nl": "Open" } },
-				"button.2":  { "title": { "en": "Close", "nl": "Dicht" } },
-				"button.3":  { "title": { "en": "Stop",  "nl": "Stop" } }
+				"button.open":  { "title": { "en": "Open",  "nl": "Open"  } },
+				"button.close": { "title": { "en": "Close", "nl": "Dicht" } },
+				"button.stop":  { "title": { "en": "Stop",  "nl": "Stop"  } }
 			},
 			"pair": [
 				{
 					"id": "start",
-					"navigation": { "next": "list_devices" }
+					"n_avigation": { "next": "list_devices" }
 				},
 				{
 					"id": "list_devices",
