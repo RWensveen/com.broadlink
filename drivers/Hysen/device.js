@@ -240,14 +240,14 @@ class HysenDevice extends BroadlinkDevice {
 		changed |= this._updateSchedule( 'weekend2', 'weekendtemp2', 7, changedKeysArr, newSettingsObj )
 
 		if( changed ) {
-			await this.set_advanced( Number(this.data['LoopMode']), Number(this.data['AutoMode']), 
+			/*await*/ this.set_advanced( Number(this.data['LoopMode']), Number(this.data['AutoMode']), 
 									 Number(this.data['SensorMode']), this.data['TempRangeExtSensor'], 
 									 this.data['FloorTempDeadZone'], this.data['SensorUpperLimit'], this.data['SensorLowerLimit'], 
 									 this.data['RoomTempAdjust'], Number(this.data['AntiFreezeMode']), this.data['poweron']);
 
 	//		await this.set_mode( Number(this.data['AutoMode']), Number(this.data['LoopMode']) /*, sensor*/ );
 
-			await this.set_schedule( this.data['schedule'] )
+			/*await*/ this.set_schedule( this.data['schedule'] )
 		}
 
 		// Device clock

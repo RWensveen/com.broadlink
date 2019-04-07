@@ -16,26 +16,6 @@
  * along with com.broadlink.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-/*
- * see: https://pycrc.org/models.html
- * 
-crc-16-modbus
-=============
-Width              16
-Poly               0x8005
-Reflect In         True
-XOR In             0xffff
-Reflect Out        True
-XOR Out            0x0000
-Short command      pycrc.py --model crc-16-modbus
-Extended command   pycrc.py --width 16 --poly 0x8005 --reflect-in True --xor-in 0xffff --reflect-out True --xor-out 0x0000
-Check              0x4b37
- */
-
-
-
 'use strict';
 
 //const Homey = require('homey');
@@ -45,8 +25,6 @@ const BroadlinkDevice = require('./../BroadlinkDevice');
 
 class DooyaDevice extends BroadlinkDevice {
 
-
-
 	onInit() {
 		Util.debugLog('==> DooyaDevice.onInit');
 
@@ -54,7 +32,10 @@ class DooyaDevice extends BroadlinkDevice {
 		this.registerCapabilityListener('button.open', this.onCapabilityOpen.bind(this));
 		this.registerCapabilityListener('button.close', this.onCapabilityClose.bind(this));
 		this.registerCapabilityListener('button.stop', this.onCapabilityStop.bind(this));
-		this.registerCapabilityListener('windowcoverings_closed', this.onCapabilityWcClosed.bind(this));
+		
+		if( this.getCapabilities().indexOf('windowcoverings_closed') > -1 ) {
+			this.registerCapabilityListener('windowcoverings_closed', this.onCapabilityWcClosed.bind(this));
+		}
 	}
 
 
@@ -76,23 +57,25 @@ class DooyaDevice extends BroadlinkDevice {
 		else {
 			this._sendCommand( 0x02, 0x00 );
 		}
-
 	}
 
 	async onCapabilityOpen( state ) {
-		this.setCapabilityValue( 'windowcoverings_closed', true );
+		if( this.getCapabilities().indexOf('windowcoverings_closed') > -1 ) {
+			this.setCapabilityValue( 'windowcoverings_closed', true );
+		}
 		this._sendCommand( 0x01, 0x00 );
 	}
 
 	async onCapabilityClose( state ) {
-		this.setCapabilityValue( 'windowcoverings_closed', false );
+		if( this.getCapabilities().indexOf('windowcoverings_closed') > -1 ) {
+			this.setCapabilityValue( 'windowcoverings_closed', false );
+		}
 		this._sendCommand( 0x02, 0x00 );
 	}
 
 	async onCapabilityStop( state ) {
 		this._sendCommand( 0x03, 0x00 );
 	}
-	
 	
 	async get_percentage(self) {
 		return await this._sendCommand(0x06, 0x5d)
