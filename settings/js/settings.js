@@ -44,4 +44,6 @@ function onHomeyReady( Homey ) {
 
       Homey.ready();
    });
+   
+   Homey.ready();
 }

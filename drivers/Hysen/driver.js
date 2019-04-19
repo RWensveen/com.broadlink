@@ -18,15 +18,15 @@
 
 'use strict';
 
-const BroadlinkDriver = require('./../BroadlinkDriver');
+const BroadlinkDriver = require('./../../lib/BroadlinkDriver');
 const Homey = require('homey');
 const Util = require('./../../lib/util.js');
 
 
 class HysenDriver extends BroadlinkDriver {
 
-	check_condition_parentalmode_on( args, state, callback ) {
-		return args.device.check_parentalmode_on( callback )
+	check_condition_parentalmode_on( args, state ) {
+		return args.device.check_parentalmode_on()
 	}
 
 	do_action_parentalmode_on(args,state) {
@@ -37,25 +37,26 @@ class HysenDriver extends BroadlinkDriver {
 		return args.device.do_action_parentalmode_off()
 	}
 
-
 	onInit() {
 		super.onInit({
 			CompatibilityID: 0x4EAD   // HYSEN
 		});
 		
+		// temperature FlowCards are added automatically
+		
 		this.trigger_parentalmode_on = new Homey.FlowCardTriggerDevice('hysen_parentalmode_on').register()
 		this.trigger_parentalmode_off = new Homey.FlowCardTriggerDevice('hysen_parentalmode_off').register()
 		this.trigger_parentalmode_toggle = new Homey.FlowCardTriggerDevice('hysen_parentalmode_toggle').register()
-
+		
 		this.condition_parentalmode_on = new Homey.FlowCardCondition('hysen_parentalmode')
 			.register()
 			.registerRunListener(this.check_condition_parentalmode_on.bind(this) )
 
-		this.action_parentalmode_on = new Homey.FlowCardAction('hysen_parentalmode_on')
+		this.action_parentalmode_on = new Homey.FlowCardAction('hysen_parentalmode_set_on')
 			.register()
 			.registerRunListener(this.do_action_parentalmode_on.bind(this))
 
-		this.action_parentalmode_off = new Homey.FlowCardAction('hysen_parentalmode_off')
+		this.action_parentalmode_off = new Homey.FlowCardAction('hysen_parentalmode_set_off')
 			.register()
 			.registerRunListener(this.do_action_parentalmode_off.bind(this))
 	}
@@ -70,11 +71,9 @@ class HysenDriver extends BroadlinkDriver {
 		
 		socket.on('properties_set', function( data, callback ) {
 			// data = { 'externalSensor': val, 'deviceList': deviceData }
-			Util.debugLog('properties_set -> data = '+JSON.stringify(data))
 			
-			// only used for HYSEN device.
 			if( ! data[ 'externalSensor' ] ) {
-				Util.debugLog("==>Broadlink: NO ext sensor");
+				// override capabilities in app.json
 				data['deviceList'][0]['capabilities'] = [
 					"measure_temperature",
 					"target_temperature",
@@ -88,27 +87,6 @@ class HysenDriver extends BroadlinkDriver {
 					}
 				}
 			}
-			else {
-				Util.debugLog("==>Broadlink: HAS ext sensor");
-				data['deviceList'][0]['capabilities'] = [
-					"measure_temperature.room",
-					"measure_temperature.outside",
-					"measure_temperature",
-					"target_temperature",
-					"parental_mode"
-					]
-				data['deviceList'][0]['capabilitiesOptions' ] = {
-					"measure_temperature.room": { "title": { "en": "Room", "nl": "Binnen" } },
-					"measure_temperature.outside": { "title": { "en": "Outside", "nl": "Buiten" } },
-					"target_temperature": {
-						"min": 5,
-						"max": 30,
-						"step": 0.5
-					}
-				}
-			}
-			Util.debugLog("==>Broadlink props: " + JSON.stringify(data));
-
 			return callback(null,data['deviceList']);
 		}.bind(this));
 	}

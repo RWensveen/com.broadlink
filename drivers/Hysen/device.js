@@ -40,7 +40,7 @@ Check              0x4b37
 
 const Homey = require('homey');
 const Util = require('./../../lib/util.js');
-const BroadlinkDevice = require('./../BroadlinkDevice');
+const BroadlinkDevice = require('./../../lib/BroadlinkDevice');
 const CRC16 = require('crc').crc16modbus;
 
 
@@ -54,8 +54,8 @@ class HysenDevice extends BroadlinkDevice {
 		await this.get_full_status()
 	}
 
-	check_parentalmode_on(callback) {
-		callback(null, this.data['ParentalMode'] )
+	check_parentalmode_on() {
+		return Promise.resolve( this.data['ParentalMode'] )
 	}
 
 	async do_action_parentalmode_on() {
@@ -69,16 +69,19 @@ class HysenDevice extends BroadlinkDevice {
 		await this.set_power( this.data['power'], false )
 		this.setCapabilityValue('parental_mode', false);
 	}
-
-	_trigger_parentalmode() {
-		let drv = this.getDriver();
-		if( this.data['ParentalMode'] ) {
-			drv.trigger_parentalmode_on.trigger(this,{},{})
-		}
-		else {
-			drv.trigger_parentalmode_off.trigger(this,{},{})
-		}
-		drv.trigger_parentalmode_toggle.trigger(this,{},{})
+	
+	async _trigger_parentalmode() {
+		try {
+			let drv = this.getDriver();
+			if( this.data['ParentalMode'] ) {
+				await drv.trigger_parentalmode_on.trigger(this,{},{})
+			}
+			else {
+				await drv.trigger_parentalmode_off.trigger(this,{},{})
+			}
+			await drv.trigger_parentalmode_toggle.trigger(this,{},{})
+		} 
+		catch(err) { Util.debugLog("_trigger_parentalmode: error = "+err)}
 	}
 	
 	_updateCapabilities() {
@@ -297,7 +300,7 @@ class HysenDevice extends BroadlinkDevice {
 	    }
 	    else {
 	    	//Util.debugLog( "**> hysen.send_request: Errorcode "+response.error + " in response")
-	    	throw( "Errorcode: " + response.error )
+	    	throw( "**> hysen.send_request: error = " + response.error )
 	    }
 	}
 
@@ -568,9 +571,7 @@ class HysenDevice extends BroadlinkDevice {
 			this.registerCapabilityListener('parental_mode', this.onCapabilityParentalMode.bind(this));
 
 			setTimeout( async function() {
-//					this.onCheckInterval();
-					try {
-					Util.debugLog("hysen - onInit delayed")
+				try {
 					await this.get_full_status()
 					await this.get_temperature()
 				}

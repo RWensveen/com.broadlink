@@ -1,6 +1,14 @@
 # homey files
 userdata
 userconf.json
+.homeyignore
+_CleanUp_
+app.json__NEW
+app.json__ORIG
+drivers/*/pair/start.html
+
+#node modules
+node_modules
 
 # client id & secret
 env.json

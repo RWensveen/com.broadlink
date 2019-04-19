@@ -19,28 +19,26 @@
 'use strict';
 
 const Homey = require('homey');
-const BroadlinkDriver = require('./../BroadlinkDriver');
+const BroadlinkDriver = require('./../../lib/BroadlinkDriver');
 const Util = require('./../../lib/util.js');
 
 
 class BroadlinkSP2Driver extends BroadlinkDriver {
 
 
-	check_condition_power_on( args, state, callback ) {
-		args.device.check_condition_power_on(callback)
+	check_condition_power_on( args, state ) {
+		return args.device.check_condition_power_on()
 	}
 
-	check_condition_nightlight_on( args, state, callback ) {
-		args.device.check_condition_nightlight_on(callback)
+	check_condition_nightlight_on( args, state ) {
+		return args.device.check_condition_nightlight_on()
 	}
 
 	do_action_power_on(args,state) {
-		//Util.debugLog('SP2Driver.do_action_power_on');
 		return args.device.do_action_power_on()
 	}
 
 	do_action_power_off(args,state) {
-		//Util.debugLog('SP2Driver.do_action_power_off');
 		return args.device.do_action_power_off()
 	}
 
@@ -94,9 +92,7 @@ class BroadlinkSP2Driver extends BroadlinkDriver {
 		this.action_nightlight_off
 			.register()
 			.registerRunListener(this.do_action_nightlight_off.bind(this))
-
 	}
-
 }
 
 module.exports = BroadlinkSP2Driver;

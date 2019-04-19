@@ -19,22 +19,22 @@
 'use strict';
 
 const Homey = require('homey');
-const BroadlinkDriver = require('./../BroadlinkDriver');
+const BroadlinkDriver = require('./../../lib/BroadlinkDriver');
 const Util = require('./../../lib/util.js');
 
 
 class BroadlinkMP1Driver extends BroadlinkDriver {
 
-	mp1_check_condition_on( args, state,callback ) {
-		args.device.check_condition_on( args.switchID, callback );
+	mp1_check_condition_on( args, state ) {
+		return args.device.check_condition_on( args.switchID );
 	}
 
 	mp1_do_action_on(args,state) {
-		args.device.do_action_on( args.switchID )
+		return args.device.do_action_on( args.switchID )
 	}
 
 	mp1_do_action_off(args,state) {
-		args.device.do_action_off( args.switchID )
+		return args.device.do_action_off( args.switchID )
 	}
 
 
@@ -48,12 +48,12 @@ class BroadlinkMP1Driver extends BroadlinkDriver {
 			.registerRunListener( (args,state,callback) => {
 				callback( null, (args.switchID == state.switchID ))
 			})
-		this.trigger_toggle_on = new Homey.FlowCardTriggerDevice('mp1_onoff_on')
+		this.trigger_on = new Homey.FlowCardTriggerDevice('mp1_onoff_on')
 			.register()
 			.registerRunListener( (args,state,callback) => {
 				callback( null, (args.switchID == state.switchID ))
 			})
-		this.trigger_toggle_off = new Homey.FlowCardTriggerDevice('mp1_onoff_off')
+		this.trigger_off = new Homey.FlowCardTriggerDevice('mp1_onoff_off')
 			.register()
 			.registerRunListener( (args,state,callback) => {
 				callback( null, (args.switchID == state.switchID ))

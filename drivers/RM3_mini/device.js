@@ -20,7 +20,7 @@
 
 const Homey = require('homey');
 const Util = require('./../../lib/util.js');
-const BroadlinkDevice = require('./../BroadlinkDevice');
+const BroadlinkDevice = require('./../../lib/BroadlinkDevice');
 const DataStore = require('./../../lib/DataStore.js')
 
 
@@ -105,6 +105,8 @@ class RM3miniDevice extends BroadlinkDevice {
 			drv.rm3mini_any_cmd_trigger.trigger( this, {'CommandSent':cmd.name}, {})
 
 		} catch( e ) { ; }
+		
+		return Promise.resolve(true)
 	}
 
 
@@ -129,8 +131,8 @@ class RM3miniDevice extends BroadlinkDevice {
 	/**
 	 *
 	 */
-	check_condition_specific_cmd_sent( args, state, callback ) {
-		callback(null,( args.variable.name === state.variable ))
+	check_condition_specific_cmd_sent( args, state ) {
+		return Promise.resolve( args.variable.name === state.variable )
 	}
 
 

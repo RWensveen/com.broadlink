@@ -18,7 +18,7 @@
 
 'use strict';
 
-const BroadlinkDriver = require('./../BroadlinkDriver');
+const BroadlinkDriver = require('./../../lib/BroadlinkDriver');
 const Homey = require('homey');
 //const Util = require('./../../lib/util.js');
 
@@ -26,40 +26,40 @@ const Homey = require('homey');
 class BroadlinkA1Driver extends BroadlinkDriver {
 
 
-	a1_check_condition_airquality( args, state, callback ) {
-		return args.device.check_airquality_level(args,state,callback)
+	a1_check_condition_airquality( args, state ) {
+		return args.device.check_airquality_level(args,state)
 	}
 
-	a1_check_condition_airquality_better( args, state, callback ) {
-		return args.device.check_airquality_level_better(args,state,callback)
+	a1_check_condition_airquality_better( args, state ) {
+		return args.device.check_airquality_level_better(args,state)
 	}
 
-	a1_check_condition_airquality_worse( args, state, callback ) {
-		return args.device.check_airquality_level_worse(args,state,callback)
+	a1_check_condition_airquality_worse( args, state ) {
+		return args.device.check_airquality_level_worse(args,state)
 	}
 
-	a1_check_condition_lightlevel( args, state, callback ) {
-		return args.device.check_lightlevel(args,state,callback)
+	a1_check_condition_lightlevel( args, state ) {
+		return args.device.check_lightlevel(args,state)
 	}
 
-	a1_check_condition_lightlevel_darker( args, state, callback ) {
-		return args.device.check_lightlevel_darker(args,state,callback)
+	a1_check_condition_lightlevel_darker( args, state ) {
+		return args.device.check_lightlevel_darker(args,state)
 	}
 
-	a1_check_condition_lightlevel_brighter( args, state, callback ) {
-		return args.device.check_lightlevel_brighter(args,state,callback)
+	a1_check_condition_lightlevel_brighter( args, state ) {
+		return args.device.check_lightlevel_brighter(args,state)
 	}
 
-	a1_check_condition_noiselevel( args, state, callback ) {
-		return args.device.check_noiselevel(args,state,callback)
+	a1_check_condition_noiselevel( args, state ) {
+		return args.device.check_noiselevel(args,state)
 	}
 
-	a1_check_condition_noiselevel_louder( args, state, callback ) {
-		return args.device.check_noiselevel_louder(args,state,callback)
+	a1_check_condition_noiselevel_louder( args, state ) {
+		return args.device.check_noiselevel_louder(args,state)
 	}
 
-	a1_check_condition_noiselevel_softer( args, state, callback ) {
-		return args.device.check_noiselevel_softer(args,state,callback)
+	a1_check_condition_noiselevel_softer( args, state ) {
+		return args.device.check_noiselevel_softer(args,state)
 	}
 
 	

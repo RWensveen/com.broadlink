@@ -19,59 +19,59 @@
 'use strict';
 
 const Homey = require('homey');
-const BroadlinkDevice = require('./../BroadlinkDevice');
+const BroadlinkDevice = require('./../../lib/BroadlinkDevice');
 const Util = require('./../../lib/util.js');
 
 
 class SP1Device  extends BroadlinkDevice {
 
 
-    /**
-	 * Send a command to the device. The command was previously retrieved
-	 * with check_IR_data()
-	 */
-	async onCapabilityOnOff( mode ) {
-		try {
-			//Util.debugLog('SP1.onCapabilityOnOff');
-			let response = await this._communicate.sp1_set_power_state(mode)
-			if( mode != this.getCapabilityValue('onoff') ) {
-				let drv = this.getDriver();
-				drv.trigger_toggle.trigger(this,{},{})
-				if( mode ) {
-					drv.trigger_on.trigger(this,{},{})
-				}
-				else {
-					drv.trigger_off.trigger(this,{},{})
-				}
+	generate_trigger( mode ) {
+		if( mode != this.getCapabilityValue('onoff') ) {
+			let drv = this.getDriver();
+			drv.trigger_toggle.trigger(this,{},{})
+			if( mode ) {
+				drv.trigger_on.trigger(this,{},{})
 			}
-		} catch( e ) {
-				Util.debugLog('**>SP1device.onCapabilityOnOff - catch = ' + err);
+			else {
+				drv.trigger_off.trigger(this,{},{})
+			}
 		}
 	}
+	
+	async set_onoff( mode ) {
+		this.generate_trigger(mode)
+		try {
+			await this._communicate.sp1_set_power_state(mode)
+		} catch( e ) { ; }
+	}
 
-
-	check_condition_on(callback) {
+	check_condition_on() {
 		let onoff = this.getCapabilityValue('onoff')
-		callback(null, onoff )
+		return Promise.resolve( onoff )
 	}
 
-	async do_action_on() {
-		await this.onCapabilityOnOff( true );
+	do_action_on() {
+		this.set_onoff( true );
 		this.setCapabilityValue('onoff', true);
+		return Promise.resolve(true)
 	}
 
-	async do_action_off() {
-		await this.onCapabilityOnOff( false );
+	do_action_off() {
+		this.set_onoff( false );
 		this.setCapabilityValue('onoff', false);
+		return Promise.resolve(true)
 	}
 
-
+	onCapabilityOnOff( mode ) {
+		this.set_onoff(mode)
+		return Promise.resolve(); 
+	}
+	
 	onInit() {
 		super.onInit();
 		this.registerCapabilityListener('onoff', this.onCapabilityOnOff.bind(this));
 	}
-
-
 }
 
 module.exports = SP1Device;

@@ -18,15 +18,15 @@
 
 'use strict';
 
-const BroadlinkDriver = require('./../BroadlinkDriver');
+const BroadlinkDriver = require('./../../lib/BroadlinkDriver');
 const Homey = require('homey');
 
 
 class BroadlinkSP1Driver extends BroadlinkDriver {
 
 
-	sp1_check_condition_on( args, state, callback ) {
-		return args.device.check_condition_on( callback )
+	sp1_check_condition_on( args, state ) {
+		return args.device.check_condition_on()
 	}
 
 	sp1_do_action_on(args,state) {

@@ -27,7 +27,6 @@ class BroadlinkRMProDriver extends BroadlinkRM3miniDriver {
 		super.onInit();
 		this.setCompatibilityID( 0x273d );  // RM PRO
 	}
-
 }
 
 module.exports = BroadlinkRMProDriver;

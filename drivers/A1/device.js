@@ -20,7 +20,7 @@
 
 const Homey = require('homey');
 const Util = require('./../../lib/util.js');
-const BroadlinkDevice = require('./../BroadlinkDevice');
+const BroadlinkDevice = require('./../../lib/BroadlinkDevice');
 
 
 /*
@@ -88,16 +88,16 @@ class A1Device extends BroadlinkDevice {
 			   ];
 	}
 
-	check_airquality_level( args, state, callback )  {
-		callback(null, args.variable.value == args.device.air_quality )
+	check_airquality_level( args, state )  {
+		return Promise.resolve( args.variable.value == args.device.air_quality )
 	}
 
-	check_airquality_level_better( args, state, callback ) {
-		callback(null, args.variable.value > args.device.air_quality )
+	check_airquality_level_better( args, state ) {
+		return Promise.resolve( args.variable.value > args.device.air_quality )
 	}
 
-	check_airquality_level_worse( args, state, callback ) {
-		callback(null, args.variable.value < args.device.air_quality )
+	check_airquality_level_worse( args, state ) {
+		return Promise.resolve( args.variable.value < args.device.air_quality )
 	}
 
 
@@ -124,16 +124,16 @@ class A1Device extends BroadlinkDevice {
 			   ];
 	}
 
-	check_lightlevel( args, state, callback )  {
-		callback(null, args.variable.value == args.device.light_level )
+	check_lightlevel( args, state )  {
+		return Promise.resolve( args.variable.value == args.device.light_level )
 	}
 
-	check_lightlevel_brighter( args, state, callback ) {
-		callback(null, args.variable.value < args.device.light_level )
+	check_lightlevel_brighter( args, state ) {
+		return Promise.resolve( args.variable.value < args.device.light_level )
 	}
 
-	check_lightlevel_darker( args, state, callback ) {
-		callback(null, args.variable.value > args.device.light_level )
+	check_lightlevel_darker( args, state ) {
+		return Promise.resolve( args.variable.value > args.device.light_level )
 	}
 
 
@@ -157,16 +157,16 @@ class A1Device extends BroadlinkDevice {
 			   ];
 	}
 
-	check_noiselevel( args, state, callback )  {
-		callback(null, args.variable.value == args.device.noise_level );
+	check_noiselevel( args, state )  {
+		return Promise.resolve( args.variable.value == args.device.noise_level );
 	}
 
-	check_noiselevel_softer( args, state, callback ) {
-		callback(null, args.variable.value > args.device.noise_level );
+	check_noiselevel_softer( args, state ) {
+		return Promise.resolve( args.variable.value > args.device.noise_level );
 	}
 
-	check_noiselevel_louder( args, state, callback ) {
-		callback(null, args.variable.value < args.device.noise_level );
+	check_noiselevel_louder( args, state ) {
+		return Promise.resolve( args.variable.value < args.device.noise_level );
 	}
 
 

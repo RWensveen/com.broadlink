@@ -19,19 +19,19 @@
 'use strict';
 
 const Homey = require('homey');
-const BroadlinkDriver = require('./../BroadlinkDriver');
+const BroadlinkDriver = require('./../../lib/BroadlinkDriver');
 const Util = require('./../../lib/util.js');
 
 
 class SP3SDriver extends BroadlinkDriver {
 
 
-	check_condition_power_on( args, state, callback ) {
-		args.device.check_condition_power_on(callback)
+	check_condition_power_on( args, state ) {
+		return args.device.check_condition_power_on()
 	}
 
-	check_condition_nightlight_on( args, state, callback ) {
-		args.device.check_condition_nightlight_on(callback)
+	check_condition_nightlight_on( args, state ) {
+		return args.device.check_condition_nightlight_on()
 	}
 
 	do_action_power_on(args,state) {
@@ -93,7 +93,6 @@ class SP3SDriver extends BroadlinkDriver {
 			.register()
 			.registerRunListener(this.do_action_nightlight_off.bind(this))
 	}
-
 }
 
 module.exports = SP3SDriver;

@@ -18,7 +18,7 @@
 
 'use strict';
 
-const BroadlinkDriver = require('./../BroadlinkDriver');
+const BroadlinkDriver = require('./../../lib/BroadlinkDriver');
 const Homey = require('homey');
 const Util = require('./../../lib/util.js');
 
@@ -26,8 +26,8 @@ const Util = require('./../../lib/util.js');
 class BroadlinkRM3miniDriver extends BroadlinkDriver {
 
 
-	check_condition_specific_cmd( args, state, callback ) {
-		args.device.check_condition_specific_cmd_sent( args, state, callback )
+	check_condition_specific_cmd( args, state ) {
+		return args.device.check_condition_specific_cmd_sent( args, state )
 	}
 
 	do_exec_cmd( args, state ) {

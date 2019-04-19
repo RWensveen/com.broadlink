@@ -40,32 +40,44 @@
 </div>
 
 
+
+
 <script type="text/javascript">
 
 Homey.setTitle(Homey.__('pair.properties'));
 
 var deviceData = null
-Homey.getViewStoreValue('add_devices', 'devices', 
+
+if (typeof Homey.getViewStoreValue == 'function') {
+	Homey.getViewStoreValue('add_devices', 'devices', 
 		function( err,data) {
-			deviceData = data
-			document.getElementById('deviceName').innerHTML = data[0].name
-})
-		
-		
+			if( err != null ) { Homey.showView( 'add_devices') }
+			else {
+				if( data.length < 1 ) { Homey.showView( 'add_devices') }
+				else {
+					deviceData = data
+					document.getElementById('deviceName').innerHTML = data[0].name
+				}
+			}
+		})
+}
+else {
+	Homey.showView( 'add_devices')
+}
+
 function doneSettingProperties( err, data ) {
 	Homey.setViewStoreValue('add_devices', 'devices', data,
 			function(err) {
-				Homey.showView( 'add_devices')
+				Homey.showView('add_devices')
 	})
 }
-
 
 function add( data ) {
 	var val = document.getElementById('externalSensor').checked;
 	var properties = { 'externalSensor': val, 
 					   'deviceList': deviceData 
 					 }
-	Homey.emit('properties_set', properties, doneSettingProperties )    
+	Homey.emit('properties_set', properties, doneSettingProperties )  
 }
 
 
