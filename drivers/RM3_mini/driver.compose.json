@@ -1,0 +1,103 @@
+{
+	"id": "RM3_mini",
+	"name": {
+		"en": "RM3 Mini",
+		"nl": "RM3 Mini"
+	},
+	"images": {
+		"large": "./drivers/RM3_mini/assets/images/large.jpg",
+		"small": "./drivers/RM3_mini/assets/images/small.jpg"
+	},
+	"class": "other",
+	"capabilities" : ["learnIRcmd"],
+	"mobile": {
+		"components": [
+			{
+				"id": "icon",
+				"capabilities": []
+			},
+			{
+				"id": "button",
+				"capabilities": ["learnIRcmd"]
+			}
+		]
+	},
+	"pair": [
+		{
+			"$template": "start",
+			"id": "start"
+		},
+		{
+			"id": "list_devices",
+			"template": "list_devices",
+			"navigation": {
+				"next": "add_devices"
+			}
+		},
+		{
+			"id": "add_devices",
+			"template": "add_devices"
+		}
+	],
+   	"$extends": [ "rm.settings" ] ,
+   	"$flow": {
+		"triggers": [
+			{
+				"id":"RC_sent_any",
+				"title": {
+					"en": "Any Remote Command transmitted",
+					"nl": "Commando verzonden"
+				},
+				"tokens": [
+					{
+						"name": "CommandSent",
+						"type": "string",
+						"title": {
+							"en": "Command sent",
+							"nl": "Verzonden commando"
+						},
+						"example": {
+							"en": "Program Up",
+							"nl": "Volgend Programma"
+						}
+					}
+				]
+			},
+			{
+				"id":"RC_specific_sent",
+				"title": {
+					"en": "Remote Command transmitted",
+					"nl": "Commando verzonden"
+				},
+				"args": [
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": { "en": "name", "nl": "naam" }
+					}
+				]
+			}
+		],
+		"conditions": [
+		],
+		"actions": [
+			{
+				"id": "send_command",
+				"title": {
+					"en": "Send Remote Command",
+					"nl": "Verstuur commando"
+				},
+				"args": [
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "name",
+							"nl": "naam"
+						}
+					}
+				]
+			}
+		]
+	}
+}

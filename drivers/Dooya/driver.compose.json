@@ -1,0 +1,99 @@
+{
+	"id": "Dooya",
+	"name": {
+		"en": "Dooya curtain controler",
+		"nl": "Dooya gordijn controller"
+	},
+	"images": {
+		"large": "./drivers/Dooya/assets/images/large.jpg",
+		"small": "./drivers/Dooya/assets/images/small.jpg"
+	},
+	"class": "curtain",
+	"capabilities": [ "button.open", "button.close", "button.stop" ],
+	"capabilitiesOptions": {
+		"button.open":  { "title": { "en": "Open",  "nl": "Open"  } },
+		"button.close": { "title": { "en": "Close", "nl": "Dicht" } },
+		"button.stop":  { "title": { "en": "Stop",  "nl": "Stop"  } }
+	},
+	"mobile": {
+		"components": [
+			{ "id": "icon", "capabilities": []	},
+			{ "id": "button", "capabilities": ["button.open", "button.close", "button.stop"] }
+		]
+	},
+	"pair": [
+		{
+			"$template": "start",
+			"id": "start"
+		},
+		{
+			"id": "list_devices",
+			"template": "list_devices",
+			"navigation": { "next": "properties" }
+		},
+		{
+			"id": "properties",
+			"navigation": { "next": "add_devices" }
+		},
+		{
+			"id": "add_devices",
+			"template": "add_devices"
+		}
+	],
+	"$flow": {
+		"triggers": [
+			{
+				"id": "dooya_closed",
+				"title": {
+					"en": "Closed",
+					"nl": "Gesloten",
+					"de": "Geschlossen"
+				}
+			},
+			{
+				"id": "dooya_opened",
+				"title": {
+					"en": "Opened",
+					"nl": "Geopend",
+					"de": "Offen"
+				 }
+			}
+		],
+		"conditions": [
+			{
+				"id": "dooya_closed",
+				"title": {
+					"en": "Are !{{closed|opened}}",
+					"nl": "Zijn !{{gesloten|geopend}}",
+					"de": "Sind !{{geschlossen|offen}}"
+				}
+			}
+		],
+		"actions": [
+			{
+				"id": "dooya_close",
+				"title": {
+					"en": "Close",
+					"nl": "Sluiten",
+					"de": "Schließen"
+				}
+			},
+			{
+				"id": "dooya_open",
+				"title": {
+					"en": "Open",
+					"nl": "Openen",
+					"de": "Öffnen"
+				}
+			},
+			{
+				"id": "dooya_toggle",
+				"title": {
+					"en": "Toggle open or closed",
+					"nl": "Schakel tussen geopend en gesloten",
+					"de": "Offen/Geschlossen umschalten"
+				}
+			}
+		]
+	}
+}

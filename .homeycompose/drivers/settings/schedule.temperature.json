@@ -1,0 +1,5 @@
+{
+	"type": "number",
+	"value": 20.0,
+	"attr": { "min": 1.0, "max":99.5, "step": 0.5 }
+}

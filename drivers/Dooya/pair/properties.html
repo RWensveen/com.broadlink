@@ -1,0 +1,56 @@
+<!--
+ * Driver for Broadlink devices
+ *
+ * Copyright 2018-2019, R Wensveen
+ *
+ * This file is part of com.broadlink
+ * com.broadlink is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * com.broadlink is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with com.broadlink.  If not, see http://www.gnu.org/licenses/.
+-->
+
+
+
+<script type="text/javascript">
+
+
+if( typeof Homey.showLoadingOverlay == 'function') {
+	Homey.showLoadingOverlay()
+}
+
+if (typeof Homey.getViewStoreValue == 'function') {
+	//function exists only for Homey V2.0 and higher
+	Homey.getViewStoreValue('add_devices', 'devices', 
+		function( err,data) {
+			if( err != null ) { Homey.nextView() }
+			else {
+				if( data.length < 1 ) { Homey.nextView() }
+				else {
+					var properties = { 'deviceList': data 
+									 }
+					Homey.emit('properties_set', properties, 
+							function( err, data ) {
+								Homey.setViewStoreValue('add_devices', 'devices', data,
+									function(err) {
+										Homey.nextView()
+								})
+							})
+				}
+			}
+		})
+}
+else {
+	Homey.nextView()
+}
+
+
+
+
+</script>

@@ -1,0 +1,19 @@
+{
+	"type": "enum",
+	"title": {
+		"en": "Light Level",
+		"nl": "Lichtniveau"
+	},
+	"values": [
+		{ "id":"dark",    "title":{"en": "dark",    "nl":"donker"} },
+		{ "id":"dim",     "title":{"en": "dim",     "nl":"schemerig"} },
+		{ "id":"normal",  "title":{"en": "normal",  "nl":"normaal"} },
+		{ "id":"bright",  "title":{"en": "bright",  "nl":"helder"} },
+		{ "id":"unknown", "title":{"en": "unknown", "nl":"onbekend"} }
+	],
+	"getable": true,
+	"setable": false,
+	"insights": false,
+	"uiComponent": "sensor",
+	"icon":"/assets/icon_lightlevel.svg"
+}

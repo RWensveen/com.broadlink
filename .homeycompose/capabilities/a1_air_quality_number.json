@@ -1,0 +1,15 @@
+{
+	"type": "number",
+	"title": {
+		"en": "Air Quality",
+		"nl": "Luchtkwaliteit"
+	},
+	"min":1,
+	"max":4,
+	"decimals": 0,
+	"chartType": "spline",
+	"getable": true,
+	"setable": false,
+	"uiComponent": null,
+	"insights": true
+}

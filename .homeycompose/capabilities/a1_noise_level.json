@@ -1,0 +1,18 @@
+{
+	"type": "enum",
+	"title": {
+		"en": "Noise Level",
+		"nl": "Geluidsniveau"
+	},
+	"values": [
+		{ "id":"quiet",   "title":{"en": "quiet",   "nl":"stil"} },
+		{ "id":"normal",  "title":{"en": "normal",  "nl":"normaal"} },
+		{ "id":"noisy",   "title":{"en": "noisy",   "nl":"luidruchtig"} },
+		{ "id":"unknown", "title":{"en": "unknown", "nl":"onbekend"} }
+	],
+	"getable": true,
+	"setable": false,
+	"insights": false,
+	"uiComponent": "sensor",
+	"icon":"/assets/icon_noiselevel.svg"
+}

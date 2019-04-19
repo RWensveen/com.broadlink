@@ -1,0 +1,106 @@
+{
+	"id": "RM_plus",
+	"name": {
+		"en": "RM Pro Plus",
+		"nl": "RM Pro Plus"
+	},
+	"images": {
+		"large": "./drivers/RM_plus/assets/images/large.jpg",
+		"small": "./drivers/RM_plus/assets/images/small.jpg"
+	},
+	"class": "other",
+	"capabilities" : ["learnIRcmd", "learnRFcmd"],
+	"mobile": {
+		"components": [
+			{
+				"id": "icon",
+				"capabilities": []
+			},
+			{
+				"id": "button",
+				"capabilities": ["learnIRcmd"]
+			},
+			{
+				"id": "button",
+				"capabilities": ["learnRFcmd"]
+			}
+		]
+	},
+	"pair": [
+		{
+			"$template": "start",
+			"id": "start"
+		},
+		{
+			"id": "list_devices",
+			"template": "list_devices",
+			"navigation": { "next": "add_devices" }
+		},
+		{
+			"id": "add_devices",
+			"template": "add_devices"
+		}
+   	],
+   	"$extends": [ "rm.settings" ],
+   	"$flow": {
+		"triggers": [
+			{
+				"id":"RC_sent_any",
+				"title": {
+					"en": "Any Remote Command transmitted",
+					"nl": "Commando verzonden"
+				},
+				"tokens": [
+					{
+						"name": "CommandSent",
+						"type": "string",
+						"title": {
+							"en": "Command sent",
+							"nl": "Verzonden commando"
+						},
+						"example": {
+							"en": "Program Up",
+							"nl": "Volgend Programma"
+						}
+					}
+				]
+			},
+			{
+				"id":"RC_specific_sent",
+				"title": {
+					"en": "Remote Command transmitted",
+					"nl": "Commando verzonden"
+				},
+				"args": [
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": { "en": "name", "nl": "naam" }
+					}
+				]
+			}
+		],
+		"conditions": [
+		],
+		"actions": [
+			{
+				"id": "send_command",
+				"title": {
+					"en": "Send Remote Command",
+					"nl": "Verstuur commando"
+				},
+				"args": [
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "name",
+							"nl": "naam"
+						}
+					}
+				]
+			}
+		]
+	}
+   	
+}

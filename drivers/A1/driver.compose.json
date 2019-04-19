@@ -1,0 +1,264 @@
+{
+	"id": "A1",
+	"name": {
+		"en": "A1",
+		"nl": "A1"
+	},
+	"images": {
+		"large": "./drivers/A1/assets/images/large.jpg",
+		"small": "./drivers/A1/assets/images/small.jpg"
+	},
+	"class": "sensor",
+	"capabilities" : [
+		"updateSensor",
+		"measure_temperature",
+		"measure_humidity",
+		"a1_light_level",
+		"a1_air_quality",
+		"a1_noise_level",
+		"a1_air_quality_number",
+		"a1_light_level_number",
+		"a1_noise_level_number"
+	],
+	"mobile": {
+		"components": [
+			{
+				"id": "icon",
+				"capabilities": [
+					"updateSensor"
+				]
+			},
+			{
+				"id": "sensor",
+				"capabilities": [
+					"a1_air_quality",
+					"a1_noise_level",
+					"a1_light_level"
+				],
+				"options": {
+					"icons": {
+						"a1_air_quality": "/drivers/a1/assets/icon_airquality.svg",
+						"a1_noise_level": "/drivers/a1/assets/icon_noiselevel.svg",
+						"a1_light_level": "/drivers/a1/assets/icon_lightlevel.svg"
+					}
+				}
+			}
+		]
+	},
+	"pair": [
+		{
+			"$template": "start",
+			"id": "start"
+		},
+		{
+			"id": "list_devices",
+			"template": "list_devices",
+			"navigation": {
+				"next": "add_devices"
+			}
+		},
+		{
+			"id": "add_devices",
+			"template": "add_devices"
+		}
+	],
+	"$flow": {
+		"triggers": [
+			{
+				"id":"a1_air_quality",
+				"title": {
+					"en": "The Air Quality has changed",
+					"nl": "De luchtkwaliteit is veranderd"
+				},
+		        "tokens": [
+					{
+						"name": "airquality",
+						"type": "string",
+						"title": { "en": "Air Quality", "nl": "Luchtkwaliteit" },
+						"example": { "en": "good", "nl": "goed" }
+					}
+				]
+			},
+			{
+				"id":"a1_light_level",
+				"title": {
+					"en": "The Light Level has changed",
+					"nl": "Het lichtniveau is veranderd"
+				},
+				"tokens": [
+					{
+						"name": "lightlevel",
+						"type": "string",
+						"title": { "en": "Light Level", "nl": "Lichtniveau" },
+						"example": { "en": "bright", "nl": "helder" }
+					}
+				]
+			},
+			{
+				"id":"a1_noise_level",
+				"title": {
+					"en": "The Noise Level has changed",
+					"nl": "Het geluidsniveau is veranderd"
+				},
+				"tokens": [
+					{
+						"name": "noiselevel",
+						"type": "string",
+						"title": { "en": "Noise Level", "nl": "Geluidsniveau" },
+						"example": { "en": "quiet", "nl": "stil" }
+					}
+				]
+			}
+		],
+		"conditions": [
+			{
+				"id":"a1_air_quality",
+				"title": {
+					"en": "Air Quality",
+					"nl": "Luchtkwaliteit"
+				},
+				"args": [
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": { "en": "Level", "nl": "Niveau" }
+					}
+				]
+			},
+			{
+				"id":"a1_air_quality_better",
+				"title": {
+					"en": "Air Quality is !{{better|not better}} than",
+					"nl": "Luchtkwaliteit is !{{beter|niet beter}} dan"
+				},
+				"args": [
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": { "en": "Level", "nl": "Niveau" }
+					}
+				]
+			},
+			{
+				"id":"a1_air_quality_worse",
+				"title": {
+					"en": "Air Quality is !!{{worse|not worse}} than",
+					"nl": "Luchtkwaliteit is !{{slechter|niet slechter}} dan"
+				},
+				"args": [
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": { "en": "Level", "nl": "Niveau"
+						}
+					}
+				]
+			},
+			{
+				"id":"a1_light_level",
+				"title": {
+					"en": "Light Level",
+					"nl": "Lichtniveau"
+				},
+				"args": [
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "Level",
+							"nl": "Niveau"
+						}
+					}
+				]
+			},
+			{
+				"id":"a1_light_level_brighter",
+				"title": {
+					"en": "Light Level is !{{brighter|not brighter}} than",
+					"nl": "Lichtniveau is !{{helderder|niet helderder}} dan"
+				},
+				"args": [
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "Level",
+							"nl": "Niveau"
+						}
+					}
+				]
+			},
+			{
+				"id":"a1_light_level_darker",
+				"title": {
+					"en": "Light Level is !{{darker|not darker}} than",
+					"nl": "Lichtniveau is !{{donkerder|niet donkerder}} dan"
+				},
+				"args": [
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "Level",
+							"nl": "Niveau"
+						}
+					}
+				]
+			},
+			{
+				"id":"a1_noise_level",
+				"title": {
+					"en": "Noise Level",
+					"nl": "Geluidsniveau"
+				},
+				"args": [
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "Level",
+							"nl": "Niveau"
+						}
+					}
+				]
+			},
+			{
+				"id":"a1_noise_level_louder",
+				"title": {
+					"en": "Noise Level is !{{louder|not louder}} than",
+					"nl": "Geluidsniveau is !{{harder|niet harder}} dan"
+				},
+				"args": [
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "Level",
+							"nl": "Niveau"
+						}
+					}
+				]
+			},
+			{
+				"id":"a1_noise_level_softer",
+				"title": {
+					"en": "Noise Level is !{{softer|not softer} than",
+					"nl": "Geluidsniveau is !{{zachter|niet zachter}} dan"
+				},
+				"args": [
+					{
+						"name": "variable",
+						"type": "autocomplete",
+						"placeholder": {
+							"en": "Level",
+							"nl": "Niveau"
+						}
+					}
+				]
+			}
+		],
+		"actions": [
+		]
+	}
+	
+}

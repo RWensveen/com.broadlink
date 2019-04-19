@@ -1,0 +1,6 @@
+{
+	"id": "Authenticate",
+	"type": "checkbox",
+	"value": false,
+	"label": { "en": "Re-authenticate device", "nl": "Apparaat opnieuw authenticeren" }
+}

@@ -1,0 +1,115 @@
+{
+	"id": "SP3S",
+	"name": {
+		"en": "SP3S"
+	},
+	"images": {
+		"large": "/drivers/SP3S/assets/images/large.jpg",
+		"small": "/drivers/SP3S/assets/images/small.jpg"
+	},
+	"class": "other",
+	"capabilities": [
+		"onoff.power",
+		"onoff.nightlight",
+		"measure_power"
+	],
+	"capabilitiesOptions": {
+		"onoff.power": { "title": { "en": "Switch", "nl": "Schakelaar" } },
+		"onoff.nightlight": { "title": { "en": "Nightlight", "nl": "Nachtlicht" } }
+	},
+	"mobile": {
+		"components": [
+			{
+				"id": "icon",
+				"capabilities": []
+			},
+			{
+				"id": "sensor",
+				"capabilities": [ "measure_power" ]
+			},
+			{
+				"id": "toggle",
+				"capabilities": [ "onoff.power" ],
+				"options" : { "showTitle": true }
+			},
+			{
+				"id": "toggle",
+				"capabilities": [ "onoff.nightlight" ],
+				"options" : { "showTitle": true }
+			}
+		]
+	},
+	"pair": [
+		{
+			"$template": "start",
+			"id": "start"
+		},
+		{
+			"id": "list_devices",
+			"template": "list_devices",
+			"navigation": {
+				"next": "add_devices"
+			}
+		},
+		{
+			"id": "add_devices",
+			"template": "add_devices"
+		}
+	],
+	"$flow": {
+		"triggers": [
+			{
+				"id": "sp3s_onoff_power",
+				"title": { "en": "Switch has changed", "nl": "Schakelaar is omgezet"}
+			},
+			{
+				"id": "sp3s_onoff_power_on",
+				"title": { "en": "Switch switched on", "nl": "Schakelaar aangezet"}
+			},
+			{
+				"id": "sp3s_onoff_power_off",
+				"title": { "en": "Switch switched off", "nl": "Schakelaar uitgezet"}
+			},
+			{
+				"id": "sp3s_onoff_nightlight",
+				"title": { "en": "Nightlight has changed", "nl": "Nachtlicht is veranderd"}
+			},
+			{
+				"id": "sp3s_onoff_nightlight_on",
+				"title": { "en": "Nightlight switched on", "nl": "Nachtlicht aangezet"}
+			},
+			{
+				"id": "sp3s_onoff_nightlight_off",
+				"title": { "en": "Nightlight switched off", "nl": "Nachtlicht uitgezet"}
+			}
+		],
+		"conditions": [
+			{
+				"id": "sp3s_onoff_power_on",
+				"title": { "en": "Switch is !{{on|off}}", "nl": "Schakelaar is !{{aan|uit}}"}
+			},
+			{
+				"id": "sp3s_onoff_nightlight_on",
+				"title": { "en": "Nightlight is !{{on|off}}", "nl": "Nachtlicht is !{{aan|uit}}"}
+			}
+		],
+		"actions": [
+			{
+				"id": "sp3s_onoff_power_on",
+				"title": { "en": "Switch on", "nl": "Schakelaar aan"}
+			},
+			{
+				"id": "sp3s_onoff_power_off",
+				"title": { "en": "Switch off", "nl": "Schakelaar uit"}
+			},
+			{
+				"id": "sp3s_onoff_nightlight_on",
+				"title": { "en": "Nightlight on", "nl": "Nachtlicht aan"}
+			},
+			{
+				"id": "sp3s_onoff_nightlight_off",
+				"title": { "en": "Nightlight off", "nl": "Nachtlicht uit"}
+			}
+		]
+	}
+}

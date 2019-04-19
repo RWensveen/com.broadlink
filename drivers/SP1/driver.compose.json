@@ -1,0 +1,73 @@
+{
+	"id": "SP1",
+	"name": {
+		"en": "SP1"
+	},
+	"images": {
+		"large": "/drivers/SP1/assets/images/large.jpg",
+		"small": "/drivers/SP1/assets/images/small.jpg"
+	},
+	"class": "other",
+	"capabilities": [ "onoff" ],
+	"mobile": {
+		"components": [
+			{
+				"id": "icon",
+				"capabilities": []
+			},
+			{
+				"id": "toggle",
+				"capabilities": [ "onoff" ]
+			}
+		]
+	},
+	"pair": [
+		{
+			"$template": "start",
+			"id": "start"
+		},
+		{
+			"id": "list_devices",
+			"template": "list_devices",
+			"navigation": {
+				"next": "add_devices"
+			}
+		},
+		{
+			"id": "add_devices",
+			"template": "add_devices"
+		}
+	],
+	"$flow": {
+		"triggers": [
+			{
+				"id": "sp1_onoff_change",
+				"title": { "en": "Switch has changed", "nl": "Schakelaar is omgezet"}
+			},
+			{
+				"id": "sp1_onoff_on",
+				"title": { "en": "Switch switched on", "nl": "Schakelaar aangezet"}
+			},
+			{
+				"id": "sp1_onoff_off",
+				"title": { "en": "Switch switched off", "nl": "Schakelaar uitgezet"}
+			}
+		],
+		"conditions": [
+			{
+				"id": "sp1_onoff",
+				"title": { "en": "Switch is !{{on|off}}", "nl": "Schakelaar is !{{aan|uit}}"}
+			}
+		],
+		"actions": [
+			{
+				"id": "sp1_onoff_on",
+				"title": { "en": "Switch on", "nl": "Schakelaar aan"}
+			},
+			{
+				"id": "sp1_onoff_off",
+				"title": { "en": "Switch off", "nl": "Schakelaar uit"}
+			}
+		]
+	}
+}

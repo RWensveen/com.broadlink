@@ -1,0 +1,10 @@
+{
+	"type": "boolean",
+	"title": {
+		"en": "Learn RF command",
+		"nl": "Leer RF commando"
+	},
+	"getable": false,
+	"setable": true,
+	"insights" : false
+}

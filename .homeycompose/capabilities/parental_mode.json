@@ -1,0 +1,11 @@
+{
+	"type": "boolean",
+	"title": {
+		"en": "Parental mode",
+		"nl": "Ouderlijke controle"
+	},
+	"getable": true,
+	"setable": true,
+	"uiComponent": "toggle",
+	"insights": false
+}

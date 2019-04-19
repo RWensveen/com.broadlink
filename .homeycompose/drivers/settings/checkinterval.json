@@ -1,0 +1,17 @@
+{
+	"id": "CheckInterval",
+	"type": "number",
+	"value": 5,
+	"label": {
+		"en": "Interval",
+		"nl": "Interval"
+	},
+	"hint": {
+		"en": "Time in minutes between reading of device status.",
+		"nl": "Tijd tussen het lezen van de apparaatstatus, in minuten."
+	},
+	"attr": {
+		"min": 1,
+		"max": 3600
+	}
+}

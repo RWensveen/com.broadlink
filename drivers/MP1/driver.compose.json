@@ -1,0 +1,165 @@
+{
+	"id": "MP1",
+	"name": {
+		"en": "MP1"
+	},
+	"images": {
+		"large": "/drivers/MP1/assets/images/large.jpg",
+		"small": "/drivers/MP1/assets/images/small.jpg"
+	},
+	"class": "other",
+	"capabilities": [ "onoff.s1", "onoff.s2", "onoff.s3","onoff.s4" ],
+	"capabilitiesOptions": {
+		"onoff.s1" : { "title": { "en": "Switch 1", "nl": "Schakelaar 1" } },
+		"onoff.s2" : { "title": { "en": "Switch 2", "nl": "Schakelaar 2" } },
+		"onoff.s3" : { "title": { "en": "Switch 3", "nl": "Schakelaar 3" } },
+		"onoff.s4" : { "title": { "en": "Switch 4", "nl": "Schakelaar 4" } }
+	},
+	"mobile": {
+		"components": [
+			{
+				"id": "icon",
+				"capabilities": []
+			},
+			{
+				"id": "toggle",
+				"capabilities": [ "onoff.s1" ],
+				"options" : { "showTitle": true }
+			},
+			{
+				"id": "toggle",
+				"capabilities": [ "onoff.s2" ],
+				"options" : { "showTitle": true }
+			},
+			{
+				"id": "toggle",
+				"capabilities": [ "onoff.s3"],
+				"options" : { "showTitle": true }
+			},
+			{
+				"id": "toggle",
+				"capabilities": [ "onoff.s4"],
+				"options" : { "showTitle": true }
+			}
+		]
+	},
+	"pair": [
+		{
+			"$template": "start",
+			"id": "start"
+		},
+		{
+			"id": "list_devices",
+			"template": "list_devices",
+			"navigation": { "next": "add_devices" }
+		},
+		{
+			"id": "add_devices",
+			"template": "add_devices"
+		}
+	],
+	"$flow": {
+		"triggers": [
+				{
+				"id": "mp1_onoff_change",
+				"title": { "en": "Switch has changed", "nl": "Schakelaar is omgezet"},
+				"args": [
+					{
+						"name": "switchID",
+						"type": "dropdown",
+						"values": [
+							{ "id": "1", "label": { "en": "Switch 1", "nl": "Schakelaar 1" } },
+							{ "id": "2", "label": { "en": "Switch 2", "nl": "Schakelaar 2" } },
+							{ "id": "3", "label": { "en": "Switch 3", "nl": "Schakelaar 3" } },
+							{ "id": "4", "label": { "en": "Switch 4", "nl": "Schakelaar 4" } }
+						]
+					}
+				]
+			},
+			{
+				"id": "mp1_onoff_on",
+				"title": { "en": "Switched on", "nl": "Schakelaar aangezet"},
+				"args": [
+					{
+						"name": "switchID",
+						"type": "dropdown",
+						"values": [
+							{ "id": "1", "label": { "en": "Switch 1", "nl": "Schakelaar 1" } },
+							{ "id": "2", "label": { "en": "Switch 2", "nl": "Schakelaar 2" } },
+							{ "id": "3", "label": { "en": "Switch 3", "nl": "Schakelaar 3" } },
+							{ "id": "4", "label": { "en": "Switch 4", "nl": "Schakelaar 4" } }
+						]
+					}
+				]
+			},
+			{
+				"id": "mp1_onoff_off",
+				"title": { "en": "Switched off", "nl": "Schakelaar uitgezet"},
+				"args": [
+					{
+						"name": "switchID",
+						"type": "dropdown",
+						"values": [
+							{ "id": "1", "label": { "en": "Switch 1", "nl": "Schakelaar 1" } },
+							{ "id": "2", "label": { "en": "Switch 2", "nl": "Schakelaar 2" } },
+							{ "id": "3", "label": { "en": "Switch 3", "nl": "Schakelaar 3" } },
+							{ "id": "4", "label": { "en": "Switch 4", "nl": "Schakelaar 4" } }
+						]
+					}
+				]
+			}
+		],
+		"conditions": [
+			{
+				"id": "mp1_onoff",
+				"title": { "en": "Switch is !{{on|off}}", "nl": "Schakelaar is !{{aan|uit}}"},
+				"args": [
+					{
+						"type": "dropdown",
+						"name": "switchID",
+						"values": [
+							{ "id": "1", "label": { "en": "Switch 1", "nl": "Schakelaar 1" } },
+							{ "id": "2", "label": { "en": "Switch 2", "nl": "Schakelaar 2" } },
+							{ "id": "3", "label": { "en": "Switch 3", "nl": "Schakelaar 3" } },
+							{ "id": "4", "label": { "en": "Switch 4", "nl": "Schakelaar 4" } }
+						]
+					}
+				]
+			}
+		],
+		"actions": [
+			{
+				"id": "mp1_onoff_on",
+				"title": { "en": "Switch on", "nl": "Schakelaar aan"},
+				"args": [
+					{
+						"type": "dropdown",
+						"name": "switchID",
+						"values": [
+							{ "id": "1", "label": { "en": "Switch 1", "nl": "Schakelaar 1" } },
+							{ "id": "2", "label": { "en": "Switch 2", "nl": "Schakelaar 2" } },
+							{ "id": "3", "label": { "en": "Switch 3", "nl": "Schakelaar 3" } },
+							{ "id": "4", "label": { "en": "Switch 4", "nl": "Schakelaar 4" } }
+						]
+					}
+				]
+			},
+			{
+				"id": "mp1_onoff_off",
+				"title": { "en": "Switch off", "nl": "Schakelaar uit"},
+				"args": [
+					{
+						"type": "dropdown",
+						"name": "switchID",
+						"values": [
+							{ "id": "1", "label": { "en": "Switch 1", "nl": "Schakelaar 1" } },
+							{ "id": "2", "label": { "en": "Switch 2", "nl": "Schakelaar 2" } },
+							{ "id": "3", "label": { "en": "Switch 3", "nl": "Schakelaar 3" } },
+							{ "id": "4", "label": { "en": "Switch 4", "nl": "Schakelaar 4" } }
+						]
+					}
+				]
+			}
+		]
+	}
+}

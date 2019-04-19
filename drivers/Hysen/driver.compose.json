@@ -1,0 +1,117 @@
+{
+	"id": "Hysen",
+	"name": {
+		"en": "Hysen Thermostat",
+		"nl": "Hysen Thermostaat"
+	},
+	"images": {
+		"large": "/drivers/Hysen/assets/images/large.jpg",
+		"small": "/drivers/Hysen/assets/images/small.jpg"
+	},
+	"class": "thermostat",
+	"capabilities": [
+		"measure_temperature.room",
+		"measure_temperature.outside",
+		"measure_temperature",
+		"target_temperature",
+		"parental_mode"
+	],
+	"capabilitiesOptions": {
+		"measure_temperature.room": { "title": { "en": "Room", "nl": "Binnen" } },
+		"measure_temperature.outside": { "title": { "en": "Outside", "nl": "Buiten" } },
+		"target_temperature": {
+			"min": 5,
+			"max": 30,
+			"step": 0.5
+		}
+	},
+	"mobile": {
+		"components": [
+			{
+				"id": "icon",
+				"capabilities": []
+			},
+			{
+				"id": "toggle",
+				"capabilities": ["parental_mode"],
+				"options" : { "showTitle": true }
+			},
+			{
+				"id":"sensor",
+				"capabilities": [ "measure_temperature" ]
+			},
+			{
+				"id":"thermostat",
+				"capabilities": [ "target_temperature" ]
+			}
+		]
+	},
+	"pair": [
+		{
+			"$template": "start",
+			"id": "start"
+		},
+		{
+			"id": "list_devices",
+			"template": "list_devices",
+			"navigation": { "next": "properties" }
+		},
+		{
+			"id": "properties"
+		},
+		{
+			"id": "add_devices",
+			"template": "add_devices"
+		}
+	],
+	"$flow": 	{
+		"triggers": [
+			{
+				"id": "hysen_parentalmode_on",
+				"title": {
+					"en": "Parental Mode Set",
+					"nl": "Ouderlijk toezicht aan"
+				}
+			},
+			{
+				"id": "hysen_parentalmode_off",
+				"title": {
+					"en": "Parental Mode Off",
+					"nl": "Ouderlijk toezicht uit"
+				}
+			},
+			{
+				"id": "hysen_parentalmode_toggle",
+				"title": {
+					"en": "Parental Mode Changed",
+					"nl": "Ouderlijk toezicht veranderd"
+				}
+			}
+		],
+		"conditions": [
+			{
+				"id": "hysen_parentalmode",
+				"title": {
+					"en": "Parental Mode is !{{set|off}}",
+					"nl": "Ouderlijk toezicht is !{{aan|uit}}"
+				}
+			}
+		],
+		"actions": [
+			{
+				"id": "hysen_parentalmode_set_on",
+				"title": {
+					"en": "Set parental mode",
+					"nl": "Ouderlijk toezicht aan"
+					}
+			},
+			{
+				"id": "hysen_parentalmode_set_off",
+				"title": {
+					"en": "Parental mode off",
+					"nl": "Ouderlijk toezicht uit"
+				}
+			}
+		]
+	}
+}

@@ -1,0 +1,229 @@
+[
+	{
+		"type": "group",
+		"label": {"en": "Schedule", "nl": "Schema"},
+		"children" : [
+			{
+				"id": "weekday1",
+				"label": { "en": "weekday 1 - time", "nl": "weekdag 1 - tijd" },
+				"$extends": "schedule.time"
+			},
+			{
+				"id": "weekdaytemp1",
+				"label": { "en": "weekday 1 - temperature", "nl": "weekdag 1 - temperatuur" },
+				"$extends": "schedule.temperature"
+			},
+			{
+				"id": "weekday2",
+				"label": { "en": "weekday 2 - time", "nl": "weekdag 2 - tijd" },
+				"$extends": "schedule.time"
+			},
+			{
+				"id": "weekdaytemp2",
+				"label": { "en": "weekday 2 - temperature", "nl": "weekdag 2 - temperatuur" },
+				"$extends": "schedule.temperature"
+			},
+			{
+				"id": "weekday3",
+				"label": { "en": "weekday 3 - time", "nl": "weekdag 3 - tijd" },
+				"$extends": "schedule.time"
+			},
+			{
+				"id": "weekdaytemp3",
+				"label": { "en": "weekday 3 - temperature", "nl": "weekdag 3 - temperatuur" },
+				"$extends": "schedule.temperature"
+			},
+			{
+				"id": "weekday4",
+				"label": { "en": "weekday 4 - time", "nl": "weekdag 4 - tijd" },
+				"$extends": "schedule.time"
+			},
+			{
+				"id": "weekdaytemp4",
+				"label": { "en": "weekday 4 - temperature", "nl": "weekdag 4 - temperatuur" },
+				"$extends": "schedule.temperature"
+			},
+			{
+				"id": "weekday5",
+				"label": { "en": "weekday 5 - time", "nl": "weekdag 5 - tijd" },
+				"$extends": "schedule.time"
+			},
+			{
+				"id": "weekdaytemp5",
+				"label": { "en": "weekday 5 - temperature", "nl": "weekdag 5 - temperatuur" },
+				"$extends": "schedule.temperature"
+			},
+			{
+				"id": "weekday6",
+				"label": { "en": "weekday 6 - time", "nl": "weekdag 6 - tijd" },
+				"$extends": "schedule.time"
+			},
+			{
+				"id": "weekdaytemp6",
+				"label": { "en": "weekday 6 - temperature", "nl": "weekdag 6 - temperatuur" },
+				"$extends": "schedule.temperature"
+			},
+			{
+				"id": "weekend1",
+				"label": { "en": "weekend 1 - time", "nl": "weekend 1 - tijd" },
+				"$extends": "schedule.time"
+			},
+			{
+				"id": "weekendtemp1",
+				"label": { "en": "weekend 1 - temperature", "nl": "weekend 1 - temperatuur" },
+				"$extends": "schedule.temperature"
+				
+			},
+			{
+				"id": "weekend2",
+				"label": { "en": "weekend 2 - time", "nl": "weekend 2 - tijd" },
+				"$extends": "schedule.time"
+			},
+			{
+				"id": "weekendtemp2",
+				"label": { "en": "weekend 2 - temperature", "nl": "weekend 2 - temperatuur" },
+				"$extends": "schedule.temperature"
+			}
+		]
+	},
+	{
+		"type":"group",
+		"label": { "en": "Settings", "nl": "Instellingen" },
+		"children": [
+			{
+				"id": "SensorMode",
+				"type": "radio",
+				"label": { "en": "Sensor mode" },
+				"value": "0",
+				"values": [
+					{ "id":"0", "label":{"en": "internal sensor", "nl":"interne sensor"} },
+					{ "id":"1", "label":{"en": "external sensor", "nl":"externe sensor"} },
+					{ "id":"2", "label":{"en": "intern:control / extern:limit temperature", "nl":"intern:controle / extern: temperatuurlimiet"} }
+				]
+			},
+			{
+				"id": "TempRangeExtSensor",
+				"type": "number",
+				"label": { "en": "External Sensor Range", "nl":"Bereik externe sensor" },
+				"value": 42,
+				"attr": { "min": 5, "max": 99 },
+				"hint": {
+					"en":"Set temperature range for external sensor. Default = 42C",
+					"nl":"Zet temperatuur bereik voor externe sensor. Standaard = 42C"
+				}
+			},
+			{
+				"id": "RoomTempAdjust",
+				"type": "number",
+				"label": { "en": "Room Temperature Adjust", "nl":"Kamertemperatuur aanpassing" },
+				"value": 0.0,
+				"attr": { "min": -5.0, "max": 5.0, "step": 0.1 },
+				"hint": {
+					"en":"Set temperature adjustment for room temperature, in steps of 0.5 degree",
+					"nl":"Zet temperatuuraanpassing voor kamer sensor, in stappen van 0.5 graden."
+				}
+			},
+			{
+				"id": "AutoMode",
+				"type": "radio",
+				"label": { "en": "Automatic mode", "nl":"Automatische mode" },
+				"value": "0",
+				"values": [
+					{ "id":"0", "label": {"en":"Manual mode", "nl":"handmatig"} },
+					{ "id":"1", "label": {"en":"Automatic (scheduled/timed) mode", "nl":"automatisch (schema/tijdklok)"} }
+				]
+			},
+			{
+				"id": "LoopMode",
+				"type": "radio",
+				"label": { "en": "Weekday/Weekend mode", "nl":"Week/Weekend mode" },
+				"value": "1",
+				"values": [
+					{ "id": "1", "label": { "en":"Sat,Sun = weekend",
+											"nl":"Za,zo = weekend" } },
+
+					{ "id": "2", "label": { "en":"Sun = weekend",
+											"nl":"Zo = weekend" } },
+
+					{ "id": "3", "label": { "en":"All weekday",
+											"nl":"Allen weekdagen" } }
+				],
+				"hint": {
+					"en":"Sat,Sun=weekend : Saturday and Sunday follow the weekend schedule.\nSun=weekend : Only Sunday follow the weekend schedule.\nAll weekday : Every day (including Saturday and Sunday) follows the weekday schedule.",
+					"nl":"Za,zo=weekend : Zaterdag en zondag volgen weekend schema.\nZo=weekend : Alleen zondag volgt weekend schema.\nAllen weekdagen : Iedere dag (ook zaterdag en zondag) volgen week schema."
+				}
+
+			},
+			{
+				"id": "FloorTempDeadZone",
+				"type": "number",
+				"value": 2,
+				"label": { "en": "Deadzone for floor temperature", "nl":"Dode zone voor vloertemperatuur" },
+				"attr": { "min": 1, "max": 9 },
+				"hint": {
+					"en":"Deadzone for floor temprature. Default = 2C",
+					"nl":"Dode zone voor vloertemperatuur. Standaard = 2C"
+				}
+			},
+			{
+				"id": "SensorUpperLimit",
+				"type": "number",
+				"value": 35,
+				"label": { "en": "Upper temperature limit for internal sensor", "nl":"Bovengrens temperatuur voor interne sensor" },
+				"attr": { "min": 5, "max": 99 },
+				"hint": {
+					"en":"Default = 35C",
+					"nl":"Standaard = 35C"
+				}
+			},
+			{
+				"id": "SensorLowerLimit",
+				"type": "number",
+				"value": 5,
+				"label": { "en": "Lower temperature limit for internal sensor", "nl":"Ondergrens temperatuur voor interne sensor" },
+				"attr": { "min": 5, "max": 99 },
+				"hint": {
+					"en":"Upper temperature limit for internal sensor. Default = 5C",
+					"nl":"Ondergrens temperatuur voor interne sensor. Standaard = 5C"
+				}
+			},
+			{
+				"id": "AntiFreezeMode",
+				"type": "radio",
+				"label": { "en": "Anti Freeze mode", "nl":"Vorstbeschermingsmode" },
+				"value": "0",
+				"values": [
+					{ "id": "0", "label": { "en":"anti-freezing function shut down.", "nl":"Uit" } },
+					{ "id": "1", "label": { "en":"anti-freezing function open.", "nl":"Aan" } }
+				]
+			}
+		]					
+	},
+	{
+		"type": "group",
+		"label": {"en": "Timing", "nl": "Tijdschema"},
+		"children" : [
+			{ "$extends": "checkinterval" }
+		]
+	},
+	{
+		"type":"group",
+		"label": { "en": "Address", "nl": "Adres" },
+		"children": [
+			{ "$extends": "ipaddress" }
+		]
+	},
+	{
+		"type": "group",
+		"label": { "en": "Maintainance", "nl":"Onderhoud" },
+		"children": [
+			{ "$extends": "authenticate" },
+			{
+				"id": "AdjustClock",
+				"type": "checkbox",
+				"value": false,
+				"label": { "en": "Adjust clock to current time of Homey", "nl": "Zet de klok gelijk met de klok van Homey" }
+			}
+		]
+	}
+]

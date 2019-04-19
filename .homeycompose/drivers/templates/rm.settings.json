@@ -1,0 +1,212 @@
+{
+	"settings": [
+		{
+			"type":"group",
+			"label": {
+				"en": "RC Commands",
+				"nl": "RC commando's"
+			},
+			"description": {
+				"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows",
+				"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+			},
+			"children": [
+				{ "id": "RcCmd0", "type": "text", "value": "", "label": { "en": "1" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd1",  "type": "text", "value": "", "label": { "en": "2" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd2",  "type": "text", "value": "", "label": { "en": "3" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd3",  "type": "text", "value": "", "label": { "en": "4" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd4",  "type": "text", "value": "", "label": { "en": "5" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd5",  "type": "text", "value": "", "label": { "en": "6" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd6",  "type": "text", "value": "", "label": { "en": "7" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd7",  "type": "text", "value": "", "label": { "en": "8" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd8",  "type": "text", "value": "", "label": { "en": "9" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd9",  "type": "text", "value": "", "label": { "en": "10" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd10", "type": "text", "value": "", "label": { "en": "11" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd11", "type": "text", "value": "", "label": { "en": "12" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd12", "type": "text", "value": "", "label": { "en": "13" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd13", "type": "text", "value": "", "label": { "en": "14" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd14", "type": "text", "value": "", "label": { "en": "15" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd15", "type": "text", "value": "", "label": { "en": "16" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd16", "type": "text", "value": "", "label": { "en": "17" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd17", "type": "text", "value": "", "label": { "en": "18" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd18", "type": "text", "value": "", "label": { "en": "19" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd19", "type": "text", "value": "", "label": { "en": "20" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd20", "type": "text", "value": "", "label": { "en": "21" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd21", "type": "text", "value": "", "label": { "en": "22" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd22", "type": "text", "value": "", "label": { "en": "23" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd23", "type": "text", "value": "", "label": { "en": "24" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd24", "type": "text", "value": "", "label": { "en": "25" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd25", "type": "text", "value": "", "label": { "en": "26" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd26", "type": "text", "value": "", "label": { "en": "27" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd27", "type": "text", "value": "", "label": { "en": "28" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd28", "type": "text", "value": "", "label": { "en": "29" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				},
+				{ "id": "RcCmd29", "type": "text", "value": "", "label": { "en": "30" },
+					"hint": {
+						"en": "Change name to give a command a new name. Clear name to delete a command. Note that this may break you flows.",
+						"nl": "Pas de naam aan om het commando te benoemen. Verwijder de naam om een commando te wissen. Let op: dit kan bestaande flows invalide maken."
+					}
+				}
+			]
+		},
+		{
+			"type":"group",
+			"label": { "en": "Address", "nl": "Adres" },
+			"children": [
+				{ "$extends": "ipaddress" }
+			]
+		},
+		{
+			"type": "group",
+			"label": {
+				"en": "Maintainance", "nl":"Onderhoud" },
+			"children": [
+				{ "$extends": "authenticate" }
+			]
+		}
+	]
+}

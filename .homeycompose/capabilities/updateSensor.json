@@ -1,0 +1,9 @@
+{
+	"type": "boolean",
+	"title": {
+		"en": "Update now",
+		"nl": "Vernieuwen"
+	},
+	"getable": false,
+	"setable": true
+}

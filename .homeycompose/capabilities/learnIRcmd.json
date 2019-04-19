@@ -1,0 +1,10 @@
+{
+	"type": "boolean",
+	"title": {
+		"en": "Learn IR command",
+		"nl": "Leer IR commando"
+	},
+	"getable": false,
+	"setable": true,
+	"insights" : false
+}

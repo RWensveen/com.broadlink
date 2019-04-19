@@ -1,0 +1,19 @@
+{
+	"type": "enum",
+	"title": {
+		"en": "Air Quality",
+		"nl": "Luchtkwaliteit"
+	},
+	"values": [
+		{ "id": "excellent", "title":{"en":"excellent", "nl": "uitstekend"} },
+		{ "id": "good",      "title":{"en":"good",      "nl": "goed"} },
+		{ "id": "normal",    "title":{"en":"normal",    "nl": "normaal"} },
+		{ "id": "bad",       "title":{"en":"bad",       "nl": "slecht"} },
+		{ "id": "unknown",   "title":{"en":"unknown",   "nl": "onbekend"} }
+	],
+	"getable": true,
+	"setable": false,
+	"insights": false,
+	"uiComponent": "sensor",
+	"icon":"/assets/icon_airquality.svg"
+}
