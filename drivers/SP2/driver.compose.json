@@ -4,8 +4,8 @@
 		"en": "SP2"
 	},
 	"images": {
-		"large": "/drivers/SP2/assets/images/large.jpg",
-		"small": "/drivers/SP2/assets/images/small.jpg"
+		"large": "{{driverAssetsPath}}/images/large.jpg",
+		"small": "{{driverAssetsPath}}/images/small.jpg"
 	},
 	"class": "other",
 	"capabilities": [

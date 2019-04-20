@@ -15,5 +15,5 @@
 	"setable": false,
 	"insights": false,
 	"uiComponent": "sensor",
-	"icon":"/assets/icon_airquality.svg"
+	"icon":"/assets/airquality.svg"
 }

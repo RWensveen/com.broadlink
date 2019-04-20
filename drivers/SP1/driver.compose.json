@@ -4,8 +4,8 @@
 		"en": "SP1"
 	},
 	"images": {
-		"large": "/drivers/SP1/assets/images/large.jpg",
-		"small": "/drivers/SP1/assets/images/small.jpg"
+		"large": "{{driverAssetsPath}}/images/large.jpg",
+		"small": "{{driverAssetsPath}}/images/small.jpg"
 	},
 	"class": "other",
 	"capabilities": [ "onoff" ],

@@ -5,8 +5,8 @@
 		"nl": "A1"
 	},
 	"images": {
-		"large": "./drivers/A1/assets/images/large.jpg",
-		"small": "./drivers/A1/assets/images/small.jpg"
+		"large": "{{driverAssetsPath}}/images/large.jpg",
+		"small": "{{driverAssetsPath}}/images/small.jpg"
 	},
 	"class": "sensor",
 	"capabilities" : [
@@ -33,13 +33,15 @@
 				"capabilities": [
 					"a1_air_quality",
 					"a1_noise_level",
-					"a1_light_level"
+					"a1_light_level",
+					"measure_temperature",
+					"measure_humidity"
 				],
 				"options": {
 					"icons": {
-						"a1_air_quality": "/drivers/a1/assets/icon_airquality.svg",
-						"a1_noise_level": "/drivers/a1/assets/icon_noiselevel.svg",
-						"a1_light_level": "/drivers/a1/assets/icon_lightlevel.svg"
+						"a1_air_quality": "/assets/airquality.svg",
+						"a1_noise_level": "/assets/noiselevel.svg",
+						"a1_light_level": "/assets/lightlevel.svg"
 					}
 				}
 			}

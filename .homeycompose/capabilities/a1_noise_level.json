@@ -14,5 +14,5 @@
 	"setable": false,
 	"insights": false,
 	"uiComponent": "sensor",
-	"icon":"/assets/icon_noiselevel.svg"
+	"icon":"/assets/noiselevel.svg"
 }

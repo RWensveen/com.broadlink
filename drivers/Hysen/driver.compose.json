@@ -5,8 +5,8 @@
 		"nl": "Hysen Thermostaat"
 	},
 	"images": {
-		"large": "/drivers/Hysen/assets/images/large.jpg",
-		"small": "/drivers/Hysen/assets/images/small.jpg"
+		"large": "{{driverAssetsPath}}/images/large.jpg",
+		"small": "{{driverAssetsPath}}/images/small.jpg"
 	},
 	"class": "thermostat",
 	"capabilities": [

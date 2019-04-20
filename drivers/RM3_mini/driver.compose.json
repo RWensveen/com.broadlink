@@ -5,8 +5,8 @@
 		"nl": "RM3 Mini"
 	},
 	"images": {
-		"large": "./drivers/RM3_mini/assets/images/large.jpg",
-		"small": "./drivers/RM3_mini/assets/images/small.jpg"
+		"large": ".{{driverAssetsPath}}/images/large.jpg",
+		"small": ".{{driverAssetsPath}}/images/small.jpg"
 	},
 	"class": "other",
 	"capabilities" : ["learnIRcmd"],

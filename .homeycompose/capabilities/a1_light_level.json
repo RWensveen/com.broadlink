@@ -15,5 +15,5 @@
 	"setable": false,
 	"insights": false,
 	"uiComponent": "sensor",
-	"icon":"/assets/icon_lightlevel.svg"
+	"icon":"/assets/lightlevel.svg"
 }

@@ -5,8 +5,8 @@
 		"nl": "RM Pro"
 	},
 	"images": {
-		"large": "./drivers/RM_pro/assets/images/large.jpg",
-		"small": "./drivers/RM_pro/assets/images/small.jpg"
+		"large": ".{{driverAssetsPath}}/images/large.jpg",
+		"small": ".{{driverAssetsPath}}/images/small.jpg"
 	},
 	"class": "other",
 	"capabilities" : ["learnIRcmd"],

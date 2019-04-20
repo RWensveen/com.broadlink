@@ -5,8 +5,8 @@
 		"nl": "Dooya gordijn controller"
 	},
 	"images": {
-		"large": "./drivers/Dooya/assets/images/large.jpg",
-		"small": "./drivers/Dooya/assets/images/small.jpg"
+		"large": "{{driverAssetsPath}}/images/large.jpg",
+		"small": "{{driverAssetsPath}}/images/small.jpg"
 	},
 	"class": "curtain",
 	"capabilities": [ "button.open", "button.close", "button.stop" ],

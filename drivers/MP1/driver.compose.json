@@ -4,8 +4,8 @@
 		"en": "MP1"
 	},
 	"images": {
-		"large": "/drivers/MP1/assets/images/large.jpg",
-		"small": "/drivers/MP1/assets/images/small.jpg"
+		"large": "{{driverAssetsPath}}/images/large.jpg",
+		"small": "{{driverAssetsPath}}/images/small.jpg"
 	},
 	"class": "other",
 	"capabilities": [ "onoff.s1", "onoff.s2", "onoff.s3","onoff.s4" ],

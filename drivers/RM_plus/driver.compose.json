@@ -5,8 +5,8 @@
 		"nl": "RM Pro Plus"
 	},
 	"images": {
-		"large": "./drivers/RM_plus/assets/images/large.jpg",
-		"small": "./drivers/RM_plus/assets/images/small.jpg"
+		"large": ".{{driverAssetsPath}}/images/large.jpg",
+		"small": ".{{driverAssetsPath}}/images/small.jpg"
 	},
 	"class": "other",
 	"capabilities" : ["learnIRcmd", "learnRFcmd"],

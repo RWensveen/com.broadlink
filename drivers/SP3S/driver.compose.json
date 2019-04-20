@@ -4,8 +4,8 @@
 		"en": "SP3S"
 	},
 	"images": {
-		"large": "/drivers/SP3S/assets/images/large.jpg",
-		"small": "/drivers/SP3S/assets/images/small.jpg"
+		"large": "{{driverAssetsPath}}/images/large.jpg",
+		"small": "{{driverAssetsPath}}/images/small.jpg"
 	},
 	"class": "other",
 	"capabilities": [

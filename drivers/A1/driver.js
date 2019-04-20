@@ -25,44 +25,6 @@ const Homey = require('homey');
 
 class BroadlinkA1Driver extends BroadlinkDriver {
 
-
-	a1_check_condition_airquality( args, state ) {
-		return args.device.check_airquality_level(args,state)
-	}
-
-	a1_check_condition_airquality_better( args, state ) {
-		return args.device.check_airquality_level_better(args,state)
-	}
-
-	a1_check_condition_airquality_worse( args, state ) {
-		return args.device.check_airquality_level_worse(args,state)
-	}
-
-	a1_check_condition_lightlevel( args, state ) {
-		return args.device.check_lightlevel(args,state)
-	}
-
-	a1_check_condition_lightlevel_darker( args, state ) {
-		return args.device.check_lightlevel_darker(args,state)
-	}
-
-	a1_check_condition_lightlevel_brighter( args, state ) {
-		return args.device.check_lightlevel_brighter(args,state)
-	}
-
-	a1_check_condition_noiselevel( args, state ) {
-		return args.device.check_noiselevel(args,state)
-	}
-
-	a1_check_condition_noiselevel_louder( args, state ) {
-		return args.device.check_noiselevel_louder(args,state)
-	}
-
-	a1_check_condition_noiselevel_softer( args, state ) {
-		return args.device.check_noiselevel_softer(args,state)
-	}
-
-	
 	onInit() {
 		super.onInit({
 			CompatibilityID: 0x2714   // A1
@@ -71,63 +33,63 @@ class BroadlinkA1Driver extends BroadlinkDriver {
 		this.a1_condition_air_quality = new Homey.FlowCardCondition('a1_air_quality');
 		this.a1_condition_air_quality
 			.register()
-			.registerRunListener(this.a1_check_condition_airquality.bind(this) )
+			.registerRunListener(( args, state ) => { return args.device.check_airquality_level(args,state) } )
 			.getArgument('variable')
 			.registerAutocompleteListener(( query, args ) => { return args.device.getAirQualityList('same'); })
 
 		this.a1_condition_air_quality_better = new Homey.FlowCardCondition('a1_air_quality_better');
 		this.a1_condition_air_quality_better
 			.register()
-			.registerRunListener(this.a1_check_condition_airquality_better.bind(this) )
+			.registerRunListener(( args, state ) => { return args.device.check_airquality_level_better(args,state) } )
 			.getArgument('variable')
 			.registerAutocompleteListener(( query, args ) => { return args.device.getAirQualityList('better'); })
 
 		this.a1_condition_air_quality_worse = new Homey.FlowCardCondition('a1_air_quality_worse');
 		this.a1_condition_air_quality_worse
 			.register()
-			.registerRunListener(this.a1_check_condition_airquality_worse.bind(this) )
+			.registerRunListener(( args, state ) => { return args.device.check_airquality_level_worse(args,state) } )
 			.getArgument('variable')
 			.registerAutocompleteListener(( query, args ) => { return args.device.getAirQualityList('worse'); })
 
 		this.a1_condition_light_level = new Homey.FlowCardCondition('a1_light_level');
 		this.a1_condition_light_level
 			.register()
-			.registerRunListener(this.a1_check_condition_lightlevel.bind(this) )
+			.registerRunListener( ( args, state ) => { return args.device.check_lightlevel(args,state) } )
 			.getArgument('variable')
 			.registerAutocompleteListener(( query, args ) => { return args.device.getLightLevelList('same'); })
 
 		this.a1_condition_light_level_brighter = new Homey.FlowCardCondition('a1_light_level_brighter');
 		this.a1_condition_light_level_brighter
 			.register()
-			.registerRunListener(this.a1_check_condition_lightlevel_brighter.bind(this) )
+			.registerRunListener(( args, state ) => { return args.device.check_lightlevel_brighter(args,state) } )
 			.getArgument('variable')
 			.registerAutocompleteListener(( query, args ) => { return args.device.getLightLevelList('brighter'); })
 
 		this.a1_condition_light_level_darker = new Homey.FlowCardCondition('a1_light_level_darker');
 		this.a1_condition_light_level_darker
 			.register()
-			.registerRunListener(this.a1_check_condition_lightlevel_darker.bind(this) )
+			.registerRunListener(( args, state ) => { return args.device.check_lightlevel_darker(args,state) } )
 			.getArgument('variable')
 			.registerAutocompleteListener(( query, args ) => { return args.device.getLightLevelList('darker'); })
 
 		this.a1_condition_noise_level = new Homey.FlowCardCondition('a1_noise_level');
 		this.a1_condition_noise_level
 			.register()
-			.registerRunListener(this.a1_check_condition_noiselevel.bind(this) )
+			.registerRunListener(( args, state ) => { return args.device.check_noiselevel(args,state) } )
 			.getArgument('variable')
 			.registerAutocompleteListener(( query, args ) => { return args.device.getNoiseLevelList('same'); })
 
 		this.a1_condition_noise_level_louder = new Homey.FlowCardCondition('a1_noise_level_louder');
 		this.a1_condition_noise_level_louder
 			.register()
-			.registerRunListener(this.a1_check_condition_noiselevel_louder.bind(this) )
+			.registerRunListener(( args, state ) => { return args.device.check_noiselevel_louder(args,state) } )
 			.getArgument('variable')
 			.registerAutocompleteListener(( query, args ) => { return args.device.getNoiseLevelList('louder'); })
 
 		this.a1_condition_noise_level_softer = new Homey.FlowCardCondition('a1_noise_level_softer');
 		this.a1_condition_noise_level_softer
 			.register()
-			.registerRunListener(this.a1_check_condition_noiselevel_softer.bind(this) )
+			.registerRunListener(( args, state ) => { return args.device.check_noiselevel_softer(args,state) } )
 			.getArgument('variable')
 			.registerAutocompleteListener(( query, args ) => { return args.device.getNoiseLevelList('softer'); })
 
