@@ -15,7 +15,7 @@ Use [Homey](https://www.athom.com/) together with [Broadlink devices](http://www
 * SP2  - power socket switch with nightlight and meter
 * SP3S - power socket switch with meter
 * MP1 - 4 way power socket switch
-* HYSEN - Thermostats by Hysen, also works with other brands, such as [Beok](http://www.beok-controls.com/product.asp)
+* Thermostats - Thermostats by Hysen/[Beok](http://www.beok-controls.com/product.asp) and other brands
 
 See compatibility list further on.
 
@@ -168,6 +168,8 @@ The following table lists which devices are already added as compatible to the a
 <tr><td>MP1                </td><td> MP1                             <br>
                                      Hontar MP1                      </td></tr>
 
+<tr><td>DOOYA              </td><td> Dooya DT360E (DOOYA curtain v2) </td></tr>
+
 <tr><td>HYSEN              </td><td> Hysen thermostats               </td></tr>
 
 <tr><td>BEOK               </td><td> Beok wifi thermostats           </td></tr>
@@ -175,6 +177,4 @@ The following table lists which devices are already added as compatible to the a
 <tr><td colspan = 2><i>Future enhancements</i></td></tr>
 
 <tr><td>S1C                </td><td> S1C (SmartOne Alarm Kit)        </td></tr>
-
-<tr><td>DOOYA              </td><td> Dooya DT360E (DOOYA curtain v2) </td></tr>
 </table>

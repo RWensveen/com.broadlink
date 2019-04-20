@@ -16,10 +16,10 @@ Use [Homey](https://www.athom.com/) together with [Broadlink devices](http://www
 * MP1 - 4 way power socket switch
 * Hysen - thermostat. this is an oem device, also available with other brandnames, 
            such as [Beok](http://www.beok-controls.com/product.asp)
+* Dooya - [motorized curtain](http://en.dooya.com/products_3.html)
 
 # To be supported devices
 
-* Dooya - curtain
 
 Others might follow...
 
@@ -64,6 +64,8 @@ still some things to do:
 
 * 2.0.4<br>
 Full working version of Hysen thermostat. Tested with a BEOK 'tol313' thermostat.
+Add Dooya motorized curtains.
+Correct display of icons for A1
 * 2.0.3<br>
 Add user manual (in APPSTORE.md) explaining how to use RF learning.<br>
 Correct sensor display of A1 device<br>

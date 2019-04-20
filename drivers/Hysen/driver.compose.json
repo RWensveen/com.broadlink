@@ -1,8 +1,8 @@
 {
 	"id": "Hysen",
 	"name": {
-		"en": "Hysen Thermostat",
-		"nl": "Hysen Thermostaat"
+		"en": "Thermostat",
+		"nl": "Thermostaat"
 	},
 	"images": {
 		"large": "{{driverAssetsPath}}/images/large.jpg",
