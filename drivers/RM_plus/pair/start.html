@@ -1,0 +1,108 @@
+<!--
+ * Driver for Broadlink devices
+ *
+ * Copyright 2018-2019, R Wensveen
+ *
+ * This file is part of com.broadlink
+ * com.broadlink is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * com.broadlink is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with com.broadlink.  If not, see http://www.gnu.org/licenses/.
+-->
+
+<style type="text/css">
+   span label { width: 100px }
+   p {text-align:center}
+   table,td {width:100% ; height:100%}
+</style>
+
+<style type="text/css">
+   .broadlink-pairing {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      width: 100%;
+   }
+   .messages {
+      padding-top: 14px;
+      color: #ff6300;
+   }
+   .next-button {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+   }
+</style>
+
+
+<p data-i18n="pair.intro"></p>
+<div class="broadlink-pairing">
+<table>
+   <TR><TD>
+      <div class="form-group">
+         <label for="address" data-i18n="pair.address"></label>
+         <input type="text" class="form-control" id="address" placeholder="0.0.0.0">
+      </div>
+   </td></TR><tr><td>
+      <div class="messages">
+         <p id="broadlink-error"></p>
+      </div>
+   </td></TR>
+</table>
+</div>
+<div class="next-button">
+   <button  id="next" onclick="add()" data-i18n="pair.next" ></button>
+</div>
+
+<script type="text/javascript">
+
+Homey.setTitle(Homey.__('pair.title'));
+
+function showError( msg ) {
+	document.getElementById('broadlink-error').innerHTML = msg;
+}
+
+function add( data ) {
+	var ipAddressElement = document.getElementById('address');
+    var device = {
+			address: ipAddressElement.value.trim()
+	}
+    if( device.address ) {
+        var m = device.address.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/g);
+    	if( ( ! m ) || ( m.length != 1 ) ) {
+    		showError(Homey.__('pair.invalid_ipaddress'))
+    	}
+    	else {
+    		showError( Homey.__('pair.discovering') );
+    		Homey.emit('start_discover', device, null )    
+    	}
+    }
+    else {
+    	showError(Homey.__('pair.invalid_ipaddress'))
+    }
+}
+
+
+Homey.on('discovered', function ( deviceData ) {
+
+	if( deviceData ) {
+		if( deviceData.isCompatible ) {
+			Homey.showView('list_devices');
+		}
+		else {
+			showError( Homey.__('pair.found_another', {'dev': deviceData.device.data.name,
+													   'type': deviceData.typeName }));
+		}
+	}
+	else {
+		showError( Homey.__('pair.error_no_discover') );
+	}
+})
+
+</script>

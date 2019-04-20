@@ -5,7 +5,6 @@ userconf.json
 _CleanUp_
 app.json__NEW
 app.json__ORIG
-drivers/*/pair/start.html
 
 #node modules
 node_modules/.bin

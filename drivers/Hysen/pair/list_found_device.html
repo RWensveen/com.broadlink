@@ -1,0 +1,97 @@
+<!--
+ * Driver for Broadlink devices
+ *
+ * Copyright 2018-2019, R Wensveen
+ *
+ * This file is part of com.broadlink
+ * com.broadlink is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * com.broadlink is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with com.broadlink.  If not, see http://www.gnu.org/licenses/.
+-->
+
+<style type="text/css">
+  span label {
+    width: 100px
+  }
+  p {text-align:center}
+  table,td {width:100% ; height:100% ; cellspacing:5px }
+</style>
+
+
+<style type="text/css">
+    .broadlink-list {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .buttons, .messages {
+        padding-top: 14px;
+    }
+    .next-button {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+</style>
+
+
+
+<div class="broadlink-list">
+	        
+	           <img id="image" width=32 height=32>
+               <label id="deviceName" >-devicename-</label>
+	           <input type="checkbox" class="form-control" id="selectDevice" checked>
+            
+</div>
+<div class="next-button">
+   <button  id="next" onclick="add()" >Volgende &gt;</button>
+</div>
+
+
+
+<script type="text/javascript">
+
+var deviceData = null
+
+function showDevice( err, data ) {
+	//data[0] = device + icon
+	//  data[0].iconObj.id, data[o].iconObj.url
+	document.getElementById('deviceName').innerHTML = data[0].name
+	document.getElementById('image').src = data[0].iconObj.url
+	Homey.hideLoadingOverlay()
+	deviceData = data
+}
+
+Homey.showLoadingOverlay()
+Homey.setTitle(Homey.__('pair.select_device'))
+Homey.emit('list_devices',{}, showDevice)
+
+
+function add( data ) {
+	var val = document.getElementById('selectDevice').checked;
+	if( val ) {
+		Homey.setViewStoreValue('add_devices', 'devices', deviceData,
+				function(err) {
+					Homey.showView('properties')
+		})
+	}
+	else {
+		Homey.done()
+	}   
+}
+
+
+// function called when user pressed button
+function cancel(data) {
+	Homey.done();
+}
+
+
+</script>
