@@ -53,6 +53,14 @@ requires the following NodeJS modules
 - dgram
 - crc
 
+# app.json
+
+app.json is split in serveral files (driver.compose.json et all).
+In order to create a full app.json, open a commandline (i.e. terminal):
+
+	> cd com.broadlink
+	> athom app validate
+ 
 
 # To Do
 
