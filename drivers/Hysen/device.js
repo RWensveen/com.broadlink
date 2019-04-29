@@ -81,7 +81,7 @@ class HysenDevice extends BroadlinkDevice {
 			}
 			await drv.trigger_parentalmode_toggle.trigger(this,{},{})
 		} 
-		catch(err) { Util.debugLog("_trigger_parentalmode: error = "+err)}
+		catch(err) { Util.debugLog("**> hysen._trigger_parentalmode: error = "+err)}
 	}
 	
 	_updateCapabilities() {
